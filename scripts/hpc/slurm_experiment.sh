@@ -81,7 +81,16 @@ ollama_exec() {
 # PYTHON ENV (before the server, so a bad interpreter fails fast without holding the GPU)
 # -----------------------------
 if [ -n "${PY_MODULE:-}" ]; then
-  module load "$PY_MODULE"
+  # Batch shells are non-interactive, so `module` may not be defined yet: load the init script.
+  if ! command -v module >/dev/null 2>&1; then
+    for init in /etc/profile.d/lmod.sh /etc/profile.d/modules.sh /usr/share/lmod/lmod/init/bash /usr/share/Modules/init/bash; do
+      # shellcheck disable=SC1090
+      [ -f "$init" ] && { set +u; source "$init"; set -u; break; }
+    done
+  fi
+  command -v module >/dev/null 2>&1 || { echo "ERROR: PY_MODULE is set but the 'module' command is unavailable on $(hostname)"; exit 1; }
+  set +u; module load "$PY_MODULE"; set -u
+  echo "Loaded module $PY_MODULE: $(command -v "$PYTHON_BIN") ($("$PYTHON_BIN" --version 2>&1))"
 fi
 if [ -n "${REBUILD_VENV:-}" ]; then rm -rf "$VENV"; fi
 
