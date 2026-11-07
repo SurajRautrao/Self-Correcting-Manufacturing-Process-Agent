@@ -134,6 +134,19 @@ python -m scmpa.evaluation.run_experiments --config configs/experiments/llm_test
 
 The runner compares B0 (LLM only), B1 (+ validator), B2 (+ LLM repair loop) and R (rule-based reference) on the **same** initial plans. It does this on two tracks: generation, and repair of injected faults. Results go to `reports/experiments/<id>/`: raw per-case CSV/JSONL, `summary.md`, a chart, and every run record. See [`docs/evaluation.md`](docs/evaluation.md) for the method and [`docs/DATA_CARD.md`](docs/DATA_CARD.md) for the synthetic benchmark (24 components, 20% deliberately infeasible, split by component into dev and test).
 
+### Running on a Slurm GPU cluster
+
+`scripts/hpc/slurm_experiment.sh` starts Ollama from an Apptainer image on a GPU node, downloads the models named in the config, and runs the experiment. Submit it from the repo root:
+
+```bash
+apptainer pull ~/ollama.sif docker://ollama/ollama:latest      # once, on a login node
+mkdir -p logs
+CONFIG=configs/experiments/llm_pilot_dev_gemma3-4b.json LIMIT=2 sbatch scripts/hpc/slurm_experiment.sh   # smoke run
+sbatch scripts/hpc/slurm_experiment.sh                          # main run (llm_test_full_gemma3-4b)
+```
+
+The job is resumable: if it hits its time limit, resubmit the same command. The script header lists every override (`CONFIG`, `LIMIT`, `FRESH`, `VENV`, `PY_MODULE`, ...). It needs Python 3.11 or newer on the cluster.
+
 If the input is invalid, `load_component` raises `InputValidationError`, which lists every problem and where it is:
 
 ```
@@ -165,7 +178,7 @@ data/            catalogue, examples, synthetic/benchmark_v1 (all synthetic)
 configs/         experiment configs
 docs/            architecture, assumptions/limits, constraint catalogue, evaluation, data card
 src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, evaluation/, app/, prompt_templates/
-scripts/         run_demo.py, make_synthetic_data.py
+scripts/         run_demo.py, make_synthetic_data.py, hpc/slurm_experiment.sh
 tests/           unit/ and integration/ tests
 reports/         generated experiment output (git-ignored)
 ```

@@ -1,0 +1,2 @@
+# Shell scripts must keep LF line endings: bash on the cluster fails on Windows CRLF line endings.
+*.sh text eol=lf
