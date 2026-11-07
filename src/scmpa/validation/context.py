@@ -42,6 +42,13 @@ class ValidationContext:
         """Operation types the catalogue considers suitable for this feature's type."""
         return list(self.catalogue.feature_types.get(feature.type, []))
 
+    def completing_operation_types(self, feature: Feature) -> list[str]:
+        """Suitable types that can complete this feature on their own (rule set v1.2: not preparatory)."""
+        return self.catalogue.completing_operation_types(feature.type)
+
+    def is_preparatory(self, operation_type: str) -> bool:
+        return operation_type in self.catalogue.preparatory_operation_types
+
     def capable_machines(self, operation_type: str) -> list[str]:
         """IDs of available machines declaring ``operation_type`` as a capability."""
         return [m.machine_id for m in self.component.resources.machines if operation_type in m.capabilities]

@@ -274,3 +274,44 @@ def test_optional_operation_without_resources_is_removed_not_escalated() -> None
     record = solve(component, CATALOGUE, Fixed(), RuleBasedRepairAgent())
     assert record.stop_reason == "valid" and record.repairs_used == 1
     assert "OP9" not in record.final_plan.sequence
+
+
+def test_spot_drill_only_hole_is_repaired_with_drilling() -> None:
+    """Regression from the full test run (syn_019 shape): repaired, not escalated, and the hole gets drilled."""
+    from scmpa.planning import PlanResult
+    from scmpa.schemas import ProcessPlan
+
+    component = comp("demo_bracket_001")
+    data = build_baseline_plan(component, CATALOGUE, "p").model_dump(mode="json")
+    f2 = next(o for o in data["operations"] if o["target_features"] == ["F2"])
+    f2["type"] = "spot_drilling"
+
+    class Fixed:
+        name = "fixed"
+
+        def generate_plan(self, *a, **k):
+            return PlanResult(status="ok", plan=ProcessPlan.model_validate(data), planner="fixed")
+
+    record = solve(component, CATALOGUE, Fixed(), RuleBasedRepairAgent())
+    assert record.stop_reason == "valid"
+    types = {o.type for o in record.final_plan.operations if "F2" in o.target_features}
+    assert types == {"drilling"}
+
+
+def test_final_plan_is_best_candidate_not_last() -> None:
+    """A repair that makes the plan worse must not replace the better earlier candidate."""
+    bad = faulty_plan("demo_bracket_001", "incompatible_tool")
+    worse = json.loads(model_json(bad))
+    for o in worse["operations"]:
+        o["machine_id"] = "M9"  # unknown machine everywhere: strictly more violations
+    agent = LLMRepairAgent(ScriptedLLMClient([json.dumps({"status": "REPAIRED", "changes": ["oops"], "missing_information": [], "plan": worse})]))
+    record = solve(comp("demo_bracket_001"), CATALOGUE, MockPlanner(faults=["incompatible_tool"]), agent, max_repairs=1)
+    assert record.stop_reason == "max_repairs_reached" and len(record.iterations) == 2
+    first, second = record.iterations
+    assert len(second.validation.hard_constraint_violations) > len(first.validation.hard_constraint_violations)
+    assert record.final_iteration == 0 and record.final_plan == first.plan and record.final_validation == first.validation
+
+
+def test_final_plan_is_last_when_accepted() -> None:
+    record = solve(comp("demo_bracket_001"), CATALOGUE, MockPlanner(faults=["incompatible_tool"]), RuleBasedRepairAgent())
+    assert record.stop_reason == "valid" and record.final_iteration == len(record.iterations) - 1

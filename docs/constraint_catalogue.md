@@ -1,4 +1,4 @@
-# Constraint catalogue (rule set v1.1)
+# Constraint catalogue (rule set v1.2)
 
 The validator lives in `src/scmpa/validation/`. It is pure Python: no LLM, no network and no randomness. A plan is **valid iff no rule reports a `hard` violation**. Warnings never affect validity. Each violation records `rule_id`, `severity`, `operation_id` and/or `feature_id`, `evidence`, a `repair_hint` and a `repairable` flag.
 
@@ -23,11 +23,12 @@ The validator lives in `src/scmpa/validation/`. It is pure Python: no LLM, no ne
 - **No cascades:** a rule skips inputs that a more basic rule has already rejected. R3 and R5 are not evaluated when R1, R2 or R4 has already failed for that operation. R6(a) skips unknown types and features. R9 skips edges that R8 rejected. This keeps the violation list focused for the repair agent.
 - **Coverage (R6):**
   - An operation *contributes* to a feature if it targets that feature and its type is in the catalogue's suitable list for the feature type. Machine and tool errors do not cancel a contribution, because R2–R5 report those separately.
-  - A feature with `required_operation_types` needs **all** of them. Any other required feature needs **any one** suitable operation.
+  - A feature with `required_operation_types` needs **all** of them. Any other required feature needs **any one** suitable *completing* operation.
+  - **Preparatory operations (v1.2):** the catalogue's `preparatory_operation_types` (spot drilling) contribute to a feature but never complete it on their own. Spot drilling centres a hole; it does not make one. A hole that only receives spot drilling is an R6 violation that asks for drilling (or reaming). Before v1.2 such a hole counted as covered. That was a false pass, and the first full test run accepted 8 such plans.
   - Optional features (`required: false`) may be omitted.
 - **Component precedence (R9):** a constraint `before → after` is checked for every pair of matching operations. If one operation matches both sides (for example, a single operation faces F1 *and* machines F2 when F1 must precede F2), that is also a violation.
 - **Cycles (R8):** one cycle is reported per validation. Revalidation after repair reports the next cycle, if any.
-- **Removable operations (v1.1):** sometimes no available resource can perform an operation, but removing it would not uncover any required feature. A spot-drilling step with no spot drill on hand is the typical case. R3/R5 then report `repairable: true` with `operation_removable: true` and the hint "remove it". In v1.0 such plans went straight to human review. This was found in the first LLM pilot, where the model added realistic but unavailable spot-drilling steps.
+- **Removable operations (v1.1, tightened in v1.2):** sometimes no available resource can perform an operation, but removing it would not add a missing operation type to any required feature. A spot-drilling step with no spot drill on hand is the typical case. R3/R5 then report `repairable: true` with `operation_removable: true` and the hint "remove it". In v1.0 such plans went straight to human review. This was found in the first LLM pilot, where the model added realistic but unavailable spot-drilling steps. v1.1 compared only *is the feature covered*, so the tapping step of a threaded hole that was already missing its drilling counted as removable, although tapping is still required there. v1.2 compares each target feature's missing types before and after removal.
 - **`repairable: false`** means no change using the available resources can fix the violation. The repair loop (M3) will route such cases to human review instead of spending its iteration budget on them.
 
 ## Configuration (`ValidationConfig`)

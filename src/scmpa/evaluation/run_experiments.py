@@ -15,6 +15,9 @@ Design
   which measures repair independently of planner quality (feasible components only).
 * **Resumable.** Every planner result and run record is cached as JSON under
   ``<output_dir>/<experiment_id>/``. Re-running skips finished cases.
+* **Re-scoring.** ``initial_plans_from`` replays the initial plans of an earlier
+  experiment instead of calling the planner, so a rule-set or loop change can be
+  measured on exactly the same plans (a paired comparison across experiments).
 """
 
 from __future__ import annotations
@@ -33,7 +36,7 @@ from typing import Any, Literal
 from pydantic import Field, model_validator
 
 import scmpa
-from scmpa.io import REPO_ROOT, load_catalogue, load_plan, read_json, validate_component
+from scmpa.io import DEFAULT_CATALOGUE_PATH, REPO_ROOT, load_catalogue, load_plan, read_json, validate_component
 from scmpa.planning import FAULT_KINDS, FaultNotApplicable, PlanResult, inject_fault, make_planner
 from scmpa.repair import make_repair_agent
 from scmpa.schemas import Catalogue, Component, ProcessPlan
@@ -73,6 +76,9 @@ class ExperimentConfig(StrictModel):
     corruption_faults: list[str] = Field(default_factory=lambda: list(DEFAULT_CORRUPTION_FAULTS))
     faults_per_case: int = Field(default=2, ge=1)
     output_dir: str = "reports/experiments"
+    #: Experiment ID (under ``output_dir``) whose cached initial plans are replayed instead of
+    #: calling the planner. A missing plan there is an error, never a silent new planner call.
+    initial_plans_from: str | None = Field(default=None, pattern=r"^[A-Za-z0-9_.\-]+$")
 
     @model_validator(mode="after")
     def _consistent(self) -> ExperimentConfig:
@@ -80,7 +86,26 @@ class ExperimentConfig(StrictModel):
             raise ValueError("system B2 requires an 'llm_repair' configuration")
         if unknown := sorted(set(self.corruption_faults) - set(FAULT_KINDS)):
             raise ValueError(f"unknown corruption faults: {unknown}")
+        if self.initial_plans_from == self.experiment_id:
+            raise ValueError("initial_plans_from must name a different experiment")
         return self
+
+
+#: Config fields that must match for replayed initial plans to mean the same thing.
+REPLAY_FIELDS = ("benchmark_dir", "planner", "corruption_faults", "faults_per_case")
+
+
+def check_replay_source(cfg: ExperimentConfig) -> Path:
+    """Return the source ``plans/`` folder, after checking it was produced under a compatible config."""
+    src = (REPO_ROOT / cfg.output_dir / cfg.initial_plans_from).resolve()  # type: ignore[operator]
+    if not (src / "config.json").exists():
+        raise ValueError(f"initial_plans_from: no experiment at {src}")
+    source = ExperimentConfig.model_validate_json((src / "config.json").read_text(encoding="utf-8"))
+    if diffs := [f for f in REPLAY_FIELDS if getattr(source, f) != getattr(cfg, f)]:
+        raise ValueError(f"initial_plans_from={cfg.initial_plans_from!r} used a different {diffs}; its plans are not comparable")
+    if missing := sorted(set(cfg.seeds) - set(source.seeds)):
+        raise ValueError(f"initial_plans_from={cfg.initial_plans_from!r} has no plans for seeds {missing}")
+    return src / "plans"
 
 
 class FixedPlanner:
@@ -137,12 +162,20 @@ def corrupt_reference(reference: ProcessPlan, component: Component, catalogue: C
     return PlanResult(status="ok", plan=plan, planner="corruption", injected_faults=records)
 
 
-def initial_plan(case: dict[str, Any], track: Track, seed: int, cfg: ExperimentConfig, catalogue: Catalogue, cache_dir: Path) -> PlanResult:
+def initial_plan(
+    case: dict[str, Any], track: Track, seed: int, cfg: ExperimentConfig, catalogue: Catalogue, cache_dir: Path,
+    replay_dir: Path | None = None,
+) -> PlanResult:
     cid = case["component_id"]
-    path = cache_dir / f"{track}__{cid}__s{seed}.json"
+    name = f"{track}__{cid}__s{seed}.json"
+    path = cache_dir / name
     if path.exists():
         return PlanResult.model_validate_json(path.read_text(encoding="utf-8"))
-    if track == "generation":
+    if replay_dir is not None:
+        if not (replay_dir / name).exists():
+            raise FileNotFoundError(f"initial_plans_from: {replay_dir / name} is missing (was that experiment finished?)")
+        result = PlanResult.model_validate_json((replay_dir / name).read_text(encoding="utf-8"))
+    elif track == "generation":
         options = {k: v for k, v in cfg.planner.items() if k != "provider"}
         planner = make_planner(cfg.planner["provider"], seed=seed, **options)
         result = planner.generate_plan(case["component"], catalogue)
@@ -226,6 +259,7 @@ def _sha(path: Path) -> str:
 def run_experiment(cfg: ExperimentConfig, *, fresh: bool = False, log=print) -> Path:
     """Run (or resume) an experiment; return its output directory."""
     catalogue = load_catalogue()
+    replay_dir = check_replay_source(cfg) if cfg.initial_plans_from else None
     out = (REPO_ROOT / cfg.output_dir / cfg.experiment_id).resolve()
     if fresh and out.exists():
         import shutil
@@ -248,6 +282,7 @@ def run_experiment(cfg: ExperimentConfig, *, fresh: bool = False, log=print) -> 
         previous_env = json.loads(env_path.read_text(encoding="utf-8"))
         stale = {k: (previous_env.get(k), v) for k, v in {
             "rule_set_version": RULE_SET_VERSION,
+            "catalogue_sha256": _sha(DEFAULT_CATALOGUE_PATH),
             "benchmark_manifest_sha256": _sha(bench_dir / "manifest.json"),
         }.items() if previous_env.get(k) != v}
         if stale:
@@ -261,6 +296,7 @@ def run_experiment(cfg: ExperimentConfig, *, fresh: bool = False, log=print) -> 
         "platform": platform.platform(),
         "rule_set_version": RULE_SET_VERSION,
         "catalogue_id": catalogue.catalogue_id,
+        "catalogue_sha256": _sha(DEFAULT_CATALOGUE_PATH),
         "benchmark_id": manifest["benchmark_id"],
         "benchmark_manifest_sha256": _sha(bench_dir / "manifest.json"),
         "n_cases_selected": len(cases),
@@ -278,7 +314,7 @@ def run_experiment(cfg: ExperimentConfig, *, fresh: bool = False, log=print) -> 
         for case in track_cases:
             for seed in cfg.seeds:
                 cid = case["component_id"]
-                pr = initial_plan(case, track, seed, cfg, catalogue, out / "plans")
+                pr = initial_plan(case, track, seed, cfg, catalogue, out / "plans", replay_dir)
                 needed = {"validate_only" if s in ("B0", "B1") else s for s in cfg.systems if not (track == "corruption" and s == "B0")}
                 records: dict[str, tuple[RunRecord, str]] = {}
                 for variant in sorted(needed):

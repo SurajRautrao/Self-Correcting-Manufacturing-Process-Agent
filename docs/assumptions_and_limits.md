@@ -17,7 +17,7 @@ This file lists every simplification in the SCMPA model. A plan judged "valid" b
 | Setups | Not modelled. Examples assume a single setup unless stated otherwise. Transfers between machines have no cost. |
 | Tools | Compatibility is decided by **tool type only**. Diameter, length, flute count and wear are ignored, so an 8 mm drill and a 5 mm drill are interchangeable to the validator. |
 | Machines | A machine is a list of operation-type capabilities. Work envelope, spindle power and axes are ignored. |
-| Feature coverage | Each feature type has a catalogue list of suitable operations. If a feature lists `required_operation_types`, all of them must be applied; otherwise one suitable operation counts as coverage. |
+| Feature coverage | Each feature type has a catalogue list of suitable operations. If a feature lists `required_operation_types`, all of them must be applied; otherwise one suitable *completing* operation counts as coverage. Spot drilling is preparatory (rule set v1.2): it never completes a hole on its own. |
 | Face milling | Mapped only to face mills, although end mills can face small areas in practice. |
 | Durations | Plan durations are illustrative estimates. They are not calculated from cutting data. |
 

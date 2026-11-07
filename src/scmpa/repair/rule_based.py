@@ -132,7 +132,7 @@ class RuleBasedRepairAgent:
                             continue
                         if t in (f.required_operation_types or []) and t not in applied:
                             needed.append(t)
-                        elif t not in applied:
+                        elif t not in applied and not ctx.is_preparatory(t):
                             unused.append(t)
                         else:
                             other.append(t)
@@ -158,13 +158,15 @@ class RuleBasedRepairAgent:
                 }
                 if feature.required_operation_types:
                     missing = [t for t in feature.required_operation_types if t not in applied]
-                elif applied:
+                elif applied & set(ctx.completing_operation_types(feature)):
                     missing = []
                 else:
-                    producible = [t for t in suitable if ctx.resource_options(t)]
-                    main = [t for t in producible if t != "spot_drilling"]
-                    missing = (main or producible)[:1]
+                    # A preparatory type (spot drilling) never completes a feature: add a completing one.
+                    producible = [t for t in ctx.completing_operation_types(feature) if ctx.resource_options(t)]
+                    missing = producible[:1]
                 for op_type in missing:
+                    if not ctx.resource_options(op_type):
+                        continue  # nothing can perform it; revalidation reports it as non-repairable
                     option = ctx.resource_options(op_type)[0]
                     new = {
                         "operation_id": next_op_id(), "type": op_type, "target_features": [feature.feature_id],

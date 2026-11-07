@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from scmpa.schemas import Operation, ProcessPlan, Violation
 from scmpa.validation.context import ValidationContext
-from scmpa.validation.rules.coverage import uncovered_required_features
+from scmpa.validation.rules.coverage import applied_operation_types, missing_operation_types
 
 R1 = "R1_OPERATION_TYPE"
 R2 = "R2_MACHINE_EXISTS"
@@ -21,14 +21,27 @@ R7 = "R7_FEATURE_REFERENCE"
 
 
 def operation_is_removable(plan: ProcessPlan, ctx: ValidationContext, op: Operation) -> bool:
-    """True if dropping ``op`` leaves every currently covered required feature covered.
+    """True if dropping ``op`` adds no missing operation type to any required feature.
 
     An operation with no capable machine or compatible tool only blocks repair
     (``repairable=False``) when it is *needed*. An optional extra operation
     (e.g. spot drilling where no spot drill exists) can simply be removed.
+
+    v1.2: compared per feature on the *missing types*, not on "is it covered".
+    The v1.1 check called the tapping step of a hole that was already missing
+    its drilling "removable", although tapping is still required there.
     """
     without = plan.model_copy(update={"operations": [o for o in plan.operations if o.operation_id != op.operation_id]})
-    return set(uncovered_required_features(without, ctx)) <= set(uncovered_required_features(plan, ctx))
+    applied_with, applied_without = applied_operation_types(plan, ctx), applied_operation_types(without, ctx)
+    for fid in op.target_features:
+        feature = ctx.features.get(fid)
+        if feature is None or not feature.required:
+            continue
+        before = set(missing_operation_types(feature, applied_with[fid], ctx)[1])
+        after = set(missing_operation_types(feature, applied_without[fid], ctx)[1])
+        if not after <= before:
+            return False
+    return True
 
 
 def check_operation_type(plan: ProcessPlan, ctx: ValidationContext) -> list[Violation]:

@@ -43,9 +43,11 @@
     "tapping": ["tap"],
     "chamfering": ["chamfer_mill"]
   },
+  "preparatory_operation_types": ["spot_drilling"],
   "assumptions": [
     "Tool compatibility is decided by tool type only; tool diameter, length, flute count and wear are not modelled.",
     "Each feature type lists the operation types considered suitable to contribute to it. If a feature declares required_operation_types, all of them must be applied; otherwise any one suitable operation is treated as covering it.",
+    "Preparatory operation types (spot drilling) contribute to a feature but never complete it on their own: spot drilling centres a hole, it does not make one. Added in rule set v1.2 after the first full test run accepted spot-drill-only holes.",
     "Face milling is mapped only to face mills for clarity, although end mills can face small areas in practice. This is a deliberate simplification of the demo rule set.",
     "No operation order is encoded here. Ordering assumptions are component-specific and live in each component's precedence_constraints."
   ]

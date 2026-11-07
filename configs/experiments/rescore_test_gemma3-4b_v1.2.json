@@ -1,0 +1,13 @@
+{
+  "experiment_id": "rescore_test_gemma3-4b_v1.2",
+  "description": "No-LLM re-scoring of the v1.1 test run's initial plans under rule set v1.2 (B0/B1/R only). Runs in seconds; B2 needs llm_test_full_gemma3-4b_v1.2 on a GPU.",
+  "benchmark_dir": "data/synthetic/benchmark_v1",
+  "split": "test",
+  "seeds": [0, 1, 2],
+  "tracks": ["generation", "corruption"],
+  "systems": ["B0", "B1", "R"],
+  "planner": {"provider": "ollama", "model": "gemma3:4b", "temperature": 0.7},
+  "max_repairs": 3,
+  "faults_per_case": 2,
+  "initial_plans_from": "llm_test_full_gemma3-4b"
+}

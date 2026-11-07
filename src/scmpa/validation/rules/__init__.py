@@ -20,7 +20,11 @@ from scmpa.validation.rules.references import (
 from scmpa.validation.rules.sanity import R10, R11, R12, check_completeness, check_duplicates, check_durations
 
 #: Bump when rule semantics change, so recorded results stay interpretable.
-RULE_SET_VERSION = "1.1"  # 1.1: R3/R5 violations on operations not needed for coverage are repairable (by removal)
+#: 1.1: R3/R5 violations on operations not needed for coverage are repairable (by removal).
+#: 1.2: preparatory operations (catalogue ``preparatory_operation_types``, e.g. spot drilling) never
+#:      cover a feature on their own (R6), so a spot-drill-only hole is a coverage violation.
+#:      R3/R5 removability compares each feature's missing types, so a still-required step is never "removable".
+RULE_SET_VERSION = "1.2"
 
 ALL_RULES: tuple[Rule, ...] = (
     Rule(R1, "Valid operation type", "Every operation type belongs to the operation catalogue.", check_operation_type),

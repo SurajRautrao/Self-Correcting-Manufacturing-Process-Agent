@@ -11,6 +11,11 @@ The loop always terminates: at most ``max_repairs`` repair calls, and it
 stops early on a repeated plan, a non-repairable violation, a human-review
 request from the repair agent, or unusable planner/repair output. Every plan,
 validation result and repair call is recorded in the :class:`RunRecord`.
+
+The *final* plan is the accepted one, or, when the run ends in human review,
+the candidate with the fewest hard violations (latest on ties; see
+:func:`best_iteration`). A repair that makes a plan worse is therefore never
+handed to the reviewer in place of a better earlier candidate.
 """
 
 from __future__ import annotations
@@ -87,6 +92,13 @@ def plan_diff(old: ProcessPlan, new: ProcessPlan) -> dict[str, Any]:
     }
 
 
+def best_iteration(iterations: list[Iteration]) -> Iteration | None:
+    """The candidate to hand on: fewest hard violations, the latest one on ties (so a valid last plan wins)."""
+    if not iterations:
+        return None
+    return min(reversed(iterations), key=lambda it: len(it.validation.hard_constraint_violations))
+
+
 class StateTransition(StrictModel):
     state: State
     iteration: int | None = None
@@ -141,6 +153,8 @@ class RunRecord(StrictModel):
     stop_detail: str = ""
     #: A repair call that ended the run without producing a new plan (human-review request or unusable output).
     terminal_repair: RepairCall | None = None
+    #: Index of the iteration whose plan is ``final_plan`` (see :func:`best_iteration`).
+    final_iteration: int | None = None
     final_plan: ProcessPlan | None = None
     final_validation: ValidationResult | None = None
 
@@ -192,7 +206,7 @@ def solve(
         terminal_repair: RepairCall | None = None,
     ) -> RunRecord:
         transitions.append(StateTransition(state=status, iteration=len(iterations) - 1 if iterations else None, detail=detail or reason))
-        last = iterations[-1] if iterations else None
+        chosen = best_iteration(iterations)
         return RunRecord(
             run_id=run_id, component_id=component.component_id, started_at=started_at,
             duration_s=round(time.perf_counter() - t0, 3),
@@ -205,7 +219,8 @@ def solve(
             planner_result=planner_result.model_copy(update={"plan": None}),
             iterations=iterations, transitions=transitions, final_status=status, stop_reason=reason, stop_detail=detail,
             terminal_repair=terminal_repair,
-            final_plan=last.plan if last else None, final_validation=last.validation if last else None,
+            final_iteration=chosen.index if chosen else None,
+            final_plan=chosen.plan if chosen else None, final_validation=chosen.validation if chosen else None,
         )
 
     planner_result = planner.generate_plan(component, catalogue)

@@ -150,6 +150,12 @@ def render_final(record: RunRecord) -> None:
     plan = record.final_plan
     accepted = record.final_status == "ACCEPTED"
     st.markdown(f"#### Final plan `{plan.plan_id}`: {'accepted under the declared rule set' if accepted else 'NOT accepted (needs human review)'}")
+    last = len(record.iterations) - 1
+    if not accepted and record.final_iteration is not None and record.final_iteration != last:
+        st.caption(
+            f"Shown: iteration {record.final_iteration}, the candidate with the fewest hard violations. "
+            f"Later repairs (up to iteration {last}) made the plan worse."
+        )
     table(plan_rows(plan, record.final_validation))
     st.markdown(f"**Explanation (from the planner, not verified):** {plan.explanation}")
     if plan.assumptions:

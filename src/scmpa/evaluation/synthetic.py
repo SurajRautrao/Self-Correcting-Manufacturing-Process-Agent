@@ -78,8 +78,7 @@ def _dims(kind: str, rng: random.Random) -> dict[str, float]:
 
 
 def _main_operation(feature_type: str, catalogue: Catalogue) -> str:
-    suitable = catalogue.feature_types[feature_type]
-    return next((t for t in suitable if t != "spot_drilling"), suitable[0])
+    return catalogue.completing_operation_types(feature_type)[0]
 
 
 def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, infeasible: bool) -> dict[str, Any]:

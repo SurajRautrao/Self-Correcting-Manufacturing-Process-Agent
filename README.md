@@ -143,7 +143,10 @@ apptainer pull ~/ollama.sif docker://ollama/ollama:latest      # once, on a logi
 mkdir -p logs
 CONFIG=configs/experiments/llm_pilot_dev_gemma3-4b.json LIMIT=2 sbatch scripts/hpc/slurm_experiment.sh   # smoke run
 sbatch scripts/hpc/slurm_experiment.sh                          # main run (llm_test_full_gemma3-4b)
+CONFIG=configs/experiments/llm_test_full_gemma3-4b_v1.2.json sbatch scripts/hpc/slurm_experiment.sh   # v1.2 re-run on the same plans
 ```
+
+Results so far, including two validator flaws found on the test split and fixed in rule set v1.2, are in [`docs/results.md`](docs/results.md).
 
 The job is resumable: if it hits its time limit, resubmit the same command. The script header lists every override (`CONFIG`, `LIMIT`, `FRESH`, `VENV`, `PY_MODULE`, ...). It needs Python 3.11 or newer on the cluster.
 

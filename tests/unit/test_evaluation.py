@@ -177,3 +177,42 @@ def test_config_requires_llm_repair_for_b2() -> None:
 def test_shipped_configs_are_valid() -> None:
     for path in (REPO_ROOT / "configs" / "experiments").glob("*.json"):
         ExperimentConfig.model_validate(read_json(path))
+
+
+def test_initial_plans_from_replays_without_planner_calls(tmp_path, monkeypatch) -> None:
+    out_dir = str(tmp_path.relative_to(REPO_ROOT)) if tmp_path.is_relative_to(REPO_ROOT) else str(tmp_path)
+    base = ExperimentConfig(experiment_id="t_src", split="all", limit=3, seeds=[0, 1], tracks=["generation", "corruption"],
+                            systems=["B0", "B1", "R"], planner={"provider": "mock", "faults": ["incompatible_tool"]}, output_dir=out_dir)
+    src = run_experiment(base, log=lambda m: None)
+
+    import scmpa.evaluation.run_experiments as rx
+
+    def no_planner(*a, **k):
+        raise AssertionError("planner must not be called when replaying")
+
+    monkeypatch.setattr(rx, "make_planner", no_planner)
+    replay = base.model_copy(update={"experiment_id": "t_replay", "initial_plans_from": "t_src", "seeds": [1]})
+    out = run_experiment(replay, log=lambda m: None)
+    for f in (out / "plans").iterdir():
+        assert f.read_text(encoding="utf-8") == (src / "plans" / f.name).read_text(encoding="utf-8")
+    assert "replayed" in (out / "summary.md").read_text(encoding="utf-8")
+
+    # a different planner or an unknown seed is refused; so is a missing plan
+    with pytest.raises(ValueError, match="different"):
+        run_experiment(replay.model_copy(update={"experiment_id": "t_bad1", "planner": {"provider": "mock"}}), log=lambda m: None)
+    with pytest.raises(ValueError, match="no plans for seeds"):
+        run_experiment(replay.model_copy(update={"experiment_id": "t_bad2", "seeds": [7]}), log=lambda m: None)
+    with pytest.raises(FileNotFoundError):
+        run_experiment(replay.model_copy(update={"experiment_id": "t_bad3", "limit": 5}), log=lambda m: None)
+    with pytest.raises(ValueError, match="different experiment"):
+        ExperimentConfig(experiment_id="same", initial_plans_from="same")
+    for name in ("t_src", "t_replay", "t_bad1", "t_bad2", "t_bad3"):
+        shutil.rmtree(tmp_path / name, ignore_errors=True)
+
+
+@pytest.mark.parametrize("n", range(1, 120))
+def test_wilson_interval_contains_estimate_at_extremes(n: int) -> None:
+    """Regression: rounding put a bound on the wrong side of p = 0 / 1, crashing the chart's error bars."""
+    for k in (0, n):
+        lo, hi = wilson_interval(k, n)
+        assert lo <= k / n <= hi

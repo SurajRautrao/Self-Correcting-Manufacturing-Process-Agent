@@ -61,7 +61,13 @@ Each experiment writes its output to `reports/experiments/<experiment_id>/`:
 | `violations_by_rule.csv` | Violation counts per rule |
 | `hard_violation_rate.png` | Chart of hard-violation rates |
 
-An interrupted run resumes from the cache when the same command is run again. A different config under the same `experiment_id` is refused.
+An interrupted run resumes from the cache when the same command is run again. A different config under the same `experiment_id` is refused. So is a cache produced under a different rule-set version, catalogue (sha256) or benchmark manifest.
+
+**Re-scoring with the same plans.** `"initial_plans_from": "<experiment_id>"` replays that experiment's cached initial plans instead of calling the planner. It refuses a source with a different benchmark, planner, faults or missing seeds, and a missing plan is an error, never a new planner call. This measures a rule-set or loop change on exactly the same plans: `rescore_test_gemma3-4b_v1.2` (B0/B1/R, seconds, no LLM) and `llm_test_full_gemma3-4b_v1.2` (with B2, GPU) replay `llm_test_full_gemma3-4b`.
+
+**Final plan.** For an accepted run this is the valid plan. For a run that ends in human review, it is the candidate with the fewest hard violations, the latest one on ties (`RunRecord.final_iteration`). This means a repair that made things worse is never handed on in place of a better earlier candidate. Runs made before this change report the last candidate.
+
+Results and the flaws found so far are in [`results.md`](results.md).
 
 ## Success criteria (spec section 8.4)
 

@@ -455,3 +455,77 @@ def test_r5_needed_operation_without_tool_stays_non_repairable() -> None:
     result = run("demo_plate_002", lambda d: op(d, "OP5").update(tool_id="T3"), remove_tap)
     [v] = hard(result, "R5_TOOL_COMPATIBILITY")
     assert v.evidence["operation_removable"] is False and v.repairable is False
+
+
+# =========================================================================== v1.2: preparatory operations
+
+
+def _spot_only_hole(d):
+    """F2 (through hole) receives only spot drilling: it is centred, never drilled."""
+    op(d, "OP2").update(type="spot_drilling")
+
+
+def _spot_drill_available(d):
+    _m1_can_spot_drill(d)
+    d["resources"]["tools"].append({"tool_id": "T9", "type": "spot_drill"})
+
+
+def test_catalogue_marks_spot_drilling_preparatory() -> None:
+    assert CATALOGUE.preparatory_operation_types == ["spot_drilling"]
+    assert CATALOGUE.completing_operation_types("blind_hole") == ["drilling", "reaming"]
+
+
+def test_spot_drill_only_hole_is_a_coverage_violation() -> None:
+    """Found in the first full test run: a spot-drill-only hole was accepted as covered (v1.1 false pass)."""
+    result = run("demo_bracket_001", lambda d: (_spot_only_hole(d), op(d, "OP2").update(tool_id="T9")), _spot_drill_available)
+    [v] = hard(result)
+    assert v.rule_id == "R6_FEATURE_COVERAGE" and v.feature_id == "F2"
+    assert "preparatory" in v.message and v.evidence["missing_operation_types"] == ["drilling", "reaming"]
+    assert v.repairable is True and "drilling on M1 with T2" in v.repair_hint
+    assert "F2" in result.coverage.missing_features
+
+
+def test_spot_drill_only_hole_without_spot_resources_is_repairable() -> None:
+    """Found in the first full test run: this shape went straight to human review although drilling was available."""
+    result = run("demo_bracket_001", _spot_only_hole)  # M1 cannot spot drill, T2 is a drill
+    r3 = hard(result, "R3_MACHINE_CAPABILITY")[0]
+    assert r3.evidence["operation_removable"] is True and r3.repairable is True
+    assert hard(result, "R6_FEATURE_COVERAGE")[0].repairable is True
+    assert all(v.repairable for v in result.hard_constraint_violations)
+
+
+def test_spot_drilling_before_drilling_still_valid() -> None:
+    def add_spot(d):
+        d["operations"].insert(1, {"operation_id": "OP9", "type": "spot_drilling", "target_features": ["F2"],
+                                   "machine_id": "M1", "tool_id": "T9", "duration_min": 0.5})
+    result = run("demo_bracket_001", add_spot, _spot_drill_available)
+    assert result.valid, [v.message for v in result.hard_constraint_violations]
+
+
+def test_catalogue_rejects_preparatory_only_feature_type() -> None:
+    from scmpa.schemas import Catalogue
+
+    data = CATALOGUE.model_dump()
+    data["preparatory_operation_types"] = ["face_milling"]
+    with pytest.raises(ValueError, match="only preparatory"):
+        Catalogue.model_validate(data)
+    data["preparatory_operation_types"] = ["laser_marking"]
+    with pytest.raises(ValueError, match="unknown operation types"):
+        Catalogue.model_validate(data)
+
+
+def test_required_step_of_uncovered_feature_is_not_removable() -> None:
+    """Found re-scoring the test run (syn_011 shape): v1.1 called a needed tapping step removable
+    because its hole was already uncovered (drilling missing). Removing it would add a missing type."""
+    def tap_only(d):
+        # F3 (threaded hole: drilling + tapping) keeps tapping, loses drilling; the tap goes on a drill
+        d["operations"] = [o for o in d["operations"] if o["operation_id"] != "OP3"]
+        op(d, "OP5").update(tool_id="T3")
+        d["precedence"] = [e for e in d["precedence"] if "OP3" not in e]
+
+    def remove_tap(d):
+        d["resources"]["tools"] = [t for t in d["resources"]["tools"] if t["type"] != "tap"]
+
+    result = run("demo_plate_002", tap_only, remove_tap)
+    [r5] = hard(result, "R5_TOOL_COMPATIBILITY")
+    assert r5.operation_id == "OP5" and r5.evidence["operation_removable"] is False and r5.repairable is False

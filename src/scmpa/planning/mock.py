@@ -44,10 +44,10 @@ def build_baseline_plan(component: Component, catalogue: Catalogue, plan_id: str
         if feature.required_operation_types:
             needed = list(feature.required_operation_types)
         else:
-            producible = [t for t in suitable if ctx.resource_options(t)]
-            # spot drilling alone does not make a hole; prefer the main operation if possible
-            main = [t for t in producible if t != "spot_drilling"]
-            needed = (main or producible or suitable)[:1]
+            # A preparatory type (spot drilling) does not make a hole: pick a completing operation.
+            completing = ctx.completing_operation_types(feature)
+            producible = [t for t in completing if ctx.resource_options(t)]
+            needed = (producible or completing or suitable)[:1]
         for op_type in needed:
             options = ctx.resource_options(op_type)
             if not options:

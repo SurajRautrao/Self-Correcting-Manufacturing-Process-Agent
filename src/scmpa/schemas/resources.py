@@ -74,7 +74,15 @@ class Catalogue(StrictModel):
     feature_types: dict[Identifier, list[Identifier]]
     #: operation type -> tool types allowed for it
     tool_compatibility: dict[Identifier, list[Identifier]]
+    #: operation types that prepare a feature but never complete it on their own
+    #: (spot drilling centres a hole; it does not make one). Rule set v1.2.
+    preparatory_operation_types: list[Identifier] = Field(default_factory=list)
     assumptions: list[str] = Field(default_factory=list)
+
+    def completing_operation_types(self, feature_type: str) -> list[str]:
+        """Suitable operation types for ``feature_type`` that can complete it (preparatory ones excluded)."""
+        prep = set(self.preparatory_operation_types)
+        return [t for t in self.feature_types.get(feature_type, []) if t not in prep]
 
     @model_validator(mode="after")
     def _internally_consistent(self) -> Catalogue:
@@ -89,6 +97,10 @@ class Catalogue(StrictModel):
                 problems.append(f"feature type {feature_type!r} has no suitable operations")
             if unknown := sorted(set(suitable) - ops):
                 problems.append(f"feature type {feature_type!r} references unknown operation types {unknown}")
+            if suitable and not set(suitable) - set(self.preparatory_operation_types):
+                problems.append(f"feature type {feature_type!r} has only preparatory operations, so it can never be completed")
+        if unknown := sorted(set(self.preparatory_operation_types) - ops):
+            problems.append(f"preparatory_operation_types references unknown operation types {unknown}")
         if missing := sorted(ops - set(self.tool_compatibility)):
             problems.append(f"operation types without a tool_compatibility entry: {missing}")
         for op, allowed in self.tool_compatibility.items():

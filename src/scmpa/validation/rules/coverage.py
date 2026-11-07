@@ -7,7 +7,9 @@ Coverage semantics (see docs/constraint_catalogue.md):
   problems do not remove a contribution; they are reported by R2–R5.
 * A required feature with ``required_operation_types`` is covered when **all**
   of those types are applied to it; otherwise it is covered when **any** one
-  suitable operation is applied.
+  suitable *completing* operation is applied. Preparatory types (catalogue
+  ``preparatory_operation_types``, e.g. spot drilling) contribute but never
+  cover a feature on their own (rule set v1.2).
 * An operation whose type is unsuitable for a feature it targets is itself an
   R6 violation (e.g. drilling a planar face).
 """
@@ -35,8 +37,8 @@ def missing_operation_types(feature: Feature, applied: set[str], ctx: Validation
     """Return ``(requirement, missing)`` where requirement is ``"all_of"`` or ``"any_of"``. Empty ``missing`` = covered."""
     if feature.required_operation_types:
         return "all_of", [t for t in feature.required_operation_types if t not in applied]
-    suitable = ctx.suitable_operation_types(feature)
-    return "any_of", ([] if applied & set(suitable) else suitable)
+    completing = ctx.completing_operation_types(feature)
+    return "any_of", ([] if applied & set(completing) else completing)
 
 
 def uncovered_required_features(plan: ProcessPlan, ctx: ValidationContext) -> list[str]:
@@ -86,6 +88,11 @@ def check_feature_coverage(plan: ProcessPlan, ctx: ValidationContext) -> list[Vi
         repairable = len(producible) == len(missing) if requirement == "all_of" else bool(producible)
         if requirement == "all_of":
             message = f"Required feature {feature.feature_id!r} is missing operation(s) {missing}."
+        elif prep := sorted(t for t in applied[feature.feature_id] if ctx.is_preparatory(t)):
+            message = (
+                f"Required feature {feature.feature_id!r} only receives preparatory operation(s) {prep}, "
+                f"which do not complete it; add one of {missing}."
+            )
         else:
             message = f"Required feature {feature.feature_id!r} is not addressed by any suitable operation (one of {missing})."
         if repairable:

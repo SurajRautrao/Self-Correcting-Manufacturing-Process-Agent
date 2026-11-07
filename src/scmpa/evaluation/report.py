@@ -75,7 +75,14 @@ def render_markdown(summaries: list[dict[str, Any]], rows: list[dict[str, Any]],
         f"- Benchmark: `{env.get('benchmark_id')}` (manifest sha256 `{env.get('benchmark_manifest_sha256')}`), split **{config['split']}**, "
         f"{env.get('n_cases_selected')} components, seeds {config['seeds']}",
         f"- Planner: `{json.dumps(config['planner'])}`; LLM repair (B2): `{json.dumps(config.get('llm_repair'))}`; max repairs {config['max_repairs']}",
-        f"- Rule set {env.get('rule_set_version')}, catalogue `{env.get('catalogue_id')}`, scmpa {env.get('scmpa_version')}, Python {env.get('python')}",
+        f"- Rule set {env.get('rule_set_version')}, catalogue `{env.get('catalogue_id')}`"
+        + (f" (sha256 `{env['catalogue_sha256']}`)" if env.get("catalogue_sha256") else "")
+        + f", scmpa {env.get('scmpa_version')}, Python {env.get('python')}",
+        *(
+            [f"- Initial plans **replayed** from experiment `{config['initial_plans_from']}` (no new planner calls), "
+             "so differences from that experiment come only from validation and repair."]
+            if config.get("initial_plans_from") else []
+        ),
         "- **All data is synthetic.** These results describe software behaviour on a toy benchmark, not industrial performance.",
         "- R is a deterministic rule-based repair agent included as a reference point. It is not an AI result.",
         "",
@@ -150,8 +157,8 @@ def plot_violation_rates(summaries: list[dict[str, Any]], path: Path) -> bool:
         items = [s for s in summaries if s["track"] == track]
         labels = [s["system"] for s in items]
         rates = [s["hard_violation_rate"]["rate"] or 0 for s in items]
-        lo = [r - (s["hard_violation_rate"]["ci_low"] or 0) for r, s in zip(rates, items)]
-        hi = [(s["hard_violation_rate"]["ci_high"] or 0) - r for r, s in zip(rates, items)]
+        lo = [max(0.0, r - (s["hard_violation_rate"]["ci_low"] or 0)) for r, s in zip(rates, items)]
+        hi = [max(0.0, (s["hard_violation_rate"]["ci_high"] or 0) - r) for r, s in zip(rates, items)]
         y = [n_slots - 1 - i for i in range(len(items))]  # same row slots in every panel, top-aligned
         ax.set_facecolor(SURFACE)
         ax.barh(y, rates, height=0.5, color=SERIES_1, zorder=2)
