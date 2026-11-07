@@ -1,0 +1,182 @@
+{
+  "schema_version": "1.0",
+  "component_id": "syn_022",
+  "description": "Synthetic prismatic part with 6 features (pocket, threaded_hole, through_hole).",
+  "material": "brass",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 9.1,
+      "width_mm": 24.1,
+      "length_mm": 17.6
+    },
+    {
+      "feature_id": "F3",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 12.0
+    },
+    {
+      "feature_id": "F4",
+      "type": "threaded_hole",
+      "required": true,
+      "description": "threaded hole",
+      "diameter_mm": 6.0,
+      "depth_mm": 11.9,
+      "required_operation_types": [
+        "drilling",
+        "tapping"
+      ]
+    },
+    {
+      "feature_id": "F5",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 9.0,
+      "width_mm": 36.1,
+      "length_mm": 19.1
+    },
+    {
+      "feature_id": "F6",
+      "type": "threaded_hole",
+      "required": true,
+      "description": "threaded hole",
+      "diameter_mm": 5.0,
+      "depth_mm": 18.0,
+      "required_operation_types": [
+        "drilling",
+        "tapping"
+      ]
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Drill-tap centre",
+        "capabilities": [
+          "drilling",
+          "tapping",
+          "chamfering"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Knee-type milling machine",
+        "capabilities": [
+          "face_milling",
+          "pocket_milling",
+          "slot_milling",
+          "drilling"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "end_mill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T5",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T6",
+        "type": "end_mill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F4",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F4",
+        "operation_type": "tapping"
+      },
+      "rationale": "Tapping requires a pre-drilled hole."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F6",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F6",
+        "operation_type": "tapping"
+      },
+      "rationale": "Tapping requires a pre-drilled hole."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v1.0",
+    "notes": "benchmark scmpa_synthetic_v1; index 22"
+  }
+}

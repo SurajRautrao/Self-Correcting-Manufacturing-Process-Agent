@@ -1,0 +1,73 @@
+# Evaluation methodology
+
+## Systems
+
+| ID | What happens after the initial plan | Answers |
+|---|---|---|
+| B0 | Nothing. The plan is passed on unchecked (validated only to measure it) | How often does the LLM alone produce invalid plans? |
+| B1 | Validated once and never repaired. Invalid plans go to human review | What does detection alone buy? |
+| B2 | LLM repair loop: at most 3 repairs, stopping on repeated or non-repairable plans | H1 and H2: does validator feedback plus LLM repair reduce violations? |
+| R | Deterministic rule-based repair, same loop | A non-AI reference point. **Never report it as an AI result.** |
+
+**Paired design.** For each (component, seed) the planner runs once. All systems start from that identical initial plan, so differences between systems come only from post-processing. B0 and B1 therefore have identical final hard-violation rates by construction. They differ in whether invalid plans are **accepted** (B0) or **flagged** (B1); see the "invalid plan accepted" and "correct outcome" columns.
+
+## Tracks
+
+- **generation:** initial plans come from the configured planner (Ollama LLM, or the mock planner for pipeline checks). This tests the end-to-end question.
+- **corruption:** initial plans are the benchmark's reference plans with 2 seeded faults, each injected into a distinct operation (`planning/faults.py`). This measures repair ability independently of how good the planner is. Only feasible components are used, and B0 is not applicable.
+
+## Metrics
+
+All metrics are defined in `src/scmpa/evaluation/metrics.py`:
+
+- hard-violation rate, with a 95% Wilson CI and the SD of the per-seed rate;
+- mean final violations, and violations by rule (`violations_by_rule.csv`);
+- repair success (overall, and for feasible components only);
+- feature coverage;
+- precedence accuracy and sequence similarity against the reference plan;
+- repair rounds (mean and median among repaired cases);
+- human-review rate, recall and precision against `expected_outcome`;
+- correct outcome, and invalid plans accepted;
+- latency and tokens. API cost is 0 for a local model, so wall-clock latency is the cost proxy.
+
+## Protocol
+
+1. **Freeze the inputs.** The benchmark (manifest sha256 recorded in `environment.json`), the rule set version, the catalogue ID, the prompt versions with content hashes (recorded in every run record), and the model ID (in the config).
+2. **Use dev for pilots and prompt work.** Run the test split only for reported results (`configs/experiments/llm_test_full_gemma3-4b.json`; `*_qwen3.5-9b.json` is the comparison model).
+3. **Run repeats at temperature > 0.** At temperature 0 with a fixed seed, repeated runs are near-identical and add no information about variability.
+4. **Report means with CIs or spread,** never only the best run.
+5. **Inspect false passes and false failures manually,** using the per-case run records in `runs/`. A known false-pass class is tool-size mismatch, which is not modelled (see `assumptions_and_limits.md`).
+
+## Reproducing
+
+```bash
+pip install -e ".[dev,eval]"
+python scripts/make_synthetic_data.py --force         # regenerates the committed benchmark exactly (verified by a unit test)
+python -m scmpa.evaluation.run_experiments --config configs/experiments/pilot_mock.json      # seconds, no LLM
+python -m scmpa.evaluation.run_experiments --config configs/experiments/llm_pilot_dev_gemma3-4b.json   # dev pilot, about 1 h on CPU
+python -m scmpa.evaluation.run_experiments --config configs/experiments/llm_test_full_gemma3-4b.json   # main run: many hours on CPU; resumable
+python -m scmpa.evaluation.report reports/experiments/<experiment_id>                        # rebuild tables and chart only
+```
+
+Each experiment writes its output to `reports/experiments/<experiment_id>/`:
+
+| File or folder | Contents |
+|---|---|
+| `config.json`, `environment.json` | The frozen inputs |
+| `plans/` | Cached initial plans |
+| `runs/` | Full run records |
+| `results.jsonl`, `results.csv` | One row per case and system |
+| `summary.md`, `summary.csv`, `summary.json` | Aggregate tables |
+| `violations_by_rule.csv` | Violation counts per rule |
+| `hard_violation_rate.png` | Chart of hard-violation rates |
+
+An interrupted run resumes from the cache when the same command is run again. A different config under the same `experiment_id` is refused.
+
+## Success criteria (spec section 8.4)
+
+**Engineering criteria**, all of which are covered by tests:
+- the validator catches every injected fault kind;
+- no schema-invalid output reaches the validator;
+- the loop always terminates.
+
+**Research claims:** no numerical target was set in advance. Only measured results are reported.

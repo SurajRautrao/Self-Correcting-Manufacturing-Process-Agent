@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "component_id": "syn_019",
+  "description": "Synthetic prismatic part with 6 features (blind_hole, chamfer, pocket, threaded_hole).",
+  "material": "brass",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "chamfer",
+      "required": true,
+      "description": "chamfer",
+      "width_mm": 0.5
+    },
+    {
+      "feature_id": "F3",
+      "type": "threaded_hole",
+      "required": true,
+      "description": "threaded hole",
+      "diameter_mm": 5.0,
+      "depth_mm": 16.5,
+      "required_operation_types": [
+        "drilling",
+        "tapping"
+      ]
+    },
+    {
+      "feature_id": "F4",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 8.0,
+      "width_mm": 25.7,
+      "length_mm": 41.5
+    },
+    {
+      "feature_id": "F5",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 3.3,
+      "width_mm": 38.2,
+      "length_mm": 17.0
+    },
+    {
+      "feature_id": "F6",
+      "type": "blind_hole",
+      "required": true,
+      "description": "blind hole",
+      "diameter_mm": 8.0,
+      "depth_mm": 19.8
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Knee-type milling machine",
+        "capabilities": [
+          "face_milling",
+          "pocket_milling",
+          "slot_milling",
+          "drilling"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Drill-tap centre",
+        "capabilities": [
+          "drilling",
+          "tapping",
+          "chamfering"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T4",
+        "type": "end_mill"
+      },
+      {
+        "tool_id": "T5",
+        "type": "chamfer_mill"
+      },
+      {
+        "tool_id": "T6",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T7",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T8",
+        "type": "spot_drill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F3",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F3",
+        "operation_type": "tapping"
+      },
+      "rationale": "Tapping requires a pre-drilled hole."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F6"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v1.0",
+    "notes": "benchmark scmpa_synthetic_v1; index 19"
+  }
+}

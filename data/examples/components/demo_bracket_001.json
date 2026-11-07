@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "component_id": "demo_bracket_001",
+  "description": "Simplified aluminium mounting bracket (example from the project brief, extended with explicit precedence assumptions).",
+  "material": "aluminium",
+  "features": [
+    {"feature_id": "F1", "type": "planar_face", "required": true, "description": "Top reference face"},
+    {"feature_id": "F2", "type": "through_hole", "required": true, "diameter_mm": 8, "description": "Mounting hole"},
+    {"feature_id": "F3", "type": "pocket", "required": true, "depth_mm": 5, "width_mm": 20, "length_mm": 30, "description": "Weight-reduction pocket"}
+  ],
+  "resources": {
+    "machines": [
+      {"machine_id": "M1", "description": "3-axis vertical machining centre", "capabilities": ["face_milling", "drilling", "pocket_milling"]}
+    ],
+    "tools": [
+      {"tool_id": "T1", "type": "face_mill"},
+      {"tool_id": "T2", "type": "drill", "description": "8 mm twist drill (diameter not checked in MVP)"},
+      {"tool_id": "T3", "type": "end_mill"}
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {"feature_id": "F1"},
+      "after": {"feature_id": "F2"},
+      "rationale": "Demo assumption: F1 is the datum face for this bracket and is machined before features located from it."
+    },
+    {
+      "before": {"feature_id": "F1"},
+      "after": {"feature_id": "F3"},
+      "rationale": "Demo assumption: pocket depth is dimensioned from F1, so F1 is machined first."
+    }
+  ],
+  "assumptions": [
+    "Single setup is assumed for the demonstration.",
+    "Tool access and collision checks are not modelled in the MVP.",
+    "Precedence constraints are specific to this demo component and are not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "Adapted from the SCMPA project brief, section 4.1",
+    "notes": "Hand-written toy specification for software testing; not derived from a real CAD model."
+  }
+}

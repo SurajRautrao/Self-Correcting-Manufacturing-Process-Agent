@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "component_id": "syn_017",
+  "description": "Synthetic prismatic part with 5 features (blind_hole, pocket, slot).",
+  "material": "steel_s235",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 11.9,
+      "width_mm": 29.7,
+      "length_mm": 20.7
+    },
+    {
+      "feature_id": "F3",
+      "type": "slot",
+      "required": true,
+      "description": "slot",
+      "depth_mm": 7.0,
+      "width_mm": 6.6,
+      "length_mm": 70.5
+    },
+    {
+      "feature_id": "F4",
+      "type": "blind_hole",
+      "required": true,
+      "description": "blind hole",
+      "diameter_mm": 4.0,
+      "depth_mm": 13.2
+    },
+    {
+      "feature_id": "F5",
+      "type": "slot",
+      "required": true,
+      "description": "slot",
+      "depth_mm": 4.0,
+      "width_mm": 5.1,
+      "length_mm": 66.3
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Knee-type milling machine",
+        "capabilities": [
+          "face_milling",
+          "pocket_milling",
+          "slot_milling",
+          "drilling"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "3-axis vertical machining centre",
+        "capabilities": [
+          "face_milling",
+          "contour_milling",
+          "pocket_milling",
+          "slot_milling",
+          "spot_drilling",
+          "drilling",
+          "chamfering"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T5",
+        "type": "drill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v1.0",
+    "notes": "benchmark scmpa_synthetic_v1; index 17; deliberately infeasible: no tool compatible with required operation 'slot_milling'"
+  }
+}

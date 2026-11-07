@@ -1,0 +1,12 @@
+{
+  "experiment_id": "pilot_mock",
+  "description": "Pipeline check without an LLM: mock planner (generation track) and injected faults (corruption track); B2 omitted, R is the rule-based reference.",
+  "benchmark_dir": "data/synthetic/benchmark_v1",
+  "split": "test",
+  "seeds": [0, 1, 2],
+  "tracks": ["generation", "corruption"],
+  "systems": ["B0", "B1", "R"],
+  "planner": {"provider": "mock"},
+  "max_repairs": 3,
+  "faults_per_case": 2
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "component_id": "syn_005",
+  "description": "Synthetic prismatic part with 4 features (chamfer, through_hole).",
+  "material": "aluminium",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 5.0
+    },
+    {
+      "feature_id": "F3",
+      "type": "chamfer",
+      "required": true,
+      "description": "chamfer",
+      "width_mm": 1.5
+    },
+    {
+      "feature_id": "F4",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 8.0
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Drill-tap centre",
+        "capabilities": [
+          "drilling",
+          "tapping",
+          "chamfering"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Knee-type milling machine",
+        "capabilities": [
+          "face_milling",
+          "pocket_milling",
+          "slot_milling",
+          "drilling"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "chamfer_mill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v1.0",
+    "notes": "benchmark scmpa_synthetic_v1; index 5"
+  }
+}

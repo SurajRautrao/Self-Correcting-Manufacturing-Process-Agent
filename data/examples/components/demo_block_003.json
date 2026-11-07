@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "component_id": "demo_block_003",
+  "description": "Aluminium housing block with a pocket, a slot, a blind hole in the pocket floor and an optional chamfer.",
+  "material": "aluminium",
+  "features": [
+    {"feature_id": "F1", "type": "planar_face", "required": true, "description": "Top face"},
+    {"feature_id": "F2", "type": "pocket", "required": true, "depth_mm": 8, "width_mm": 25, "length_mm": 40},
+    {"feature_id": "F3", "type": "slot", "required": true, "depth_mm": 4, "width_mm": 6, "length_mm": 50},
+    {"feature_id": "F4", "type": "blind_hole", "required": true, "diameter_mm": 5, "depth_mm": 10, "description": "Hole in the pocket floor"},
+    {"feature_id": "F5", "type": "chamfer", "required": false, "width_mm": 0.5, "description": "Optional cosmetic chamfer"}
+  ],
+  "resources": {
+    "machines": [
+      {"machine_id": "M1", "description": "3-axis vertical machining centre", "capabilities": ["face_milling", "pocket_milling", "slot_milling", "drilling"]}
+    ],
+    "tools": [
+      {"tool_id": "T1", "type": "face_mill"},
+      {"tool_id": "T2", "type": "end_mill"},
+      {"tool_id": "T3", "type": "drill"}
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {"feature_id": "F1"},
+      "after": {"feature_id": "F2"},
+      "rationale": "Demo assumption: pocket depth is dimensioned from F1."
+    },
+    {
+      "before": {"feature_id": "F1"},
+      "after": {"feature_id": "F3"},
+      "rationale": "Demo assumption: slot depth is dimensioned from F1."
+    },
+    {
+      "before": {"feature_id": "F2"},
+      "after": {"feature_id": "F4"},
+      "rationale": "Demo assumption: F4 starts at the pocket floor, so the pocket is milled first."
+    }
+  ],
+  "assumptions": [
+    "Single setup is assumed for the demonstration.",
+    "F5 is optional and no chamfer tool or capability is available; a plan may omit it.",
+    "Precedence constraints are specific to this demo component and are not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "Hand-written for SCMPA Milestone 0",
+    "notes": "Toy specification for software testing; not derived from a real CAD model."
+  }
+}

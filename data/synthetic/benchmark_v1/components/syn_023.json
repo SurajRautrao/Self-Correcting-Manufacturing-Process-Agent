@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "component_id": "syn_023",
+  "description": "Synthetic prismatic part with 4 features (outer_contour, slot, threaded_hole).",
+  "material": "stainless_1.4301",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "outer_contour",
+      "required": true,
+      "description": "outer contour"
+    },
+    {
+      "feature_id": "F3",
+      "type": "slot",
+      "required": true,
+      "description": "slot",
+      "depth_mm": 3.2,
+      "width_mm": 10.0,
+      "length_mm": 41.2
+    },
+    {
+      "feature_id": "F4",
+      "type": "threaded_hole",
+      "required": true,
+      "description": "threaded hole",
+      "diameter_mm": 5.0,
+      "depth_mm": 9.4,
+      "required_operation_types": [
+        "drilling",
+        "tapping"
+      ]
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "3-axis vertical machining centre",
+        "capabilities": [
+          "face_milling",
+          "contour_milling",
+          "pocket_milling",
+          "slot_milling",
+          "spot_drilling",
+          "drilling",
+          "chamfering"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Pillar drill with tapping head",
+        "capabilities": [
+          "spot_drilling",
+          "drilling",
+          "tapping",
+          "reaming"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "end_mill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T3",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T5",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T6",
+        "type": "drill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F4",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F4",
+        "operation_type": "tapping"
+      },
+      "rationale": "Tapping requires a pre-drilled hole."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v1.0",
+    "notes": "benchmark scmpa_synthetic_v1; index 23"
+  }
+}

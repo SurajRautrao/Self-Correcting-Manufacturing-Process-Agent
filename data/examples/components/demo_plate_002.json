@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "component_id": "demo_plate_002",
+  "description": "Steel mounting plate with a plain hole, a threaded hole and an edge chamfer, split across two machines.",
+  "material": "steel_s235",
+  "features": [
+    {"feature_id": "F1", "type": "planar_face", "required": true, "description": "Top face"},
+    {"feature_id": "F2", "type": "through_hole", "required": true, "diameter_mm": 10},
+    {
+      "feature_id": "F3",
+      "type": "threaded_hole",
+      "required": true,
+      "diameter_mm": 6,
+      "depth_mm": 12,
+      "description": "M6 threaded hole",
+      "required_operation_types": ["drilling", "tapping"]
+    },
+    {"feature_id": "F4", "type": "chamfer", "required": true, "width_mm": 1, "description": "Top edge chamfer"}
+  ],
+  "resources": {
+    "machines": [
+      {"machine_id": "M1", "description": "3-axis milling machine", "capabilities": ["face_milling", "chamfering", "drilling"]},
+      {"machine_id": "M2", "description": "Pillar drill with tapping head", "capabilities": ["drilling", "tapping"]}
+    ],
+    "tools": [
+      {"tool_id": "T1", "type": "face_mill"},
+      {"tool_id": "T2", "type": "drill", "description": "10 mm drill"},
+      {"tool_id": "T3", "type": "drill", "description": "5 mm tap drill for M6"},
+      {"tool_id": "T4", "type": "tap", "description": "M6 tap"},
+      {"tool_id": "T5", "type": "chamfer_mill"}
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {"feature_id": "F3", "operation_type": "drilling"},
+      "after": {"feature_id": "F3", "operation_type": "tapping"},
+      "rationale": "A cut tap requires a pre-drilled hole of the tap-drill size."
+    },
+    {
+      "before": {"feature_id": "F1"},
+      "after": {"feature_id": "F4"},
+      "rationale": "Demo assumption: the edge chamfer is on F1, so F1 must exist before it is chamfered."
+    },
+    {
+      "before": {"feature_id": "F1"},
+      "after": {"feature_id": "F2"},
+      "rationale": "Demo assumption: hole positions are located from the finished top face."
+    }
+  ],
+  "assumptions": [
+    "Moving the part between M1 and M2 is not modelled as a setup cost in the MVP.",
+    "Tool diameters are recorded in descriptions only and are not checked against feature diameters.",
+    "Precedence constraints other than drill-before-tap are demo assumptions for this component only."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "Hand-written for SCMPA Milestone 0",
+    "notes": "Toy specification for software testing; not derived from a real CAD model."
+  }
+}

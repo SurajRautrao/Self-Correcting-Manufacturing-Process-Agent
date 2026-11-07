@@ -1,0 +1,200 @@
+{
+  "schema_version": "1.0",
+  "component_id": "syn_004",
+  "description": "Synthetic prismatic part with 7 features (blind_hole, chamfer, outer_contour, pocket, reamed_hole).",
+  "material": "stainless_1.4301",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "chamfer",
+      "required": false,
+      "description": "chamfer",
+      "width_mm": 1.0
+    },
+    {
+      "feature_id": "F3",
+      "type": "outer_contour",
+      "required": true,
+      "description": "outer contour"
+    },
+    {
+      "feature_id": "F4",
+      "type": "blind_hole",
+      "required": true,
+      "description": "blind hole",
+      "diameter_mm": 3.0,
+      "depth_mm": 14.7
+    },
+    {
+      "feature_id": "F5",
+      "type": "chamfer",
+      "required": false,
+      "description": "chamfer",
+      "width_mm": 0.5
+    },
+    {
+      "feature_id": "F6",
+      "type": "through_hole",
+      "required": true,
+      "description": "reamed hole",
+      "diameter_mm": 8.0,
+      "required_operation_types": [
+        "drilling",
+        "reaming"
+      ]
+    },
+    {
+      "feature_id": "F7",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 14.0,
+      "width_mm": 12.8,
+      "length_mm": 35.3
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Pillar drill with tapping head",
+        "capabilities": [
+          "spot_drilling",
+          "drilling",
+          "tapping"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Knee-type milling machine",
+        "capabilities": [
+          "face_milling",
+          "pocket_milling",
+          "slot_milling",
+          "drilling"
+        ]
+      },
+      {
+        "machine_id": "M3",
+        "description": "3-axis vertical machining centre",
+        "capabilities": [
+          "face_milling",
+          "contour_milling",
+          "pocket_milling",
+          "slot_milling",
+          "spot_drilling",
+          "drilling",
+          "chamfering"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "chamfer_mill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "chamfer_mill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "end_mill"
+      },
+      {
+        "tool_id": "T5",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T6",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T7",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T8",
+        "type": "reamer"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F6"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F6",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F6",
+        "operation_type": "reaming"
+      },
+      "rationale": "Reaming requires a pre-drilled hole."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F7"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F3"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: the chamfer is on the contour edge."
+    },
+    {
+      "before": {
+        "feature_id": "F3"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: the chamfer is on the contour edge."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v1.0",
+    "notes": "benchmark scmpa_synthetic_v1; index 4; deliberately infeasible: no machine capable of required operation 'reaming'"
+  }
+}

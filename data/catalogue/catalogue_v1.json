@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "catalogue_id": "scmpa_demo_catalogue_v1",
+  "description": "Simplified operation/tool/feature vocabulary for the SCMPA MVP. Pedagogical rule set, not an industrial standard.",
+  "operation_types": [
+    "face_milling",
+    "contour_milling",
+    "pocket_milling",
+    "slot_milling",
+    "spot_drilling",
+    "drilling",
+    "reaming",
+    "tapping",
+    "chamfering"
+  ],
+  "tool_types": [
+    "face_mill",
+    "end_mill",
+    "spot_drill",
+    "drill",
+    "reamer",
+    "tap",
+    "chamfer_mill"
+  ],
+  "feature_types": {
+    "planar_face": ["face_milling"],
+    "outer_contour": ["contour_milling"],
+    "pocket": ["pocket_milling"],
+    "slot": ["slot_milling"],
+    "through_hole": ["spot_drilling", "drilling", "reaming"],
+    "blind_hole": ["spot_drilling", "drilling", "reaming"],
+    "threaded_hole": ["spot_drilling", "drilling", "tapping"],
+    "chamfer": ["chamfering"]
+  },
+  "tool_compatibility": {
+    "face_milling": ["face_mill"],
+    "contour_milling": ["end_mill"],
+    "pocket_milling": ["end_mill"],
+    "slot_milling": ["end_mill"],
+    "spot_drilling": ["spot_drill"],
+    "drilling": ["drill"],
+    "reaming": ["reamer"],
+    "tapping": ["tap"],
+    "chamfering": ["chamfer_mill"]
+  },
+  "assumptions": [
+    "Tool compatibility is decided by tool type only; tool diameter, length, flute count and wear are not modelled.",
+    "Each feature type lists the operation types considered suitable to contribute to it. If a feature declares required_operation_types, all of them must be applied; otherwise any one suitable operation is treated as covering it.",
+    "Face milling is mapped only to face mills for clarity, although end mills can face small areas in practice. This is a deliberate simplification of the demo rule set.",
+    "No operation order is encoded here. Ordering assumptions are component-specific and live in each component's precedence_constraints."
+  ]
+}
