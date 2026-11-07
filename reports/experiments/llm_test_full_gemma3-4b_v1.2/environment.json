@@ -1,0 +1,11 @@
+{
+  "scmpa_version": "0.1.0",
+  "python": "3.11.11",
+  "platform": "Linux-5.14.0-687.39.1.el9_8.x86_64-x86_64-with-glibc2.34",
+  "rule_set_version": "1.2",
+  "catalogue_id": "scmpa_demo_catalogue_v1",
+  "catalogue_sha256": "1770637895736ed9",
+  "benchmark_id": "scmpa_synthetic_v1",
+  "benchmark_manifest_sha256": "6f5de0faafb24a07",
+  "n_cases_selected": 16
+}

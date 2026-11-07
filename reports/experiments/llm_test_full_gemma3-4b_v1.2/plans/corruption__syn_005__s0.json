@@ -1,0 +1,101 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_005_corrupted_s0",
+    "component_id": "syn_005",
+    "operations": [
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "chamfering",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T4",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ]
+    ],
+    "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "planner": "corruption",
+  "model": null,
+  "prompt_refs": [],
+  "attempts": [],
+  "normalization_notes": [],
+  "injected_faults": [
+    {
+      "kind": "swap_precedence",
+      "operation_id": "OP2",
+      "operations": [
+        "OP1",
+        "OP2"
+      ],
+      "expected_rule": "R9_PRECEDENCE_ORDER",
+      "detail": "swapped OP1 and OP2 in sequence"
+    },
+    {
+      "kind": "incapable_machine",
+      "operation_id": "OP3",
+      "operations": [
+        "OP3"
+      ],
+      "expected_rule": "R3_MACHINE_CAPABILITY",
+      "detail": "machine -> M2"
+    }
+  ],
+  "error": null
+}

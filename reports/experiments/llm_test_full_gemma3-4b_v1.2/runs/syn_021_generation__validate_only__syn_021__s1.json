@@ -1,0 +1,607 @@
+{
+  "run_id": "generation__validate_only__syn_021__s1",
+  "component_id": "syn_021",
+  "started_at": "2026-11-07T22:44:26+00:00",
+  "duration_s": 0.001,
+  "planner": "llm",
+  "planner_model": "gemma3:4b",
+  "repair_agent": null,
+  "max_repairs": 0,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": null
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "llm",
+    "model": "gemma3:4b",
+    "prompt_refs": [
+      "planner_system@v1#86ada0ca7d3bb324",
+      "planner_user@v1#723b81a7db1f3554"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "raw_output": "{\"component_id\": \"syn_021\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T7\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"slot_milling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 120.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 30.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 30.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP8\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 90.0\n  },\n  {\n    \"operation_id\": \"OP9\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 30.0\n  }\n], \"precedence\": [[\"OP1\", \"OP2\"], [\"OP1\", \"OP3\"], [\"OP4\", \"OP5\"], [\"OP6\", \"OP7\"], [\"OP7\", \"OP8\"], [\"OP8\", \"OP9\"]], \"explanation\": \"Milling of planar face, slot, and pockets in sequence. Drilling and tapping of threaded holes. Precedence constraints are followed to ensure correct operation order.\", \"assumptions\": [\"Synthetic component generated for software evaluation; not derived from real geometry.\", \"Tool size, tool access, collisions and setups are not modelled.\"], \"uncertainties\": [\"The exact toolpaths and cutting parameters are not defined.\"]}",
+        "issues": [],
+        "latency_s": 3.6112904949113727,
+        "prompt_tokens": 3013,
+        "completion_tokens": 803
+      }
+    ],
+    "normalization_notes": [],
+    "injected_faults": [],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_021_plan_v0",
+        "component_id": "syn_021",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T7",
+            "duration_min": 60.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "slot_milling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T3",
+            "duration_min": 60.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "pocket_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T3",
+            "duration_min": 120.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T2",
+            "duration_min": 30.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 60.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "drilling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T2",
+            "duration_min": 30.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "tapping",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 60.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "pocket_milling",
+            "target_features": [
+              "F7"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T3",
+            "duration_min": 90.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP9",
+            "type": "drilling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T2",
+            "duration_min": 30.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ],
+          [
+            "OP6",
+            "OP7"
+          ],
+          [
+            "OP7",
+            "OP8"
+          ],
+          [
+            "OP8",
+            "OP9"
+          ]
+        ],
+        "explanation": "Milling of planar face, slot, and pockets in sequence. Drilling and tapping of threaded holes. Precedence constraints are followed to ensure correct operation order.",
+        "assumptions": [
+          "Synthetic component generated for software evaluation; not derived from real geometry.",
+          "Tool size, tool access, collisions and setups are not modelled."
+        ],
+        "uncertainties": [
+          "The exact toolpaths and cutting parameters are not defined."
+        ],
+        "provenance": null
+      },
+      "plan_hash": "f2872f365116705a",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R3_MACHINE_CAPABILITY",
+            "severity": "hard",
+            "message": "Machine 'M3' cannot perform 'pocket_milling'.",
+            "operation_id": "OP3",
+            "feature_id": null,
+            "evidence": {
+              "selected_machine": "M3",
+              "operation_type": "pocket_milling",
+              "machine_capabilities": [
+                "face_milling",
+                "slot_milling",
+                "drilling"
+              ],
+              "capable_machines": [],
+              "operation_removable": false
+            },
+            "repair_hint": "No available machine can perform 'pocket_milling'; human review needed.",
+            "repairable": false
+          },
+          {
+            "rule_id": "R3_MACHINE_CAPABILITY",
+            "severity": "hard",
+            "message": "Machine 'M3' cannot perform 'pocket_milling'.",
+            "operation_id": "OP8",
+            "feature_id": null,
+            "evidence": {
+              "selected_machine": "M3",
+              "operation_type": "pocket_milling",
+              "machine_capabilities": [
+                "face_milling",
+                "slot_milling",
+                "drilling"
+              ],
+              "capable_machines": [],
+              "operation_removable": false
+            },
+            "repair_hint": "No available machine can perform 'pocket_milling'; human review needed.",
+            "repairable": false
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F8' is missing operation(s) ['drilling', 'tapping'].",
+            "operation_id": null,
+            "feature_id": "F8",
+            "evidence": {
+              "feature_type": "threaded_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "drilling",
+                "tapping"
+              ],
+              "applied_operation_types": [],
+              "resource_options": {
+                "drilling": [
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T4"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T4"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T4"
+                  }
+                ],
+                "tapping": [
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T1"
+                  },
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T6"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T1"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T6"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F8: drilling on M1 with T2; tapping on M1 with T1.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 8,
+          "covered_features": 7,
+          "missing_features": [
+            "F8"
+          ]
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "3 hard violation(s)"
+    },
+    {
+      "state": "NEEDS_HUMAN_REVIEW",
+      "iteration": 0,
+      "detail": "R3_MACHINE_CAPABILITY: No available machine can perform 'pocket_milling'; human review needed.; R3_MACHINE_CAPABILITY: No available machine can perform 'pocket_milling'; human review needed."
+    }
+  ],
+  "final_status": "NEEDS_HUMAN_REVIEW",
+  "stop_reason": "non_repairable_violation",
+  "stop_detail": "R3_MACHINE_CAPABILITY: No available machine can perform 'pocket_milling'; human review needed.; R3_MACHINE_CAPABILITY: No available machine can perform 'pocket_milling'; human review needed.",
+  "terminal_repair": null,
+  "final_iteration": 0,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_021_plan_v0",
+    "component_id": "syn_021",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "slot_milling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "pocket_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 120.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T2",
+        "duration_min": 30.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T2",
+        "duration_min": 30.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "tapping",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "pocket_milling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 90.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "drilling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T2",
+        "duration_min": 30.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ],
+      [
+        "OP6",
+        "OP7"
+      ],
+      [
+        "OP7",
+        "OP8"
+      ],
+      [
+        "OP8",
+        "OP9"
+      ]
+    ],
+    "explanation": "Milling of planar face, slot, and pockets in sequence. Drilling and tapping of threaded holes. Precedence constraints are followed to ensure correct operation order.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled."
+    ],
+    "uncertainties": [
+      "The exact toolpaths and cutting parameters are not defined."
+    ],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": false,
+    "hard_constraint_violations": [
+      {
+        "rule_id": "R3_MACHINE_CAPABILITY",
+        "severity": "hard",
+        "message": "Machine 'M3' cannot perform 'pocket_milling'.",
+        "operation_id": "OP3",
+        "feature_id": null,
+        "evidence": {
+          "selected_machine": "M3",
+          "operation_type": "pocket_milling",
+          "machine_capabilities": [
+            "face_milling",
+            "slot_milling",
+            "drilling"
+          ],
+          "capable_machines": [],
+          "operation_removable": false
+        },
+        "repair_hint": "No available machine can perform 'pocket_milling'; human review needed.",
+        "repairable": false
+      },
+      {
+        "rule_id": "R3_MACHINE_CAPABILITY",
+        "severity": "hard",
+        "message": "Machine 'M3' cannot perform 'pocket_milling'.",
+        "operation_id": "OP8",
+        "feature_id": null,
+        "evidence": {
+          "selected_machine": "M3",
+          "operation_type": "pocket_milling",
+          "machine_capabilities": [
+            "face_milling",
+            "slot_milling",
+            "drilling"
+          ],
+          "capable_machines": [],
+          "operation_removable": false
+        },
+        "repair_hint": "No available machine can perform 'pocket_milling'; human review needed.",
+        "repairable": false
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Required feature 'F8' is missing operation(s) ['drilling', 'tapping'].",
+        "operation_id": null,
+        "feature_id": "F8",
+        "evidence": {
+          "feature_type": "threaded_hole",
+          "requirement": "all_of",
+          "missing_operation_types": [
+            "drilling",
+            "tapping"
+          ],
+          "applied_operation_types": [],
+          "resource_options": {
+            "drilling": [
+              {
+                "machine_id": "M1",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M1",
+                "tool_id": "T4"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T4"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T4"
+              }
+            ],
+            "tapping": [
+              {
+                "machine_id": "M1",
+                "tool_id": "T1"
+              },
+              {
+                "machine_id": "M1",
+                "tool_id": "T6"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T1"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T6"
+              }
+            ]
+          }
+        },
+        "repair_hint": "Add operation(s) targeting F8: drilling on M1 with T2; tapping on M1 with T1.",
+        "repairable": true
+      }
+    ],
+    "warnings": [],
+    "coverage": {
+      "required_features": 8,
+      "covered_features": 7,
+      "missing_features": [
+        "F8"
+      ]
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}
