@@ -1,0 +1,422 @@
+{
+  "run_id": "corruption__validate_only__syn_023__s1",
+  "component_id": "syn_023",
+  "started_at": "2026-11-07T20:31:51+00:00",
+  "duration_s": 0.0,
+  "planner": "corruption",
+  "planner_model": null,
+  "repair_agent": null,
+  "max_repairs": 0,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.1",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": null
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "corruption",
+    "model": null,
+    "prompt_refs": [],
+    "attempts": [],
+    "normalization_notes": [],
+    "injected_faults": [
+      {
+        "kind": "precedence_cycle",
+        "operation_id": "OP5",
+        "operations": [
+          "OP4",
+          "OP5"
+        ],
+        "expected_rule": "R8_PRECEDENCE_VALIDITY",
+        "detail": "added reverse edge OP5->OP4"
+      },
+      {
+        "kind": "unknown_tool",
+        "operation_id": "OP2",
+        "operations": [
+          "OP2"
+        ],
+        "expected_rule": "R4_TOOL_EXISTS",
+        "detail": "tool -> T_UNKNOWN"
+      }
+    ],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_023_corrupted_s1",
+        "component_id": "syn_023",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "contour_milling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T_UNKNOWN",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "slot_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T5",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T2",
+            "duration_min": 1.5,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ],
+          [
+            "OP5",
+            "OP4"
+          ]
+        ],
+        "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "5bbe3381b25454c9",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R4_TOOL_EXISTS",
+            "severity": "hard",
+            "message": "Tool 'T_UNKNOWN' is not among the available tools.",
+            "operation_id": "OP2",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T_UNKNOWN",
+              "available_tools": [
+                "T1",
+                "T2",
+                "T3",
+                "T4",
+                "T5",
+                "T6"
+              ]
+            },
+            "repair_hint": "Use an available tool compatible with 'contour_milling': ['T1'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R8_PRECEDENCE_VALIDITY",
+            "severity": "hard",
+            "message": "Precedence edges contain a cycle: OP4 -> OP5 -> OP4.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "cycle": [
+                "OP4",
+                "OP5",
+                "OP4"
+              ]
+            },
+            "repair_hint": "Remove or reverse at least one edge in the cycle so that a valid order exists.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP5 -> OP4 is violated: OP4 is sequenced before OP5.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 5,
+              "edge": [
+                "OP5",
+                "OP4"
+              ],
+              "positions": {
+                "OP5": 4,
+                "OP4": 3
+              }
+            },
+            "repair_hint": "Move OP5 before OP4 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 4,
+          "covered_features": 4,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.1"
+      },
+      "repair": null
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "3 hard violation(s)"
+    },
+    {
+      "state": "NEEDS_HUMAN_REVIEW",
+      "iteration": 0,
+      "detail": "0 repair(s) used"
+    }
+  ],
+  "final_status": "NEEDS_HUMAN_REVIEW",
+  "stop_reason": "max_repairs_reached",
+  "stop_detail": "0 repair(s) used",
+  "terminal_repair": null,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_023_corrupted_s1",
+    "component_id": "syn_023",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "contour_milling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T_UNKNOWN",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "slot_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T5",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 1.5,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ],
+      [
+        "OP5",
+        "OP4"
+      ]
+    ],
+    "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": false,
+    "hard_constraint_violations": [
+      {
+        "rule_id": "R4_TOOL_EXISTS",
+        "severity": "hard",
+        "message": "Tool 'T_UNKNOWN' is not among the available tools.",
+        "operation_id": "OP2",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T_UNKNOWN",
+          "available_tools": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "T6"
+          ]
+        },
+        "repair_hint": "Use an available tool compatible with 'contour_milling': ['T1'].",
+        "repairable": true
+      },
+      {
+        "rule_id": "R8_PRECEDENCE_VALIDITY",
+        "severity": "hard",
+        "message": "Precedence edges contain a cycle: OP4 -> OP5 -> OP4.",
+        "operation_id": "OP4",
+        "feature_id": null,
+        "evidence": {
+          "cycle": [
+            "OP4",
+            "OP5",
+            "OP4"
+          ]
+        },
+        "repair_hint": "Remove or reverse at least one edge in the cycle so that a valid order exists.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R9_PRECEDENCE_ORDER",
+        "severity": "hard",
+        "message": "Declared precedence OP5 -> OP4 is violated: OP4 is sequenced before OP5.",
+        "operation_id": "OP4",
+        "feature_id": null,
+        "evidence": {
+          "source": "plan_precedence",
+          "edge_index": 5,
+          "edge": [
+            "OP5",
+            "OP4"
+          ],
+          "positions": {
+            "OP5": 4,
+            "OP4": 3
+          }
+        },
+        "repair_hint": "Move OP5 before OP4 in the operation sequence, or remove the edge if it is not required.",
+        "repairable": true
+      }
+    ],
+    "warnings": [],
+    "coverage": {
+      "required_features": 4,
+      "covered_features": 4,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.1"
+  }
+}
