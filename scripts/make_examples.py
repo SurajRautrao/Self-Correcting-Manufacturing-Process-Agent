@@ -123,7 +123,7 @@ def optimizer_case() -> list[str]:
     ]
 
 
-def main() -> int:
+def render() -> str:
     lines = [
         "# Representative cases",
         "",
@@ -135,8 +135,12 @@ def main() -> int:
         record = load_run(EXP / exp / "runs" / run_file)
         lines += [f"## {n}. {title}", "", f"`{exp}` / `{run_file}`", "", why, "", *render_run(record)]
     lines += optimizer_case()
+    return "\n".join(lines)
+
+
+def main() -> int:
     out = ROOT / "docs" / "examples.md"
-    out.write_text("\n".join(lines), encoding="utf-8")
+    out.write_text(render(), encoding="utf-8")
     print(f"wrote {out}")
     return 0
 

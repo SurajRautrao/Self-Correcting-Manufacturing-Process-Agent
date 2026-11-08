@@ -161,7 +161,9 @@ def optimize_sequence(
         for i in range(n):
             if i != j:
                 m.Add(pos[j] == pos[i] + 1).OnlyEnforceIf(arc[i, j])
-    for a, b in pairs:
+    # Sorted: ``pairs`` is a set, whose order depends on Python's per-process hash seed. Constraint order
+    # changes which of several equally good solutions CP-SAT returns, so unsorted it is not reproducible.
+    for a, b in sorted(pairs):
         m.Add(pos[idx[a]] < pos[idx[b]])
 
     # Integer code of each op's chosen machine and tool, linked to the choice literals.

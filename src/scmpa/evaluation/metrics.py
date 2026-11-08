@@ -156,6 +156,6 @@ def aggregate(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "correct_outcome": _rate(rows, lambda r: r["correct_outcome"]),
         "invalid_plan_accepted": _rate(rows, lambda r: r["final_status"] in ("ACCEPTED", "UNCHECKED") and not r["final_valid"]),
         "mean_latency_s": _mean(r["latency_s"] for r in rows),
-        "total_latency_s": sum(r["latency_s"] or 0 for r in rows),
+        "total_latency_s": round(math.fsum(r["latency_s"] or 0 for r in rows), 3),  # fsum: same on every Python version
         "mean_tokens": _mean(r["tokens"] for r in rows),
     }

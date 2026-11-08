@@ -2,8 +2,9 @@
 
     streamlit run src/scmpa/app/streamlit_app.py
 
-Three views: run the generate → validate → repair workflow on a component, inspect a saved run
-record (including slow LLM runs), and browse experiment results.
+Three views: run the generate → validate → repair workflow on a component (from the examples, the
+benchmark, a STEP model via FreeCAD feature extraction, or uploaded JSON), inspect a saved run record
+(including slow LLM runs), and browse experiment results.
 """
 
 from __future__ import annotations
@@ -248,12 +249,64 @@ def render_rules() -> None:
 # --------------------------------------------------------------------------- views
 
 
+CAD_FIXTURE = REPO_ROOT / "tests" / "fixtures" / "cad"
+
+
+def cad_component() -> Component | None:
+    """A component extracted from STEP geometry: the stored demo extraction, or a live FreeCAD run on an upload."""
+    from scmpa.cad import FreeCADNotFound, extract_features, to_component
+
+    sb = st.sidebar
+    mode = sb.radio("STEP model", ["Demo block (stored extraction)", "Upload STEP (needs FreeCAD)"])
+    resources = read_json(CAD_FIXTURE / "demo_block_resources.json")
+    if mode.startswith("Demo"):
+        extraction, cid = read_json(CAD_FIXTURE / "demo_block_extraction.json"), "demo_block_cad"
+    else:
+        step = sb.file_uploader("STEP file", type=["step", "stp"])
+        res = sb.file_uploader("Resources JSON (optional; default: the demo block's machines and tools)", type="json")
+        if step is None:
+            st.info("Upload a STEP file in the sidebar. Machines and tools are not in the geometry, so they come from a resources file.")
+            return None
+        if res is not None:
+            resources = json.loads(res.getvalue())
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / step.name
+            path.write_bytes(step.getvalue())
+            try:
+                with st.spinner("Extracting features with FreeCAD …"):
+                    extraction = extract_features(path)
+            except FreeCADNotFound as exc:
+                st.error(f"{exc}. The demo block works without FreeCAD.")
+                return None
+            except RuntimeError as exc:
+                st.error(str(exc))
+                return None
+        cid = "".join(c if c.isalnum() or c in "_-" else "_" for c in Path(step.name).stem) or "cad_part"
+    try:
+        component, unsupported = to_component(extraction, cid, resources, catalogue=catalogue())
+    except (ValueError, InputValidationError) as exc:
+        st.error(f"The extracted features could not be turned into a component: {exc}")
+        return None
+    st.success(f"Extracted {len(extraction['features'])} features from {Path(extraction['source_file']).name} "
+               f"(FreeCAD {extraction['freecad_version']}): {len(component.features)} mapped to SCMPA features.")
+    if unsupported:
+        st.info("Left out (no SCMPA feature type): " + ", ".join(sorted({u['type'] for u in unsupported}))
+                + ". No precedence constraints are derived from geometry, so only the plan's own ordering edges are checked.")
+    return component
+
+
 def view_run() -> None:
     sb = st.sidebar
     sb.header("1. Component")
-    source = sb.radio("Source", ["Examples", "Synthetic benchmark", "Upload JSON"], horizontal=False)
+    source = sb.radio("Source", ["Examples", "Synthetic benchmark", "From CAD (STEP)", "Upload JSON"], horizontal=False)
     component: Component | None = None
-    if source == "Upload JSON":
+    if source == "From CAD (STEP)":
+        component = cad_component()
+        if component is None:
+            return
+    elif source == "Upload JSON":
         upload = sb.file_uploader("Component JSON", type="json")
         if upload is not None:
             try:

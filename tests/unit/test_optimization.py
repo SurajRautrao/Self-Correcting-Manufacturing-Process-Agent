@@ -225,3 +225,26 @@ def test_weights_decide_a_genuine_tradeoff_in_order_only_mode() -> None:
     # with reassignment the conflict disappears: everything can run on M1 with grouped tools
     both = optimize_sequence(plan, comp, CATALOGUE, OptimizationConfig(reassign_resources=True))
     assert (both.after.machine_changes, both.after.tool_changes) == (0, 2)
+
+
+@pytest.mark.parametrize("cid", ["syn_001", "syn_013", "syn_018"])
+def test_result_does_not_depend_on_set_iteration_order(monkeypatch, cid) -> None:
+    """Python's hash seed changes set order between processes; the optimizer must not depend on it.
+
+    Several plans can tie on both objectives, and CP-SAT's choice among them depends on the order in
+    which constraints are added. ``required_order_pairs`` returns a set, so the optimizer sorts it.
+    """
+    import scmpa.optimization.sequence_optimizer as so
+
+    component, plan = synthetic(cid)
+    original = so.required_order_pairs
+    results = []
+    for seed in range(3):
+        def shuffled(p, ctx, seed=seed):
+            pairs = list(original(p, ctx))
+            random.Random(seed).shuffle(pairs)
+            return pairs
+        monkeypatch.setattr(so, "required_order_pairs", shuffled)
+        r = optimize_sequence(plan, component, CATALOGUE, OptimizationConfig())
+        results.append([(o.operation_id, o.machine_id, o.tool_id) for o in r.plan.operations])
+    assert results[0] == results[1] == results[2]

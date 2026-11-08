@@ -45,7 +45,7 @@ flowchart LR
 
 **Repair loop.** The repair agent receives the plan and the violation list and returns a revised plan with change notes. The loop stops when the plan is valid, a violation is non-repairable, the repair agent returns a plan it already produced, its output is unusable, or 3 repairs are spent. When a run ends in human review, the reviewer gets the candidate with the fewest hard violations. A deterministic rule-based repair agent (R) runs the same loop as a non-AI reference point.
 
-**Optimizer.** A CP-SAT model (OR-Tools) reorders a valid plan, and optionally reassigns each operation to another eligible machine/tool pair, to minimise `10 × machine changes + 1 × tool changes` between consecutive operations, subject to all declared precedence. It solves in two phases (cost, then minimal displacement), with deterministic time limits, one worker and a fixed seed, so results are repeatable. The output is checked again by the validator.
+**Optimizer.** A CP-SAT model (OR-Tools) reorders a valid plan, and optionally reassigns each operation to another eligible machine/tool pair, to minimise `10 × machine changes + 1 × tool changes` between consecutive operations, subject to all declared precedence. It solves in two phases (cost, then minimal displacement), with deterministic time limits, one worker, a fixed seed and a fixed constraint order, so results are repeatable across processes and machines (for a given OR-Tools version). The output is checked again by the validator.
 
 **CAD and external data (extensions).** `scmpa.cad` extracts holes, pockets, slots and steps from STEP geometry with FreeCAD, and `scmpa.importers.fabricad` reads the text labels of the FabriCAD dataset. Both produce components marked as derived data (Section 4.7).
 
@@ -206,9 +206,12 @@ A revised planner prompt (explicit treatment of preparatory operations, tool loo
 
 ## 8. Reproducibility
 
+**A fresh clone reproduces every committed result without an LLM or GPU:** `python scripts/check_reproducible.py` regenerates both benchmarks, rebuilds every results table and `docs/examples.md`, replays the deterministic systems (B0, B1, R) from the cached LLM plans, and re-validates every stored B2 final plan. Everything must match the committed files exactly. CI runs it, together with the test suite, on Python 3.11 and 3.12. The check found one real defect, which was fixed: optimizer tie-breaks depended on Python's hash seed (`results.md`, M6).
+
 ```bash
 pip install -e ".[dev,eval,opt]"
-pytest                                                                     # 482 tests; FreeCAD and live-LLM tests skip if unavailable
+pytest                                                                     # 486 tests; FreeCAD and live-LLM tests skip if unavailable
+python scripts/check_reproducible.py                                       # every committed result, no LLM needed
 python scripts/make_synthetic_data.py --force                              # regenerates benchmark v1 exactly
 python -m scmpa.evaluation.run_experiments --config configs/experiments/pilot_mock.json   # full pipeline, no LLM, seconds
 python -m scmpa.evaluation.report reports/experiments/<experiment_id>      # rebuild tables from stored results

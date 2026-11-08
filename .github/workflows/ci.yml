@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      # OR-Tools is pinned to the version that produced the committed optimizer results: another version may
+      # return a different one of several equally good plans (same cost), which the exact comparison would flag.
+      - name: Install
+        run: pip install -e ".[dev,eval,opt,app]" "ortools==9.15.6755"
+      # FreeCAD and live-Ollama tests skip automatically when those are not installed.
+      - name: Tests
+        run: pytest -q
+      # Benchmarks, result tables, deterministic replays and docs/examples.md must match the committed files.
+      - name: Reproducibility check
+        run: python scripts/check_reproducible.py

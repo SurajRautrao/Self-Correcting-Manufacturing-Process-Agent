@@ -90,6 +90,23 @@ def test_app_renders_and_runs_mock_workflow() -> None:
     assert any("Deliberately injected faults" in i.value for i in at.info)
 
 
+def test_app_runs_a_component_extracted_from_cad() -> None:
+    """Stored FreeCAD extraction of the demo block -> component -> mock plan with a fault -> repaired."""
+    at = streamlit_testing.AppTest.from_file(APP, default_timeout=60)
+    at.run()
+    at.sidebar.radio[1].set_value("From CAD (STEP)")
+    at.run()
+    assert not at.exception
+    assert any("mapped to SCMPA features" in s.value for s in at.success)
+    assert any("step" in i.value for i in at.info)
+    at.sidebar.multiselect[0].set_value(["incompatible_tool"])
+    [run] = [b for b in at.sidebar.button if b.label == "Run workflow"]
+    run.click()
+    at.run()
+    assert not at.exception
+    assert any("Accepted" in s.value for s in at.success)
+
+
 def test_app_other_views_render() -> None:
     at = streamlit_testing.AppTest.from_file(APP, default_timeout=60)
     at.run()

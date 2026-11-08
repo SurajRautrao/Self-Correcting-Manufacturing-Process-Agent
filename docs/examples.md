@@ -239,19 +239,19 @@ Computed diff (the audit record): removed OP4; precedence +[] −[['OP1', 'OP4']
 | 1 | OP1 | face_milling | F1 | M2 | T1 |  |
 | 2 | OP2 | spot_drilling | F2 | M2 | T4 |  |
 | 3 | OP6 | spot_drilling | F4 | M2 | T4 |  |
-| 4 | OP4 | drilling | F3 | M2 | T6 |  |
-| 5 | OP3 | drilling | F2 | M2 | T6 |  |
+| 4 | OP3 | drilling | F2 | M2 | T6 |  |
+| 5 | OP4 | drilling | F3 | M2 | T6 |  |
 | 6 | OP7 | drilling | F4 | M2 | T6 |  |
 | 7 | OP9 | pocket_milling | F5 | M2 | T3 |  |
-| 8 | OP5 | reaming | F3 | M1 | T2 |  |
-| 9 | OP8 | tapping | F4 | M1 | T7 |  |
+| 8 | OP8 | tapping | F4 | M1 | T7 |  |
+| 9 | OP5 | reaming | F3 | M1 | T2 |  |
 
 Machine changes 2 → 1, tool changes 7 → 5, cost 27 → 15. Solver: OPTIMAL. Revalidated: valid.
 
 Changes:
-- sequence: OP1 OP2 OP6 OP4 OP3 OP7 OP9 OP5 OP8
+- sequence: OP1 OP2 OP6 OP3 OP4 OP7 OP9 OP8 OP5
 - OP2: M1/T4 -> M2/T4
 - OP6: M1/T4 -> M2/T4
-- OP4: M1/T6 -> M2/T6
 - OP3: M1/T6 -> M2/T6
+- OP4: M1/T6 -> M2/T6
 - OP7: M1/T6 -> M2/T6

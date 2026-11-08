@@ -1,5 +1,7 @@
 # Self-Correcting Manufacturing Process Agent (SCMPA)
 
+[![CI](https://github.com/SurajRautrao/Self-Correcting-Manufacturing-Process-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/SurajRautrao/Self-Correcting-Manufacturing-Process-Agent/actions/workflows/ci.yml)
+
 A research prototype in which an AI system proposes a CNC process plan for a simplified component, checks it against explicit manufacturing constraints, diagnoses violations, repairs the plan and revalidates it. The loop ends when the plan is feasible under the declared rule set or needs a human to review it.
 
 > **Safety and scope disclaimer.** SCMPA is a decision-support research prototype. It does **not** produce machine-executable G-code. No plan it outputs is claimed to be safe, collision-free, production-ready or suitable for execution on a real machine. The rule set is a deliberately simplified, documented model; see [`docs/assumptions_and_limits.md`](docs/assumptions_and_limits.md). All data in this repository is currently **synthetic**.
@@ -162,7 +164,7 @@ pip install -e ".[app]"
 streamlit run src/scmpa/app/streamlit_app.py
 ```
 
-- **Run the workflow:** pick a part (an example, a benchmark part or an uploaded JSON file), choose the planner (mock or Ollama), optionally inject faults, and choose the repair agent. The app shows:
+- **Run the workflow:** pick a part (an example, a benchmark part, a part extracted from a STEP model, or an uploaded JSON file), choose the planner (mock or Ollama), optionally inject faults, and choose the repair agent. The app shows:
   - the input part: features, machines, tools, ordering assumptions and stated assumptions;
   - an iteration timeline;
   - for each iteration, the plan, the validator findings with repair hints, and what the repair changed;

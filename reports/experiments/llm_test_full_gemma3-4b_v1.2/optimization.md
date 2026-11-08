@@ -14,8 +14,8 @@ Improvement is non-negative by construction, because the input plan is kept when
 | generation | B1+opt | order+resources | 10 | 5 | 10/10 | 10/10 | 1.60 → 1.20 | 4.60 → 4.10 | 20.6 → 16.1 | 4% | 1.0 | 0.0 |
 | generation | B3 | order | 18 | 10 | 18/18 | 18/18 | 2.06 → 1.17 | 4.28 → 3.83 | 24.8 → 15.5 | 8% | 1.9 | 0.0 |
 | generation | B3 | order+resources | 18 | 13 | 18/18 | 18/18 | 2.06 → 1.00 | 4.28 → 3.50 | 24.8 → 13.5 | 42% | 1.7 | 0.6 |
-| generation | R+opt | order | 39 | 28 | 39/39 | 39/39 | 2.38 → 1.46 | 5.23 → 4.08 | 29.1 → 18.7 | 41% | 3.5 | 0.0 |
-| generation | R+opt | order+resources | 39 | 31 | 39/39 | 38/39 | 2.38 → 1.28 | 5.23 → 4.08 | 29.1 → 16.9 | 46% | 2.9 | 0.8 |
+| generation | R+opt | order | 39 | 28 | 39/39 | 39/39 | 2.38 → 1.46 | 5.23 → 4.08 | 29.1 → 18.7 | 41% | 3.6 | 0.0 |
+| generation | R+opt | order+resources | 39 | 31 | 39/39 | 38/39 | 2.38 → 1.28 | 5.23 → 4.08 | 29.1 → 16.9 | 46% | 2.8 | 0.8 |
 | reference | REF+opt | order | 13 | 11 | 13/13 | 13/13 | 3.00 → 1.46 | 5.23 → 3.46 | 35.2 → 18.1 | 47% | 4.1 | 0.0 |
 | reference | REF+opt | order+resources | 13 | 12 | 13/13 | 13/13 | 3.00 → 1.08 | 5.23 → 3.46 | 35.2 → 14.2 | 64% | 3.7 | 1.6 |
 
@@ -41,4 +41,4 @@ A plan has a *trade-off* if its optimal (machine changes, tool changes) differs 
 | order+resources | … of which proven optimal at every weight | 0/52 | | |
 
 Plans invalid after optimization: **0** of 1144 optimizer runs.
-Solver statuses: {'FEASIBLE': 5, 'OPTIMAL': 1139}; tie-break statuses: {'FEASIBLE': 53, 'OPTIMAL': 1091}.
+Solver statuses: {'FEASIBLE': 5, 'OPTIMAL': 1139}; tie-break statuses: {'FEASIBLE': 58, 'OPTIMAL': 1086}.

@@ -1,0 +1,41 @@
+{
+  "experiment_id": "rescore_dev_gemma3-4b_v1.2",
+  "description": "Dev-split check of rule set v1.2: the dev pilot's initial plans re-scored without an LLM (B0/B1/R). Pipeline check, not a reportable result.",
+  "benchmark_dir": "data/synthetic/benchmark_v1",
+  "split": "dev",
+  "limit": 4,
+  "seeds": [
+    0
+  ],
+  "tracks": [
+    "generation",
+    "corruption"
+  ],
+  "systems": [
+    "B0",
+    "B1",
+    "R"
+  ],
+  "planner": {
+    "provider": "ollama",
+    "model": "gemma3:4b",
+    "temperature": 0.0
+  },
+  "llm_repair": null,
+  "max_repairs": 3,
+  "corruption_faults": [
+    "incapable_machine",
+    "incompatible_tool",
+    "invalid_duration",
+    "missing_operation",
+    "precedence_cycle",
+    "swap_precedence",
+    "unknown_feature",
+    "unknown_machine",
+    "unknown_operation_type",
+    "unknown_tool"
+  ],
+  "faults_per_case": 2,
+  "output_dir": "reports/experiments",
+  "initial_plans_from": "llm_pilot_dev_gemma3-4b"
+}

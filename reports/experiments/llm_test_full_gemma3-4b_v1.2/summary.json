@@ -83,7 +83,7 @@
       "ci_high": 0.08966985360023902
     },
     "mean_latency_s": 0.0,
-    "total_latency_s": 0,
+    "total_latency_s": 0.0,
     "mean_tokens": null
   },
   {
@@ -170,7 +170,7 @@
       "ci_high": 0.08966985360023902
     },
     "mean_latency_s": 42.398282051282045,
-    "total_latency_s": 1653.5329999999997,
+    "total_latency_s": 1653.533,
     "mean_tokens": 9531.384615384615
   },
   {
@@ -257,7 +257,7 @@
       "ci_high": 0.08966985360023902
     },
     "mean_latency_s": 0.0,
-    "total_latency_s": 0,
+    "total_latency_s": 0.0,
     "mean_tokens": null
   },
   {
@@ -344,7 +344,7 @@
       "ci_high": 0.8826985220411018
     },
     "mean_latency_s": 3.5232916666666667,
-    "total_latency_s": 169.1179999999999,
+    "total_latency_s": 169.118,
     "mean_tokens": 3250.3541666666665
   },
   {
@@ -431,7 +431,7 @@
       "ci_high": 0.0741026511527422
     },
     "mean_latency_s": 3.5232916666666667,
-    "total_latency_s": 169.1179999999999,
+    "total_latency_s": 169.118,
     "mean_tokens": 3250.3541666666665
   },
   {
@@ -605,7 +605,7 @@
       "ci_high": 0.0741026511527422
     },
     "mean_latency_s": 3.5234583333333336,
-    "total_latency_s": 169.12599999999992,
+    "total_latency_s": 169.126,
     "mean_tokens": 3250.3541666666665
   }
 ]
