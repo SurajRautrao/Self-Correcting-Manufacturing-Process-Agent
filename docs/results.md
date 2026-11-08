@@ -85,14 +85,38 @@ This run replays Run 1's initial plans, so B0, B1 and R match the re-score above
 - **Latency is not comparable between the runs.** Output speed fell from about 200 to about 36 tokens/s with a similar number of tokens, which points to a slower or shared GPU, or a model partly offloaded to the CPU. Check the `ollama ps` line in the job log. Validity results do not depend on speed.
 - **Coverage is gemma's main weakness under v1.2.** R6 now hits 35 of 48 initial plans (92 violations). gemma often gives a hole only a spot drill.
 
-### Hypotheses after Runs 1–2
+## Run 3: `llm_test_full_qwen3.5-9b` (rule set v1.2, comparison model)
 
-- **H1 (constraint feedback lowers violations):** supported for detection: invalid plans accepted fall from 79% to 0%. For the violation rate it is moderate: 79% falls to 62–69% for B2, while R, the ceiling of what the feedback allows, reaches 19%.
-- **H2 (the bounded loop repairs a measurable share):** supported. B2 repairs 62–74% of injected faults and 8 of 29 invalid feasible generated plans (v1.2). It never ends worse than it started, and it never made a correct B1 outcome wrong.
+This uses the same test split, seeds, prompts, rule set and loop as Run 2. The planner and repair model is Ollama `qwen3.5:9b` (thinking off), and qwen generates its own initial plans. It ran on the `gpu-stud` partition.
+
+| | gemma3:4b (Run 2, v1.2) | qwen3.5:9b (Run 3) |
+|---|---|---|
+| Generation: B0 hard-violation rate | 79% [66–88%] | **54%** [40–67%] |
+| Generation: B0 coverage | 0.67 | 0.96 |
+| Generation: B2 correct outcome | 56% (27/48) | **100%** (48/48) |
+| Generation: B2 feasible plans repaired | 8 / 29 | **17 / 17** |
+| Corruption: B2 repair success | 62–74% (two runs) | **97%** (38/39) |
+| Repair calls needing a schema retry | 16 / 124 | 0 / 66 |
+| Median planner call | 3.4 s (Run 1 node) | 17.6 s |
+| Median repair call | 21.1 s | 18.4 s |
+
+- **The planner is better from the start.** qwen's initial plans are invalid half as often as gemma's, and they rarely leave a feature uncovered: only 6 of 48 plans have R6 violations. Its errors are mostly wrong tool (R5) or wrong machine (R3), which are the easiest to repair. 6 components are valid under every seed (gemma: 1).
+- **qwen's repair loop matches the rule-based ceiling.** B2 and R agree on every one of the 48 generation cases. All 17 invalid feasible plans were repaired, mostly in 1 round (mean 1.12), and all 9 infeasible cases went to human review. Against B1, that is 17 wins and 0 losses over 8 components (p < 0.001).
+- **Corruption is a paired comparison across models.** The inputs are identical to the gemma runs, which I verified for all 39 cases. qwen repaired 10–15 cases that gemma did not, and gemma repaired 1 that qwen did not (p = 0.012 against Run 1, p < 0.001 against Run 2, spread over 7–10 components). The only qwen failure (syn_023 s1, precedence cycle plus unknown tool) stopped on a repeated plan, which is ordering again.
+- **The edits are minimal.** qwen's repairs change a median of 2 operations and keep 79% of operations unchanged, the same as gemma. It needs fewer rounds and never produced unusable output.
+- **Caveats:**
+  - The generation track is *not* paired across models: each model repairs its own plans, and qwen's are easier to repair. Corruption is the fair model comparison.
+  - This is a single run. Run 2 showed that B2 outcomes can flip in about a quarter of cases between runs. qwen's per-seed SD is 0.00–0.04 and its results sit at the ceiling, so the noise is probably smaller here, but that is not yet measured.
+  - Latency was measured on a different partition from the gemma runs, so the latencies are not comparable.
+
+### Hypotheses after Runs 1–3
+
+- **H1 (constraint feedback lowers violations):** supported. Invalid plans accepted fall to 0% with either model. The hard-violation rate falls from 79% to 62–69% with gemma and from 54% to 19% with qwen. The 19% left are exactly the infeasible cases.
+- **H2 (the bounded loop repairs a measurable share):** supported, and strongly model-dependent. On injected faults, gemma repairs 62–74% and qwen 97%. On generated plans, gemma repairs 8 of 29 and qwen 17 of 17. Neither model ever made a correct validator-only outcome wrong, and with best-candidate selection no run ends worse than it started.
 - **H3 (sequencing optimizer):** not tested (M6).
-- **H4 (auditability):** qualitative. Every repair has a computed diff and a stop reason. Repeated plans (15 generation cases in Run 2) and invalid repair outputs are visible as such.
+- **H4 (auditability):** qualitative. Every repair has a computed diff and a stop reason. Repeated plans and unusable repair outputs show up as such. Both models' diffs show small, targeted edits (median 1–2 operations).
 
 ## Pending
 
-- `llm_test_full_qwen3.5-9b`: the comparison model, run under v1.2. It also gives a third estimate of B2 noise if it is run twice.
+- A second qwen run (new `experiment_id`, `initial_plans_from` the first) to measure its run-to-run noise.
 - H3 (sequencing optimizer, M6) has not been tested.
