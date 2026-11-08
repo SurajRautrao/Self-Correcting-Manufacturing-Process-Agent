@@ -1,0 +1,217 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_007_plan_v0",
+    "component_id": "synv2_007",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "reaming",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T7",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "tapping",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T1",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "slot_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 10.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "tapping",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T1",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "pocket_milling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 15.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP10",
+        "type": "pocket_milling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 18.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP11",
+        "type": "drilling",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP12",
+        "type": "reaming",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T5",
+        "duration_min": 3.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP7",
+        "OP8"
+      ],
+      [
+        "OP1",
+        "OP9"
+      ],
+      [
+        "OP1",
+        "OP10"
+      ],
+      [
+        "OP1",
+        "OP11"
+      ],
+      [
+        "OP11",
+        "OP12"
+      ]
+    ],
+    "explanation": "This process plan sequences operations to meet feature requirements and precedence constraints. Datum face is machined first, followed by holes and then other features. Drilling is always followed by reaming or tapping.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "Optimal cutting parameters are not defined."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:27b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"synv2_007\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T7\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"slot_milling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T8\",\n    \"duration_min\": 10.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP8\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP9\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 15.0\n  },\n  {\n    \"operation_id\": \"OP10\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 18.0\n  },\n  {\n    \"operation_id\": \"OP11\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP12\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 3.0\n  }\n], \"precedence\": [\n  [\"OP1\", \"OP2\"],\n  [\"OP2\", \"OP3\"],\n  [\"OP1\", \"OP4\"],\n  [\"OP4\", \"OP5\"],\n  [\"OP1\", \"OP6\"],\n  [\"OP1\", \"OP7\"],\n  [\"OP7\", \"OP8\"],\n  [\"OP1\", \"OP9\"],\n  [\"OP1\", \"OP10\"],\n  [\"OP1\", \"OP11\"],\n  [\"OP11\", \"OP12\"]\n], \"explanation\": \"This process plan sequences operations to meet feature requirements and precedence constraints. Datum face is machined first, followed by holes and then other features. Drilling is always followed by reaming or tapping.\", \"assumptions\": [\n  \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n  \"Tool size, tool access, collisions and setups are not modelled.\",\n  \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n], \"uncertainties\": [\"Optimal cutting parameters are not defined.\"]\n}",
+      "issues": [],
+      "latency_s": 17.18014862993732,
+      "prompt_tokens": 3218,
+      "completion_tokens": 1104
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

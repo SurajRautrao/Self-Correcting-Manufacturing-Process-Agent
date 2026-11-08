@@ -1,0 +1,365 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_018_plan_v0",
+    "component_id": "synv2_018",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "spot_drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "reaming",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "spot_drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "reaming",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "chamfering",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "pocket_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T8",
+        "duration_min": 10.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP10",
+        "type": "spot_drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP11",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP12",
+        "type": "reaming",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP13",
+        "type": "spot_drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP14",
+        "type": "drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP15",
+        "type": "tapping",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP16",
+        "type": "chamfering",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP17",
+        "type": "spot_drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP18",
+        "type": "drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP19",
+        "type": "reaming",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP20",
+        "type": "drilling",
+        "target_features": [
+          "F10"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T10",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP21",
+        "type": "pocket_milling",
+        "target_features": [
+          "F11"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T8",
+        "duration_min": 8.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP3",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP5",
+        "OP6"
+      ],
+      [
+        "OP6",
+        "OP7"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ],
+      [
+        "OP1",
+        "OP9"
+      ],
+      [
+        "OP9",
+        "OP10"
+      ],
+      [
+        "OP10",
+        "OP11"
+      ],
+      [
+        "OP1",
+        "OP12"
+      ],
+      [
+        "OP1",
+        "OP13"
+      ],
+      [
+        "OP13",
+        "OP14"
+      ],
+      [
+        "OP14",
+        "OP15"
+      ],
+      [
+        "OP1",
+        "OP15"
+      ],
+      [
+        "OP1",
+        "OP16"
+      ],
+      [
+        "OP1",
+        "OP17"
+      ],
+      [
+        "OP17",
+        "OP18"
+      ],
+      [
+        "OP18",
+        "OP19"
+      ],
+      [
+        "OP1",
+        "OP19"
+      ],
+      [
+        "OP1",
+        "OP20"
+      ],
+      [
+        "OP1",
+        "OP21"
+      ]
+    ],
+    "explanation": "The process plan starts by face milling the datum face (F1). Then each required feature is processed in sequence, respecting precedence constraints. Drilling and reaming operations are paired, and threading includes drilling as a prerequisite. Chamfering is performed on optional features. Pocket milling operations are included for F5 and F11.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules.",
+      "All holes are drilled perpendicular to the datum face."
+    ],
+    "uncertainties": [
+      "Optimal cutting parameters (feeds, speeds, depths of cut) are not defined.",
+      "Workholding strategy is not defined.",
+      "Coolant strategy is not defined.",
+      "The sequence may need adjustments based on part geometry and tool access.",
+      "No consideration has been given to surface finish requirements."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:27b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"synv2_018\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T7\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 1.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 1.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP8\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP9\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T8\",\n    \"duration_min\": 10.0\n  },\n  {\n    \"operation_id\": \"OP10\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 1.0\n  },\n  {\n    \"operation_id\": \"OP11\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP12\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP13\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 1.0\n  },\n  {\n    \"operation_id\": \"OP14\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP15\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 4.0\n  },\n  {\n    \"operation_id\": \"OP16\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 1.0\n  },\n  {\n    \"operation_id\": \"OP17\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F9\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 1.0\n  },\n  {\n    \"operation_id\": \"OP18\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F9\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP19\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F9\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP20\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F10\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T10\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP21\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F11\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T8\",\n    \"duration_min\": 8.0\n  }\n],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP2\", \"OP3\"],\n    [\"OP3\", \"OP4\"],\n    [\"OP1\", \"OP5\"],\n    [\"OP5\", \"OP6\"],\n    [\"OP6\", \"OP7\"],\n    [\"OP1\", \"OP8\"],\n    [\"OP1\", \"OP9\"],\n    [\"OP9\", \"OP10\"],\n    [\"OP10\", \"OP11\"],\n    [\"OP1\", \"OP12\"],\n    [\"OP1\", \"OP13\"],\n    [\"OP13\", \"OP14\"],\n    [\"OP14\", \"OP15\"],\n    [\"OP1\", \"OP15\"],\n    [\"OP1\", \"OP16\"],\n    [\"OP1\", \"OP17\"],\n    [\"OP17\", \"OP18\"],\n    [\"OP18\", \"OP19\"],\n    [\"OP1\", \"OP19\"],\n    [\"OP1\", \"OP20\"],\n    [\"OP1\", \"OP21\"]\n  ],\n  \"explanation\": \"The process plan starts by face milling the datum face (F1). Then each required feature is processed in sequence, respecting precedence constraints. Drilling and reaming operations are paired, and threading includes drilling as a prerequisite. Chamfering is performed on optional features. Pocket milling operations are included for F5 and F11.\",\n  \"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\",\n    \"All holes are drilled perpendicular to the datum face.\"\n  ],\n  \"uncertainties\": [\n    \"Optimal cutting parameters (feeds, speeds, depths of cut) are not defined.\",\n    \"Workholding strategy is not defined.\",\n    \"Coolant strategy is not defined.\",\n    \"The sequence may need adjustments based on part geometry and tool access.\",\n    \"No consideration has been given to surface finish requirements.\"\n  ]\n}",
+      "issues": [],
+      "latency_s": 32.15474664559588,
+      "prompt_tokens": 3822,
+      "completion_tokens": 1995
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

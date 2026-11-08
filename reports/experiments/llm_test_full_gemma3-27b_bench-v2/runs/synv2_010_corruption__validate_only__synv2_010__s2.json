@@ -1,0 +1,547 @@
+{
+  "run_id": "corruption__validate_only__synv2_010__s2",
+  "component_id": "synv2_010",
+  "started_at": "2026-11-08T19:18:50+00:00",
+  "duration_s": 0.0,
+  "planner": "corruption",
+  "planner_model": null,
+  "repair_agent": null,
+  "max_repairs": 0,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": null
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "corruption",
+    "model": null,
+    "prompt_refs": [],
+    "attempts": [],
+    "normalization_notes": [],
+    "injected_faults": [
+      {
+        "kind": "incapable_machine",
+        "operation_id": "OP8",
+        "operations": [
+          "OP8"
+        ],
+        "expected_rule": "R3_MACHINE_CAPABILITY",
+        "detail": "machine -> M2"
+      },
+      {
+        "kind": "precedence_cycle",
+        "operation_id": "OP9",
+        "operations": [
+          "OP1",
+          "OP9"
+        ],
+        "expected_rule": "R8_PRECEDENCE_VALIDITY",
+        "detail": "added reverse edge OP9->OP1"
+      }
+    ],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "synv2_010_corrupted_s2",
+        "component_id": "synv2_010",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "tapping",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T7",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "slot_milling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T6",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "pocket_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 6.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "drilling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "tapping",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T7",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP9",
+            "type": "drilling",
+            "target_features": [
+              "F7"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP1",
+            "OP7"
+          ],
+          [
+            "OP1",
+            "OP8"
+          ],
+          [
+            "OP1",
+            "OP9"
+          ],
+          [
+            "OP3",
+            "OP4"
+          ],
+          [
+            "OP7",
+            "OP8"
+          ],
+          [
+            "OP9",
+            "OP1"
+          ]
+        ],
+        "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "4e375169cce51304",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R3_MACHINE_CAPABILITY",
+            "severity": "hard",
+            "message": "Machine 'M2' cannot perform 'tapping'.",
+            "operation_id": "OP8",
+            "feature_id": null,
+            "evidence": {
+              "selected_machine": "M2",
+              "operation_type": "tapping",
+              "machine_capabilities": [
+                "slot_milling",
+                "chamfering",
+                "spot_drilling"
+              ],
+              "capable_machines": [
+                "M3"
+              ],
+              "operation_removable": false
+            },
+            "repair_hint": "Assign a machine capable of 'tapping': ['M3'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R8_PRECEDENCE_VALIDITY",
+            "severity": "hard",
+            "message": "Precedence edges contain a cycle: OP1 -> OP9 -> OP1.",
+            "operation_id": "OP1",
+            "feature_id": null,
+            "evidence": {
+              "cycle": [
+                "OP1",
+                "OP9",
+                "OP1"
+              ]
+            },
+            "repair_hint": "Remove or reverse at least one edge in the cycle so that a valid order exists.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP9 -> OP1 is violated: OP1 is sequenced before OP9.",
+            "operation_id": "OP1",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 9,
+              "edge": [
+                "OP9",
+                "OP1"
+              ],
+              "positions": {
+                "OP9": 8,
+                "OP1": 0
+              }
+            },
+            "repair_hint": "Move OP9 before OP1 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 7,
+          "covered_features": 7,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "3 hard violation(s)"
+    },
+    {
+      "state": "NEEDS_HUMAN_REVIEW",
+      "iteration": 0,
+      "detail": "0 repair(s) used"
+    }
+  ],
+  "final_status": "NEEDS_HUMAN_REVIEW",
+  "stop_reason": "max_repairs_reached",
+  "stop_detail": "0 repair(s) used",
+  "terminal_repair": null,
+  "final_iteration": 0,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_010_corrupted_s2",
+    "component_id": "synv2_010",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "tapping",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "slot_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T6",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "pocket_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 6.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "tapping",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T7",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ],
+      [
+        "OP1",
+        "OP9"
+      ],
+      [
+        "OP3",
+        "OP4"
+      ],
+      [
+        "OP7",
+        "OP8"
+      ],
+      [
+        "OP9",
+        "OP1"
+      ]
+    ],
+    "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": false,
+    "hard_constraint_violations": [
+      {
+        "rule_id": "R3_MACHINE_CAPABILITY",
+        "severity": "hard",
+        "message": "Machine 'M2' cannot perform 'tapping'.",
+        "operation_id": "OP8",
+        "feature_id": null,
+        "evidence": {
+          "selected_machine": "M2",
+          "operation_type": "tapping",
+          "machine_capabilities": [
+            "slot_milling",
+            "chamfering",
+            "spot_drilling"
+          ],
+          "capable_machines": [
+            "M3"
+          ],
+          "operation_removable": false
+        },
+        "repair_hint": "Assign a machine capable of 'tapping': ['M3'].",
+        "repairable": true
+      },
+      {
+        "rule_id": "R8_PRECEDENCE_VALIDITY",
+        "severity": "hard",
+        "message": "Precedence edges contain a cycle: OP1 -> OP9 -> OP1.",
+        "operation_id": "OP1",
+        "feature_id": null,
+        "evidence": {
+          "cycle": [
+            "OP1",
+            "OP9",
+            "OP1"
+          ]
+        },
+        "repair_hint": "Remove or reverse at least one edge in the cycle so that a valid order exists.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R9_PRECEDENCE_ORDER",
+        "severity": "hard",
+        "message": "Declared precedence OP9 -> OP1 is violated: OP1 is sequenced before OP9.",
+        "operation_id": "OP1",
+        "feature_id": null,
+        "evidence": {
+          "source": "plan_precedence",
+          "edge_index": 9,
+          "edge": [
+            "OP9",
+            "OP1"
+          ],
+          "positions": {
+            "OP9": 8,
+            "OP1": 0
+          }
+        },
+        "repair_hint": "Move OP9 before OP1 in the operation sequence, or remove the edge if it is not required.",
+        "repairable": true
+      }
+    ],
+    "warnings": [],
+    "coverage": {
+      "required_features": 7,
+      "covered_features": 7,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

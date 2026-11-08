@@ -1,0 +1,173 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_016_plan_v0",
+    "component_id": "synv2_016",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "chamfering",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T7",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "pocket_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 12.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "slot_milling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 8.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T6",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "tapping",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "tapping",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 4.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ],
+      [
+        "OP6",
+        "OP7"
+      ],
+      [
+        "OP8",
+        "OP9"
+      ]
+    ],
+    "explanation": "The plan sequences the machining operations to satisfy the precedence constraints and feature requirements. Datum face is machined first, followed by other features. Drilling is performed before tapping for threaded holes.",
+    "assumptions": [
+      "The component is fully fixtured and accessible to the tools.",
+      "The toolpaths are simple and do not require complex 5-axis movements."
+    ],
+    "uncertainties": [
+      "Optimal cutting parameters are not determined.",
+      "The material properties are assumed as typical for steel_s235.",
+      "Tool wear is not considered."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:27b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"synv2_016\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T7\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T8\",\n    \"duration_min\": 12.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"slot_milling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T8\",\n    \"duration_min\": 8.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 4.0\n  },\n  {\n    \"operation_id\": \"OP8\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F9\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP9\",\n    \"type\": \"tapping\",\n    \"target_features\": [\"F9\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 4.0\n  }\n], \"precedence\": [\n  [\"OP1\", \"OP2\"],\n  [\"OP1\", \"OP3\"],\n  [\"OP1\", \"OP4\"],\n  [\"OP1\", \"OP5\"],\n  [\"OP1\", \"OP6\"],\n  [\"OP1\", \"OP8\"],\n  [\"OP6\", \"OP7\"],\n  [\"OP8\", \"OP9\"]\n], \"explanation\": \"The plan sequences the machining operations to satisfy the precedence constraints and feature requirements. Datum face is machined first, followed by other features. Drilling is performed before tapping for threaded holes.\", \"assumptions\": [\"The component is fully fixtured and accessible to the tools.\", \"The toolpaths are simple and do not require complex 5-axis movements.\"], \"uncertainties\": [\"Optimal cutting parameters are not determined.\", \"The material properties are assumed as typical for steel_s235.\", \"Tool wear is not considered.\"]}",
+      "issues": [],
+      "latency_s": 13.094585800077766,
+      "prompt_tokens": 3181,
+      "completion_tokens": 854
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}
