@@ -58,7 +58,7 @@ python scripts/check_reproducible.py                                            
 - every stored B2 final plan, re-validated by today's validator: it must get the same validity and hard-violation count;
 - `docs/examples.md`, regenerated from the run records.
 
-B2 itself cannot be re-run without the model, and an LLM's output is not reproducible bit for bit anyway, so its stored records are the evidence. Experiments under the superseded rule set v1.1 are skipped in the replay. Optimizer results are exact for a given OR-Tools version (CI pins 9.15.6755); another version may pick a different plan of the same cost.
+B2 itself cannot be re-run without the model, and an LLM's output is not reproducible bit for bit anyway, so its stored records are the evidence. Experiments under the superseded rule set v1.1 are skipped in the replay. Optimizer results are exact for a given platform and OR-Tools version (CI pins 9.15.6755). When several plans tie on both objectives, CP-SAT's search path decides which one it returns, and that path can differ between operating systems or versions. So in the `docs/examples.md` optimizer case the check requires only the same cost, solver status and revalidation. The committed `optimization.jsonl` files are rebuilt into tables, not re-solved.
 
 Each experiment writes its output to `reports/experiments/<experiment_id>/`:
 

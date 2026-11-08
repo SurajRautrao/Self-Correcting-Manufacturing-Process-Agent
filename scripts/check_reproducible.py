@@ -12,7 +12,9 @@ Checks, each against the files committed in the repository:
    replayed from the cached initial plans (no planner calls) and must give the same rows as committed.
    LLM repair (B2) cannot be re-run without the model; its stored run records are re-validated instead:
    each final plan must get the same validity and hard-violation count from today's validator.
-4. **Examples:** docs/examples.md regenerates exactly from the stored run records.
+4. **Examples:** docs/examples.md regenerates exactly from the stored run records. In the optimizer case,
+   only the cost, solver status and revalidation must match: several plans can tie on both objectives,
+   and which one CP-SAT returns can differ between platforms.
 
 Exit code 0 if everything matches. Replayed rows must match in every field; latency, which includes the
 rule-based repair time measured live, must match within 0.05 s.
@@ -98,7 +100,10 @@ def check_tables(rep: Report, tmp: Path) -> None:
         n = 0
         for f in TABLES:
             if (exp / f).exists():
-                rep.check(_read(exp / f) == _read(work / f), f"{exp.name}/{f}")
+                same = _read(exp / f) == _read(work / f)
+                rep.check(same, f"{exp.name}/{f}")
+                if not same:
+                    print(_diff(_read(exp / f), _read(work / f), f), flush=True)
                 n += 1
         if (exp / "optimization.jsonl").exists():
             rows = [json.loads(line) for line in (exp / "optimization.jsonl").open(encoding="utf-8")]
@@ -156,12 +161,40 @@ def check_replay(rep: Report, tmp: Path) -> None:
               f"{agree}/{len(b2)} B2 final plans re-validated", flush=True)
 
 
+OPTIMIZER_SECTION = "## 5. The optimizer"
+
+
+def _diff(a: str, b: str, name: str) -> str:
+    import difflib
+
+    lines = difflib.unified_diff(a.splitlines(), b.splitlines(), f"committed/{name}", f"rebuilt/{name}", lineterm="", n=1)
+    return "\n".join(list(lines)[:40])
+
+
 def check_examples(rep: Report) -> None:
+    """docs/examples.md must match exactly, except the plan chosen in the optimizer case.
+
+    That plan can tie with others on both objectives (cost, then closeness to the input), and which of the
+    tied plans CP-SAT returns depends on its search path, which can differ between platforms. Its cost, the
+    solver status and the revalidation result must still match.
+    """
     print("4. docs/examples.md", flush=True)
     spec = importlib.util.spec_from_file_location("make_examples", ROOT / "scripts" / "make_examples.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)  # type: ignore[union-attr]
-    rep.check(_read(ROOT / "docs" / "examples.md") == mod.render().replace("\r\n", "\n"), "docs/examples.md")
+    committed, fresh = _read(ROOT / "docs" / "examples.md"), mod.render().replace("\r\n", "\n")
+    c_head, _, c_opt = committed.partition(OPTIMIZER_SECTION)
+    f_head, _, f_opt = fresh.partition(OPTIMIZER_SECTION)
+    rep.check(c_head == f_head, "docs/examples.md (cases 1-4)")
+    if c_head != f_head:
+        print(_diff(c_head, f_head, "examples.md"), flush=True)
+    summary = lambda text: [line for line in text.splitlines() if line.startswith("Machine changes")]
+    ok = bool(summary(c_opt)) and summary(c_opt) == summary(f_opt)
+    rep.check(ok, "docs/examples.md (optimizer case: cost, solver status, revalidation)")
+    if not ok:
+        print(_diff(c_opt, f_opt, "examples.md"), flush=True)
+    elif c_opt != f_opt:
+        print("   optimizer case: same cost and status; CP-SAT chose another equally good plan on this platform", flush=True)
 
 
 def main() -> int:
