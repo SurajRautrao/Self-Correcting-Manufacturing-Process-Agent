@@ -17,6 +17,42 @@ Hypotheses (to be tested, not assumed):
 - **H3** A deterministic sequencing optimizer improves declared quality metrics without breaking hard constraints.
 - **H4** Structured violation reports and repair histories make decisions easier to audit than free text.
 
+## How it works
+
+```mermaid
+flowchart LR
+    C[Component + resources<br/>JSON, schema-checked] --> P[Planner<br/>LLM via Ollama, or mock]
+    P --> N[Normalizer<br/>benign shape fixes only]
+    N --> V{Validator<br/>rules R1–R12<br/>deterministic}
+    V -- valid --> A[Accepted plan]
+    V -- invalid, repairable,<br/>budget left --> R[Repair agent<br/>LLM or rule-based]
+    R --> V
+    V -- non-repairable / repeated plan /<br/>budget spent / unusable output --> H[Human review]
+    A -. optional .-> O[CP-SAT optimizer<br/>reorder and reassign] --> V2{Validator} --> F[Optimized plan]
+```
+
+The validator alone decides validity. Every repaired or optimized plan is checked again, and every candidate, finding and repair is recorded in a run record.
+
+## Results at a glance
+
+Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible by design. Details, caveats and the validator flaws found along the way are in [`docs/results.md`](docs/results.md); worked traces are in [`docs/examples.md`](docs/examples.md).
+
+| | gemma3:4b | qwen3.5:9b |
+|---|---|---|
+| LLM alone: invalid plans (B0) | 79% | 54% |
+| With validator: invalid plans accepted (B1) | 0% | 0% |
+| With repair loop: correct outcome (B2) | 56% | 100% |
+| Injected faults repaired (B2, corruption track) | 62–74% | 97% |
+| Repair notes claiming changes that were not made | 20% of calls | 2% of calls |
+| Optimizer: machine + tool change cost (B3), median cut | 42% | 48% |
+
+- **H1:** supported. Detection alone removes every invalid plan from the accepted output.
+- **H2:** supported, and strongly model-dependent.
+- **H3:** supported for the declared metric (change counts, not time). The optimizer never broke a hard constraint in 2,664 runs; its weighting is verified on a constructed case, and benchmark v2 runs will test it on LLM plans.
+- **H4:** supported. The computed diff exposed every false repair claim.
+
+All data is synthetic, so these numbers describe software behaviour on a toy benchmark, not industrial performance.
+
 ## Status
 
 | Milestone | Content | Status |
@@ -28,7 +64,8 @@ Hypotheses (to be tested, not assumed):
 | M4 | Synthetic benchmark, baselines B0/B1/B2, metrics, reports | ✅ done (gemma3:4b and qwen3.5:9b test runs, see `docs/results.md`) |
 | M5 | Streamlit demo | ✅ done |
 | M6 | Optional: OR-Tools sequencing (B3, H3) | ✅ done |
-| M6 | Optional: FabriCAD importer, FreeCAD feature extraction | not started |
+| M6 | Optional: FabriCAD investigation and importer (derived data, not redistributed) | ✅ done, see `docs/fabricad.md` |
+| M6 | Optional: FreeCAD feature extraction | see `docs/fabricad.md` / roadmap |
 
 ## Quick start
 
@@ -189,9 +226,9 @@ Checks happen at two stages:
 ```
 data/            catalogue, examples, synthetic/benchmark_v1 (all synthetic)
 configs/         experiment configs
-docs/            architecture, assumptions/limits, constraint catalogue, evaluation, data card
-src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, optimization/, evaluation/, app/, prompt_templates/
-scripts/         run_demo.py, make_synthetic_data.py, hpc/slurm_experiment.sh
+docs/            architecture, assumptions/limits, constraint catalogue, evaluation, results, examples, FabriCAD, data card
+src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, optimization/, importers/, evaluation/, app/, prompt_templates/
+scripts/         run_demo.py, make_synthetic_data.py, make_examples.py, hpc/slurm_experiment.sh
 tests/           unit/ and integration/ tests
 reports/         generated experiment output (git-ignored)
 ```

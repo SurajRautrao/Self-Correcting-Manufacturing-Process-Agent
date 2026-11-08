@@ -1,0 +1,10 @@
+Arbeitsschritt;Subschritt;Kurztext;Volumen[mm^3];Kosten[($)];Dauer[min]; Werkzeug[mm](D);vf[m/min];ap[mm];ZSV[mm^3/min];Schweißnaht [mm]
+2;2.1;Bohrung Ø8 x 20.0[mm] mit 45°-Senkung mit M8 Gewinde (#1);-1000.0;0.0;0.05;Spiralbohrer (6.8);0.2;8.0;50000.0;-
+2;2.2;Bohrung Ø10 x 30.0[mm]mit Passung H7 (#2);-2000.0;0.0;0.06;Spiralbohrer (9.8);0.2;8.0;50000.0;-
+2;2.3;Bohrung Ø12 x 30.0[mm]mit Passung H12 (#3);-3000.0;0.0;0.07;Spiralbohrer (12.0);0.2;8.0;50000.0;-
+2;2.4;Bohrung Ø6 x 15.0[mm] mit zylindrischer Senkung für Zylinderkopfschraube nach DIN 912 (#4);-500.0;0.0;0.04;Spiralbohrer (6.0);0.2;8.0;50000.0;-
+3;3.1;Rechteckige Tasche mit 40.0[mm] x 30.0[mm] x 10.0[mm] (#5);-12000.0;0.0;0.1;Schruppfräser (20.0);1.5;8.0;150000.0;-
+3;3.2;Langloch Ø12.0[mm] x 8.0[mm] DIN3771 (#6);-3000.0;0.0;0.05;Schruppfräser (12.0);1.5;6.0;100000.0;-
+3;3.3;Abgerundete Viertelstufe  Ø40 [mm] x 10.0[mm] (#7);-4000.0;0.0;0.05;Schruppfräser (20.0);1.5;8.0;150000.0;-
+3;3.4;O-Ring-Nut Ø30.0[mm] x 4.0[mm] DIN3771 (#8);-900.0;0.0;0.03;Schruppfräser (4.0);2.0;3.0;60000.0;-
+4;4.1;Geschweißter Steg L: 50.0[mm], B: 10.0[mm], H: 40.0[mm]  (#9);-20000.0;0.0;0.0;- (-);-;-;-;100.0[mm]

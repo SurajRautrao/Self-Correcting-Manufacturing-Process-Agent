@@ -1,0 +1,14 @@
+{
+  "experiment_id": "llm_test_full_qwen3.5-9b_rep2",
+  "description": "Repeat of llm_test_full_qwen3.5-9b for run-to-run noise: the initial plans are replayed, and only the B2 repair calls are new. Compare per case with the first run (paired, same inputs).",
+  "benchmark_dir": "data/synthetic/benchmark_v1",
+  "split": "test",
+  "seeds": [0, 1, 2],
+  "tracks": ["generation", "corruption"],
+  "systems": ["B0", "B1", "B2", "R"],
+  "planner": {"provider": "ollama", "model": "qwen3.5:9b", "temperature": 0.7},
+  "llm_repair": {"provider": "ollama", "model": "qwen3.5:9b", "temperature": 0.7},
+  "max_repairs": 3,
+  "faults_per_case": 2,
+  "initial_plans_from": "llm_test_full_qwen3.5-9b"
+}

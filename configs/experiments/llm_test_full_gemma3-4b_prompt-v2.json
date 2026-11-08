@@ -1,0 +1,13 @@
+{
+  "experiment_id": "llm_test_full_gemma3-4b_prompt-v2",
+  "description": "Test split with planner prompt v2 (rule set v1.2 reflected in the prompt: preparatory operations never complete a feature; tool-compatibility look-up; leave out unperformable optional steps). gemma3:4b, generation track, B0/B1/B2 (+R). Compare with llm_test_full_gemma3-4b_v1.2 (prompt v1). v2 was designed after the v1 test-split error analysis and checked on dev first; report it as a prompt change, next to the v1 runs.",
+  "benchmark_dir": "data/synthetic/benchmark_v1",
+  "split": "test",
+  "seeds": [0, 1, 2],
+  "tracks": ["generation"],
+  "systems": ["B0", "B1", "B2", "R"],
+  "planner": {"provider": "ollama", "model": "gemma3:4b", "temperature": 0.7, "prompt_version": "v2"},
+  "llm_repair": {"provider": "ollama", "model": "gemma3:4b", "temperature": 0.7},
+  "max_repairs": 3,
+  "faults_per_case": 2
+}

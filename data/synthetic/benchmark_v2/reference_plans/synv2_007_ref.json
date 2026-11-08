@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "synv2_007_ref",
+  "component_id": "synv2_007",
+  "operations": [
+    {
+      "operation_id": "OP1",
+      "type": "face_milling",
+      "target_features": [
+        "F1"
+      ],
+      "machine_id": "M2",
+      "tool_id": "T2",
+      "duration_min": 4.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP2",
+      "type": "drilling",
+      "target_features": [
+        "F2"
+      ],
+      "machine_id": "M3",
+      "tool_id": "T6",
+      "duration_min": 2.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP3",
+      "type": "reaming",
+      "target_features": [
+        "F2"
+      ],
+      "machine_id": "M3",
+      "tool_id": "T4",
+      "duration_min": 1.5,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP4",
+      "type": "drilling",
+      "target_features": [
+        "F3"
+      ],
+      "machine_id": "M3",
+      "tool_id": "T6",
+      "duration_min": 2.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP5",
+      "type": "tapping",
+      "target_features": [
+        "F3"
+      ],
+      "machine_id": "M4",
+      "tool_id": "T1",
+      "duration_min": 1.5,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP6",
+      "type": "slot_milling",
+      "target_features": [
+        "F4"
+      ],
+      "machine_id": "M1",
+      "tool_id": "T3",
+      "duration_min": 4.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP7",
+      "type": "drilling",
+      "target_features": [
+        "F5"
+      ],
+      "machine_id": "M3",
+      "tool_id": "T6",
+      "duration_min": 2.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP8",
+      "type": "tapping",
+      "target_features": [
+        "F5"
+      ],
+      "machine_id": "M4",
+      "tool_id": "T1",
+      "duration_min": 1.5,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP9",
+      "type": "pocket_milling",
+      "target_features": [
+        "F6"
+      ],
+      "machine_id": "M2",
+      "tool_id": "T3",
+      "duration_min": 6.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP10",
+      "type": "pocket_milling",
+      "target_features": [
+        "F7"
+      ],
+      "machine_id": "M2",
+      "tool_id": "T3",
+      "duration_min": 6.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP11",
+      "type": "drilling",
+      "target_features": [
+        "F8"
+      ],
+      "machine_id": "M3",
+      "tool_id": "T6",
+      "duration_min": 2.0,
+      "notes": ""
+    },
+    {
+      "operation_id": "OP12",
+      "type": "reaming",
+      "target_features": [
+        "F8"
+      ],
+      "machine_id": "M3",
+      "tool_id": "T4",
+      "duration_min": 1.5,
+      "notes": ""
+    }
+  ],
+  "precedence": [
+    [
+      "OP1",
+      "OP2"
+    ],
+    [
+      "OP1",
+      "OP3"
+    ],
+    [
+      "OP1",
+      "OP4"
+    ],
+    [
+      "OP1",
+      "OP5"
+    ],
+    [
+      "OP1",
+      "OP6"
+    ],
+    [
+      "OP1",
+      "OP7"
+    ],
+    [
+      "OP1",
+      "OP8"
+    ],
+    [
+      "OP1",
+      "OP10"
+    ],
+    [
+      "OP2",
+      "OP3"
+    ],
+    [
+      "OP4",
+      "OP5"
+    ],
+    [
+      "OP7",
+      "OP8"
+    ],
+    [
+      "OP11",
+      "OP12"
+    ]
+  ],
+  "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+  "assumptions": [
+    "Durations are illustrative placeholders, not calculated from cutting data."
+  ],
+  "uncertainties": [],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.planning.mock.build_baseline_plan",
+    "notes": "Generated reference plan, checked by the validator; one valid sequence among possibly many. Not expert-reviewed."
+  }
+}

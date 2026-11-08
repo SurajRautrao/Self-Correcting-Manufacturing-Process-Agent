@@ -1,0 +1,2 @@
+Arbeitsschritt;Subschritt;Kurztext;Volumen[mm^3];Kosten[($)];Dauer[min]; Werkzeug[mm](D);vf[m/min];ap[mm];ZSV[mm^3/min];Schweißnaht [mm]
+2;2.1;Geschweißter Winkel L: 40.0[mm], B: 20.0[mm], H: 30.0[mm], t: 5.0[mm]  (#1);-8000.0;0.0;0.0;- (-);-;-;-;80.0[mm]

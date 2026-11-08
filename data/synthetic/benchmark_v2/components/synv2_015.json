@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.0",
+  "component_id": "synv2_015",
+  "description": "Synthetic prismatic part with 8 features (chamfer, pocket, slot, through_hole).",
+  "material": "steel_s235",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 9.1,
+      "width_mm": 38.6,
+      "length_mm": 25.0
+    },
+    {
+      "feature_id": "F3",
+      "type": "slot",
+      "required": true,
+      "description": "slot",
+      "depth_mm": 4.8,
+      "width_mm": 9.9,
+      "length_mm": 79.7
+    },
+    {
+      "feature_id": "F4",
+      "type": "chamfer",
+      "required": true,
+      "description": "chamfer",
+      "width_mm": 0.5
+    },
+    {
+      "feature_id": "F5",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 12.0
+    },
+    {
+      "feature_id": "F6",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 8.0
+    },
+    {
+      "feature_id": "F7",
+      "type": "slot",
+      "required": true,
+      "description": "slot",
+      "depth_mm": 6.4,
+      "width_mm": 12.0,
+      "length_mm": 73.8
+    },
+    {
+      "feature_id": "F8",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 12.0
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Slotting and chamfering cell",
+        "capabilities": [
+          "slot_milling",
+          "chamfering",
+          "spot_drilling"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Drill-tap unit",
+        "capabilities": [
+          "spot_drilling",
+          "drilling",
+          "tapping"
+        ]
+      },
+      {
+        "machine_id": "M3",
+        "description": "Horizontal boring mill",
+        "capabilities": [
+          "drilling",
+          "reaming",
+          "pocket_milling",
+          "face_milling"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T2",
+        "type": "chamfer_mill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T6",
+        "type": "face_mill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F6"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F7"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F8"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v2.0",
+    "notes": "benchmark scmpa_synthetic_v2; index 15; deliberately infeasible: no tool compatible with required operation 'pocket_milling'"
+  }
+}

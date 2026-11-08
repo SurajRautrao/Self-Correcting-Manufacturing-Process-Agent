@@ -54,6 +54,22 @@ def test_committed_benchmark_matches_generator(tmp_path) -> None:
         assert json.loads(f.read_text()) == json.loads((tmp_path / "components" / f.name).read_text())
 
 
+def test_committed_benchmark_v2_matches_generator(tmp_path) -> None:
+    """benchmark_v2 (profile v2: specialised machines, more features and constraints) regenerates exactly."""
+    bench2 = REPO_ROOT / "data" / "synthetic" / "benchmark_v2"
+    manifest = read_json(bench2 / "manifest.json")
+    assert manifest["benchmark_id"] == "scmpa_synthetic_v2" and manifest["profile"] == "v2"
+    regenerated = generate_benchmark(tmp_path, CATALOGUE, n_components=manifest["n_components"], seed=manifest["seed"],
+                                     infeasible_fraction=manifest["infeasible_fraction"], profile="v2")
+    assert regenerated == manifest
+    for sub in ("components", "reference_plans"):
+        for f in (bench2 / sub).iterdir():
+            assert json.loads(f.read_text()) == json.loads((tmp_path / sub / f.name).read_text())
+    for c in manifest["cases"]:
+        assert c["n_features"] >= 7 and c["n_machines"] >= 2  # datum + 6..10 features; at least 2 machines
+    assert {c["expected_outcome"] for c in manifest["cases"] if c["split"] == "test"} == {"feasible", "needs_human_review"}
+
+
 def test_benchmark_split_has_both_outcomes() -> None:
     manifest = read_json(BENCH / "manifest.json")
     for split in ("dev", "test"):

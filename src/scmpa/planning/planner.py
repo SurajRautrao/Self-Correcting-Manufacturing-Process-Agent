@@ -61,9 +61,17 @@ def model_view_of_component(component: Component) -> dict[str, Any]:
     return component.model_dump(mode="json", exclude={"provenance", "schema_version"}, exclude_none=True)
 
 
-def model_view_of_catalogue(catalogue: Catalogue) -> dict[str, Any]:
-    """What the model sees of the catalogue: the vocabulary and compatibility maps."""
-    return catalogue.model_dump(mode="json", include={"operation_types", "tool_types", "feature_types", "tool_compatibility"})
+CATALOGUE_VIEW_FIELDS = {"operation_types", "tool_types", "feature_types", "tool_compatibility"}
+
+
+def model_view_of_catalogue(catalogue: Catalogue, *, include_preparatory: bool = False) -> dict[str, Any]:
+    """What the model sees of the catalogue: the vocabulary and compatibility maps.
+
+    Prompt v1 sees exactly the v1 fields, so v1 prompts stay byte-identical to the
+    recorded runs. Prompt v2 also sees ``preparatory_operation_types`` (rule set v1.2).
+    """
+    fields = CATALOGUE_VIEW_FIELDS | ({"preparatory_operation_types"} if include_preparatory else set())
+    return catalogue.model_dump(mode="json", include=fields)
 
 
 class LLMPlanner:
@@ -83,11 +91,12 @@ class LLMPlanner:
         self.system_prompt = load_prompt("planner_system", prompt_version)
         self.user_prompt = load_prompt("planner_user", prompt_version)
         self.retry_prompt = load_prompt("planner_retry", prompt_version)
+        self.prompt_version = prompt_version
 
     def build_messages(self, component: Component, catalogue: Catalogue) -> list[ChatMessage]:
         user = self.user_prompt.render(
             component_json=json.dumps(model_view_of_component(component), indent=2),
-            catalogue_json=json.dumps(model_view_of_catalogue(catalogue), indent=2),
+            catalogue_json=json.dumps(model_view_of_catalogue(catalogue, include_preparatory=self.prompt_version != "v1"), indent=2),
             component_id=component.component_id,
         )
         return [{"role": "system", "content": self.system_prompt.text}, {"role": "user", "content": user}]

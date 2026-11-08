@@ -1,0 +1,282 @@
+{
+  "schema_version": "1.0",
+  "component_id": "synv2_023",
+  "description": "Synthetic prismatic part with 9 features (outer_contour, pocket, reamed_hole, threaded_hole).",
+  "material": "steel_s235",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "outer_contour",
+      "required": true,
+      "description": "outer contour"
+    },
+    {
+      "feature_id": "F3",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 10.2,
+      "width_mm": 24.5,
+      "length_mm": 15.6
+    },
+    {
+      "feature_id": "F4",
+      "type": "through_hole",
+      "required": true,
+      "description": "reamed hole",
+      "diameter_mm": 8.0,
+      "required_operation_types": [
+        "drilling",
+        "reaming"
+      ]
+    },
+    {
+      "feature_id": "F5",
+      "type": "threaded_hole",
+      "required": true,
+      "description": "threaded hole",
+      "diameter_mm": 5.0,
+      "depth_mm": 18.3,
+      "required_operation_types": [
+        "drilling",
+        "tapping"
+      ]
+    },
+    {
+      "feature_id": "F6",
+      "type": "pocket",
+      "required": true,
+      "description": "pocket",
+      "depth_mm": 4.4,
+      "width_mm": 25.9,
+      "length_mm": 30.5
+    },
+    {
+      "feature_id": "F7",
+      "type": "outer_contour",
+      "required": true,
+      "description": "outer contour"
+    },
+    {
+      "feature_id": "F8",
+      "type": "outer_contour",
+      "required": true,
+      "description": "outer contour"
+    },
+    {
+      "feature_id": "F9",
+      "type": "through_hole",
+      "required": true,
+      "description": "reamed hole",
+      "diameter_mm": 10.0,
+      "required_operation_types": [
+        "drilling",
+        "reaming"
+      ]
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Drill-tap unit",
+        "capabilities": [
+          "spot_drilling",
+          "drilling",
+          "tapping"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Horizontal boring mill",
+        "capabilities": [
+          "drilling",
+          "reaming",
+          "pocket_milling",
+          "face_milling"
+        ]
+      },
+      {
+        "machine_id": "M3",
+        "description": "Slotting and chamfering cell",
+        "capabilities": [
+          "slot_milling",
+          "chamfering",
+          "spot_drilling"
+        ]
+      },
+      {
+        "machine_id": "M4",
+        "description": "Milling centre (no drilling)",
+        "capabilities": [
+          "face_milling",
+          "contour_milling",
+          "pocket_milling",
+          "slot_milling",
+          "chamfering"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "reamer"
+      },
+      {
+        "tool_id": "T2",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "end_mill"
+      },
+      {
+        "tool_id": "T5",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T6",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T7",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T8",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T9",
+        "type": "chamfer_mill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F4",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F4",
+        "operation_type": "reaming"
+      },
+      "rationale": "Reaming requires a pre-drilled hole."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F5",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F5",
+        "operation_type": "tapping"
+      },
+      "rationale": "Tapping requires a pre-drilled hole."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F6"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F7"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F8"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F9"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F9",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F9",
+        "operation_type": "reaming"
+      },
+      "rationale": "Reaming requires a pre-drilled hole."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v2.0",
+    "notes": "benchmark scmpa_synthetic_v2; index 23"
+  }
+}

@@ -123,22 +123,46 @@ Mode `order+resources` (reorder and reassign eligible machine/tool pairs), defau
 | gemma B3, corruption | 24 | 18 | 24/24 | 2.67 → 1.17 | 4.75 → 3.38 | 56% |
 | reference plans (test split) | 13 | 12 | 13/13 | 3.00 → 1.08 | 5.23 → 3.46 | 64% |
 
-- **Hard constraints held everywhere.** All 1,665 optimizer runs across both experiments, every mode and every weight setting ended with a valid plan, re-checked by the validator. 1,660 of 1,665 were proven optimal. The other 5 hit the deterministic time limit with a feasible, improved plan.
+- **Hard constraints held everywhere.** All 2,664 optimizer runs across both experiments, both modes and every weight setting ended with a valid plan, re-checked by the validator. 2,657 of 2,664 were proven optimal. The other 7 hit the deterministic time limit with a feasible, improved plan.
 - **The gain is large:** at the median, the change cost is cut by about half. Machine changes fall to about 1 per plan, which is close to the floor, because most parts need two machines. Reordering alone gets most of the gain (median 26–48%); reassignment adds the rest.
 - **LLM plans are not sequenced for changes.** qwen's initially valid plans start at a cost of 30.0 and end at 14.0. gemma's few initially valid plans were already well grouped: median 4%, and only 5 of 10 improved.
-- **The weights do not matter on this benchmark.** In all 190 qwen plans, and in gemma's, the optimum is the same at 1:1, 1:10, 10:1 and 100:1. Grouping operations by machine also groups their tools, so the two objectives never conflict here. The sensitivity check therefore passes only trivially. A benchmark with real trade-offs, such as the same tool type on different machines, would be needed to test the weighting.
+- **The weights do not matter on this benchmark, in either mode.** For all 151 accepted LLM plans (99 qwen, 52 gemma), the optimal machine and tool counts are identical at 1:1, 1:10, 10:1 and 100:1, both with reassignment and in reorder-only mode. Two reasons:
+  - Eligibility depends only on operation type, and tools are shared across machines. So with reassignment, operations of one type can almost always share a machine, and grouping by machine also groups by tool. In a check on 60 generated parts, a trade-off appeared in 1 with reassignment but in 14 when random valid machine assignments were kept.
+  - Both LLMs assign each operation type to one machine consistently, so even their fixed assignments leave no conflict.
+  - The optimizer does honour the weights when a conflict exists: a hand-built case gives (1 machine, 3 tool changes) at 100:1 and (2, 2) at 1:100, confirmed by brute force (`test_weights_decide_a_genuine_tradeoff_in_order_only_mode`). Benchmark v2's specialised machines are designed to create such conflicts in LLM plans.
 - **The result is deterministic.** Each solve uses a deterministic time limit, one worker and a fixed seed. Repeated runs give identical plans, and the reference-plan rows match exactly across both experiment folders.
 - **Limits:** this measures change counts, not time. Durations are fixed, setups within a machine are not modelled, and a reassigned tool may differ in unmodelled size (see `assumptions_and_limits.md`).
 
+## Validator audit: false failures and audit trail (spec 8.3)
+
+**False failures** (valid alternatives the rules reject) were checked by classifying every violation in the 96 initial generated plans of Runs 2 and 3, by rule and by (operation, tool or feature) pair.
+
+| Class | Cases | Verdict |
+|---|---|---|
+| Wrong or missing tool or machine (tap work with a drill, operations on machines without the capability), mostly on the infeasible parts | most R3/R5 | genuine |
+| Hole that gets spot drilling (and possibly tapping or reaming) but no drilling | 69 holes (gemma), 9 (qwen) | genuine: the hole is never drilled |
+| Plan's own precedence edges contradict its sequence, or a component constraint is broken | 13 | genuine |
+| Face milling a pocket or a hole | 4 | genuine |
+| **Optional spot-drilling step without a spot drill or capable machine** | 10 of qwen's 26 invalid plans fail *only* for this | **correct under the rules, but minor.** The step cannot be done as written. The repair removes it, and the rest of the plan was fine. |
+| **Spot drill used to chamfer** (gemma syn_009 ×2), **chamfering a threaded-hole entry** (qwen syn_011), **spot drilling or pre-drilling a pocket entry** (qwen syn_018 ×2) | 5 violations, 4 plans | **false failures.** All are common shop practice. The catalogue's operation-to-feature map is narrower than reality. Only 1 plan (qwen syn_018 s0) was rejected for this reason alone. |
+
+- **Consequence for H1:** the strict rule set inflates qwen's raw invalid rate. Excluding the 10 plans that fail only on an optional spot step, qwen's LLM-only invalid rate is 33% (16/48) rather than 54%. gemma has no such plans.
+- **The cost of the false failures was small:** a needless edit (the repair removed the realistic step, see `examples.md` case 4), never a wrong routing to human review.
+- **Fixing it** would mean a catalogue notion of auxiliary operations (chamfering any hole edge, entry holes for pockets). That is a rule-set change for a v1.3, to be decided on the dev split, not here.
+- The documented simplification "face milling only with face mills" caused **no** rejections in either run.
+
+**Audit trail (H4).** A repair agent's change notes were compared with the computed diff of the plan it returned. gemma claimed changes but returned an unchanged plan in **24 of 121** repair calls (20%); qwen did so in **1 of 66**. All 25 cases were caught by repeated-plan detection and are visible in the diff. Without the structured comparison, a reader of the model's text would have accepted these claims. See `examples.md` case 2.
+
 ### Hypotheses after Runs 1–3 and M6
 
-- **H1 (constraint feedback lowers violations):** supported. Invalid plans accepted fall to 0% with either model. The hard-violation rate falls from 79% to 62–69% with gemma and from 54% to 19% with qwen. The 19% left are exactly the infeasible cases.
+- **H1 (constraint feedback lowers violations):** supported. Invalid plans accepted fall to 0% with either model (qwen's raw 54% includes 10 plans that fail only on an optional spot step; see the audit above). The hard-violation rate falls from 79% to 62–69% with gemma and from 54% to 19% with qwen. The 19% left are exactly the infeasible cases.
 - **H2 (the bounded loop repairs a measurable share):** supported, and strongly model-dependent. On injected faults, gemma repairs 62–74% and qwen 97%. On generated plans, gemma repairs 8 of 29 and qwen 17 of 17. Neither model ever made a correct validator-only outcome wrong, and with best-candidate selection no run ends worse than it started.
-- **H3 (sequencing optimizer):** supported for the declared metrics. The optimizer roughly halves the machine- and tool-change cost of accepted plans and never breaks a hard constraint (0 of 1,665 runs). The improvement is non-negative by construction. The measured effect is its size, and it is about counts, not time. The weighting is untested, because this benchmark has no conflicting objectives.
-- **H4 (auditability):** qualitative. Every repair has a computed diff and a stop reason. Repeated plans and unusable repair outputs show up as such. Both models' diffs show small, targeted edits (median 1–2 operations).
+- **H3 (sequencing optimizer):** supported for the declared metrics. The optimizer roughly halves the machine- and tool-change cost of accepted plans and never breaks a hard constraint (0 of 2,664 runs across both experiments, all modes and all weights). The improvement is non-negative by construction. The measured effect is its size, and it is about counts, not time. The weighting is untested on benchmark v1, because neither model's plans contain a conflict; it is verified on a constructed case and is to be measured on benchmark v2.
+- **H4 (auditability):** supported with a concrete measure. The model's own change notes were false (claimed changes, none made) in 20% of gemma's repair calls and 2% of qwen's. The computed diff and repeated-plan detection exposed every case. Every repair also has a stop reason, and both models' diffs show small, targeted edits (median 1–2 operations). Representative traces are in `examples.md`.
 
 ## Pending
 
-- A second qwen run (new `experiment_id`, `initial_plans_from` the first) to measure its run-to-run noise.
-- M6 remainder: FabriCAD importer and FreeCAD feature extraction (not started).
-- A benchmark variant where machine and tool changes conflict, to test the optimizer's weighting.
+- Prompt v2 (planner): dev comparison `dev_gemma3-4b_prompt-v1` vs `-v2`, then `llm_test_full_gemma3-4b_prompt-v2` on test.
+- Benchmark v2: `llm_test_full_gemma3-4b_bench-v2` and `llm_test_full_qwen3.5-9b_bench-v2`, then `optimize_results` on them (weight trade-offs in reorder-only mode).
+- `llm_test_full_qwen3.5-9b_rep2`: qwen run-to-run noise.
+- FreeCAD feature extraction (M6 remainder).

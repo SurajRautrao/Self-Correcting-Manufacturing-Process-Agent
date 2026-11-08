@@ -59,6 +59,24 @@ FEATURE_KINDS: dict[str, tuple[str, list[str] | None, int]] = {
 
 MATERIALS = ["aluminium", "steel_s235", "stainless_1.4301", "brass"]
 
+#: v2 machines are specialised, with partly overlapping capabilities. Some operation types run on
+#: two machine kinds and others on one, so minimising machine changes and minimising tool changes
+#: can pull in different directions (needed to test the optimizer's weighting, H3).
+MACHINE_TEMPLATES_V2: dict[str, tuple[str, list[str]]] = {
+    "mill_centre": ("Milling centre (no drilling)", ["face_milling", "contour_milling", "pocket_milling", "slot_milling", "chamfering"]),
+    "drill_tap_unit": ("Drill-tap unit", ["spot_drilling", "drilling", "tapping"]),
+    "boring_mill": ("Horizontal boring mill", ["drilling", "reaming", "pocket_milling", "face_milling"]),
+    "slot_cell": ("Slotting and chamfering cell", ["slot_milling", "chamfering", "spot_drilling"]),
+}
+
+#: Generator profiles. "v1" reproduces benchmark_v1 exactly (same random calls, same parameters).
+PROFILES: dict[str, dict[str, Any]] = {
+    "v1": {"benchmark_id": BENCHMARK_ID, "generator_version": GENERATOR_VERSION, "templates": MACHINE_TEMPLATES,
+           "n_features": (3, 7), "n_machines": (1, 3), "distractors": (0, 2), "p_datum": 0.7, "p_pocket_floor": 0.5},
+    "v2": {"benchmark_id": "scmpa_synthetic_v2", "generator_version": "2.0", "templates": MACHINE_TEMPLATES_V2,
+           "n_features": (6, 10), "n_machines": (2, 3), "distractors": (1, 3), "p_datum": 0.9, "p_pocket_floor": 0.8},
+}
+
 
 def _dims(kind: str, rng: random.Random) -> dict[str, float]:
     r = lambda a, b: round(rng.uniform(a, b), 1)  # noqa: E731
@@ -77,18 +95,20 @@ def _dims(kind: str, rng: random.Random) -> dict[str, float]:
     return {}
 
 
-def _main_operation(feature_type: str, catalogue: Catalogue) -> str:
+def _main_operation(feature_type: str, catalogue: Catalogue) -> str:  # noqa: D103
     return catalogue.completing_operation_types(feature_type)[0]
 
 
-def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, infeasible: bool) -> dict[str, Any]:
+def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, infeasible: bool, profile: str = "v1") -> dict[str, Any]:
     """Return one component as plain JSON-compatible data (validated before return)."""
-    cid = f"syn_{index:03d}"
+    prof = PROFILES[profile]
+    templates = prof["templates"]
+    cid = f"syn_{index:03d}" if profile == "v1" else f"syn{profile}_{index:03d}"
     features: list[dict[str, Any]] = [{"feature_id": "F1", "type": "planar_face", "required": True, "description": "Datum face"}]
     kinds = list(FEATURE_KINDS)
     weights = [FEATURE_KINDS[k][2] for k in kinds]
     picked: list[str] = []
-    for n in range(rng.randint(3, 7)):
+    for n in range(rng.randint(*prof["n_features"])):
         kind = rng.choices(kinds, weights)[0]
         ftype, req_ops, _ = FEATURE_KINDS[kind]
         feature: dict[str, Any] = {
@@ -107,12 +127,12 @@ def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, 
     all_needs = sorted({t for f in features for t in needed_ops(f)})
 
     # Machines: random templates, then top up until every needed op is covered.
-    names = rng.sample(sorted(MACHINE_TEMPLATES), rng.randint(1, 3))
+    names = rng.sample(sorted(templates), rng.randint(*prof["n_machines"]))
     for op in all_needs:
-        if not any(op in MACHINE_TEMPLATES[n][1] for n in names):
-            names.append(next(n for n in sorted(MACHINE_TEMPLATES) if op in MACHINE_TEMPLATES[n][1]))
+        if not any(op in templates[n][1] for n in names):
+            names.append(next(n for n in sorted(templates) if op in templates[n][1]))
     machines = [
-        {"machine_id": f"M{i + 1}", "description": MACHINE_TEMPLATES[n][0], "capabilities": list(MACHINE_TEMPLATES[n][1])}
+        {"machine_id": f"M{i + 1}", "description": templates[n][0], "capabilities": list(templates[n][1])}
         for i, n in enumerate(names)
     ]
 
@@ -124,7 +144,7 @@ def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, 
             tool_types.append(t)
     if "drill" in tool_types and rng.random() < 0.6:
         tool_types.append("drill")  # a second drill of a different (unmodelled) size
-    for _ in range(rng.randint(0, 2)):
+    for _ in range(rng.randint(*prof["distractors"])):
         tool_types.append(rng.choice(catalogue.tool_types))
     rng.shuffle(tool_types)
     tools = [{"tool_id": f"T{i + 1}", "type": t} for i, t in enumerate(tool_types)]
@@ -150,7 +170,7 @@ def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, 
     # Precedence assumptions (component-specific, each with a rationale).
     constraints: list[dict[str, Any]] = []
     for f in features[1:]:
-        if rng.random() < 0.7:
+        if rng.random() < prof["p_datum"]:
             constraints.append({
                 "before": {"feature_id": "F1"}, "after": {"feature_id": f["feature_id"]},
                 "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it.",
@@ -166,7 +186,7 @@ def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, 
     pockets = [f for f in features if f["type"] == "pocket"]
     blind = [f for f in features if f["type"] == "blind_hole"]
     for hole in blind:
-        if pockets and rng.random() < 0.5:
+        if pockets and rng.random() < prof["p_pocket_floor"]:
             pocket = rng.choice(pockets)
             hole["description"] = f"blind hole in the floor of {pocket['feature_id']}"
             constraints.append({
@@ -196,8 +216,8 @@ def generate_component(index: int, rng: random.Random, catalogue: Catalogue, *, 
         ],
         "provenance": {
             "source_type": "synthetic",
-            "source": f"scmpa.evaluation.synthetic v{GENERATOR_VERSION}",
-            "notes": f"benchmark {BENCHMARK_ID}; index {index}" + (f"; deliberately infeasible: {infeasible_reason}" if infeasible_reason else ""),
+            "source": f"scmpa.evaluation.synthetic v{prof['generator_version']}",
+            "notes": f"benchmark {prof['benchmark_id']}; index {index}" + (f"; deliberately infeasible: {infeasible_reason}" if infeasible_reason else ""),
         },
     }
     validate_component(data, catalogue, cid)  # raises if the generator produced bad input
@@ -213,6 +233,7 @@ def generate_benchmark(
     seed: int = 2026,
     infeasible_fraction: float = 0.2,
     dev_fraction: float = 1 / 3,
+    profile: str = "v1",
 ) -> dict[str, Any]:
     """Write components, reference plans and ``manifest.json`` to ``out_dir``; return the manifest."""
     rng = random.Random(seed)
@@ -224,7 +245,7 @@ def generate_benchmark(
     infeasible_idx = set(rng.sample(range(1, n_components + 1), n_infeasible))
     cases = []
     for i in range(1, n_components + 1):
-        data = generate_component(i, rng, catalogue, infeasible=i in infeasible_idx)
+        data = generate_component(i, rng, catalogue, infeasible=i in infeasible_idx, profile=profile)
         meta = data.pop("_meta")
         component = validate_component(data, catalogue, data["component_id"])
         (out / "components" / f"{component.component_id}.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
@@ -273,9 +294,10 @@ def generate_benchmark(
     split = {k: sorted(v) for k, v in split.items()}
 
     manifest = {
-        "benchmark_id": BENCHMARK_ID,
+        "benchmark_id": PROFILES[profile]["benchmark_id"],
         "generator": "scmpa.evaluation.synthetic",
-        "generator_version": GENERATOR_VERSION,
+        "generator_version": PROFILES[profile]["generator_version"],
+        **({"profile": profile} if profile != "v1" else {}),
         "catalogue_id": catalogue.catalogue_id,
         "seed": seed,
         "n_components": n_components,

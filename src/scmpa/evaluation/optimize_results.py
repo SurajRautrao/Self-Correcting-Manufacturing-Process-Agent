@@ -67,7 +67,9 @@ def collect_plans(exp_dir: Path, catalogue) -> list[dict[str, Any]]:
 
 
 def optimize_all(items: list[dict[str, Any]], catalogue, log=print) -> list[dict[str, Any]]:
-    settings = [(mode, MAIN_WEIGHTS) for mode in MODES] + [("order+resources", w) for w in SENSITIVITY_WEIGHTS if w != MAIN_WEIGHTS]
+    # Sensitivity in BOTH modes: with reassignment the two objectives rarely conflict (ops of one type can share
+    # a machine), while with the plan's own machine assignments they can, so "order" is where weights matter.
+    settings = [(mode, MAIN_WEIGHTS) for mode in MODES] + [(mode, w) for mode in MODES for w in SENSITIVITY_WEIGHTS if w != MAIN_WEIGHTS]
     cache: dict[tuple, dict[str, Any]] = {}  # identical plans recur across systems (e.g. initially valid plans)
     rows = []
     t0 = time.perf_counter()
@@ -153,16 +155,22 @@ def render(exp_id: str, rows: list[dict[str, Any]], summary: list[dict[str, Any]
             f"{_fmt(s['tool_before'])} → {_fmt(s['tool_after'])} | {_fmt(s['cost_before'], '{:.1f}')} → {_fmt(s['cost_after'], '{:.1f}')} | "
             f"{_fmt(s['median_cost_reduction'], '{:.0%}')} | {_fmt(s['mean_moved'], '{:.1f}')} | {_fmt(s['mean_reassigned'], '{:.1f}')} |"
         )
-    lines += ["", "## Weight sensitivity (order+resources, all accepted LLM-system plans)", "",
-              "| Machine : tool weight | Machine changes after | Tool changes after | Plans improved |", "|---|---|---|---|"]
-    sys_rows = [r for r in rows if r["mode"] == "order+resources" and r["system"] in ("B1+opt", "B3")]
-    before_m = _mean([r["before_machine_changes"] for r in sys_rows if (r["machine_change_weight"], r["tool_change_weight"]) == MAIN_WEIGHTS])
-    before_t = _mean([r["before_tool_changes"] for r in sys_rows if (r["machine_change_weight"], r["tool_change_weight"]) == MAIN_WEIGHTS])
-    lines.append(f"| (input plans) | {_fmt(before_m)} | {_fmt(before_t)} | – |")
-    for wm, wt in SENSITIVITY_WEIGHTS:
-        g = [r for r in sys_rows if (r["machine_change_weight"], r["tool_change_weight"]) == (wm, wt)]
-        lines.append(f"| {wm} : {wt} | {_fmt(_mean([r['after_machine_changes'] for r in g]))} | "
-                     f"{_fmt(_mean([r['after_tool_changes'] for r in g]))} | {sum(r['status'] == 'optimized' for r in g)}/{len(g)} |")
+    lines += ["", "## Weight sensitivity (all accepted LLM-system plans: B1+opt and B3)", "",
+              "A plan has a *trade-off* if its optimal (machine changes, tool changes) differs between weight settings.", "",
+              "| Mode | Machine : tool weight | Machine changes after | Tool changes after | Plans improved |", "|---|---|---|---|---|"]
+    for mode in MODES:
+        sys_rows = [r for r in rows if r["mode"] == mode and r["system"] in ("B1+opt", "B3")]
+        main = [r for r in sys_rows if (r["machine_change_weight"], r["tool_change_weight"]) == MAIN_WEIGHTS]
+        lines.append(f"| {mode} | (input plans) | {_fmt(_mean([r['before_machine_changes'] for r in main]))} | "
+                     f"{_fmt(_mean([r['before_tool_changes'] for r in main]))} | – |")
+        for wm, wt in SENSITIVITY_WEIGHTS:
+            g = [r for r in sys_rows if (r["machine_change_weight"], r["tool_change_weight"]) == (wm, wt)]
+            lines.append(f"| {mode} | {wm} : {wt} | {_fmt(_mean([r['after_machine_changes'] for r in g]))} | "
+                         f"{_fmt(_mean([r['after_tool_changes'] for r in g]))} | {sum(r['status'] == 'optimized' for r in g)}/{len(g)} |")
+        per_plan: dict[tuple, set] = {}
+        for r in sys_rows:
+            per_plan.setdefault((r["track"], r["system"], r["component_id"], r["seed"]), set()).add((r["after_machine_changes"], r["after_tool_changes"]))
+        lines.append(f"| {mode} | plans with a trade-off | {sum(len(v) > 1 for v in per_plan.values())}/{len(per_plan)} | | |")
     invalid = [r for r in rows if not r["valid_after"]]
     lines += ["", f"Plans invalid after optimization: **{len(invalid)}** of {len(rows)} optimizer runs.",
               f"Solver statuses: {dict(sorted(_count(r['solver_status'] for r in rows).items()))}; "

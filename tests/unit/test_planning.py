@@ -338,3 +338,28 @@ def test_multiple_faults_hit_distinct_operations() -> None:
     assert len(touched) == len(set(touched))
     rules = {v.rule_id for v in validate_plan(result.plan, component, CATALOGUE).hard_constraint_violations}
     assert {f["expected_rule"] for f in result.injected_faults} <= rules
+
+
+# --------------------------------------------------------------------------- prompt v2
+
+
+def test_prompt_v1_catalogue_view_is_unchanged_and_v2_adds_preparatory() -> None:
+    v1 = LLMPlanner(ScriptedLLMClient([]), prompt_version="v1").build_messages(comp("demo_bracket_001"), CATALOGUE)
+    v2 = LLMPlanner(ScriptedLLMClient([]), prompt_version="v2").build_messages(comp("demo_bracket_001"), CATALOGUE)
+    assert "preparatory_operation_types" not in v1[1]["content"]  # v1 stays byte-identical to the recorded runs
+    assert '"preparatory_operation_types"' in v2[1]["content"] and "spot_drilling" in v2[1]["content"]
+    assert "NEVER complete it on their own" in v2[0]["content"] and "preparatory" not in v1[0]["content"]
+
+
+def test_prompt_v2_planner_produces_a_plan_and_records_v2_refs() -> None:
+    planner = LLMPlanner(ScriptedLLMClient([ref_plan_json("demo_bracket_001")]), prompt_version="v2")
+    result = planner.generate_plan(comp("demo_bracket_001"), CATALOGUE)
+    assert result.status == "ok"
+    assert result.prompt_refs and all("@v2#" in ref for ref in result.prompt_refs)
+
+
+def test_factory_passes_prompt_version() -> None:
+    from scmpa.planning import make_planner
+
+    assert make_planner("ollama", model="x", prompt_version="v2").prompt_version == "v2"
+    assert make_planner("ollama", model="x").prompt_version == "v1"

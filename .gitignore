@@ -33,3 +33,6 @@ logs/
 
 # Project brief (kept local, not published)
 self_correcting_manufacturing_process_agent_project_brief.pdf
+
+# External datasets imported locally (e.g. FabriCAD, CC BY-NC 4.0): never committed
+data/external/

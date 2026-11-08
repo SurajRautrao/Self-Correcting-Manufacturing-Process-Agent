@@ -191,3 +191,37 @@ def test_optimize_results_on_mock_experiment(tmp_path, monkeypatch) -> None:
     assert all(r["after_cost"] <= r["before_cost"] for r in rows)
     assert {r["system"] for r in rows} >= {"R+opt", "REF+opt"}
     assert "Weight sensitivity" in report.read_text(encoding="utf-8")
+
+
+def _tradeoff_case():
+    """Fixed assignments put pockets and holes on both machines: (1 machine, 3 tool) vs (2 machine, 2 tool) changes."""
+    from scmpa.io import validate_component
+    from scmpa.schemas import ProcessPlan
+
+    comp = validate_component({
+        "component_id": "tradeoff", "material": "aluminium",
+        "features": [{"feature_id": f, "type": t} for f, t in
+                     [("F1", "planar_face"), ("F2", "pocket"), ("F3", "pocket"), ("F4", "blind_hole"), ("F5", "blind_hole")]],
+        "resources": {"machines": [{"machine_id": "M1", "capabilities": ["face_milling", "pocket_milling", "drilling"]},
+                                   {"machine_id": "M2", "capabilities": ["pocket_milling", "drilling"]}],
+                      "tools": [{"tool_id": "T1", "type": "face_mill"}, {"tool_id": "T2", "type": "end_mill"}, {"tool_id": "T3", "type": "drill"}]},
+        "provenance": {"source_type": "synthetic", "source": "test"},
+    }, CATALOGUE, "tradeoff")
+    ops = [("OP1", "face_milling", "F1", "M1", "T1"), ("OP2", "pocket_milling", "F2", "M1", "T2"), ("OP3", "drilling", "F4", "M2", "T3"),
+           ("OP4", "pocket_milling", "F3", "M2", "T2"), ("OP5", "drilling", "F5", "M1", "T3")]
+    plan = ProcessPlan.model_validate({"plan_id": "p", "component_id": "tradeoff", "explanation": "x", "operations": [
+        {"operation_id": i, "type": t, "target_features": [f], "machine_id": m, "tool_id": tl, "duration_min": 1.0} for i, t, f, m, tl in ops]})
+    return comp, plan
+
+
+def test_weights_decide_a_genuine_tradeoff_in_order_only_mode() -> None:
+    comp, plan = _tradeoff_case()
+    machine_first = optimize_sequence(plan, comp, CATALOGUE, OptimizationConfig(machine_change_weight=100, tool_change_weight=1, reassign_resources=False))
+    tool_first = optimize_sequence(plan, comp, CATALOGUE, OptimizationConfig(machine_change_weight=1, tool_change_weight=100, reassign_resources=False))
+    assert (machine_first.after.machine_changes, machine_first.after.tool_changes) == (1, 3)
+    assert (tool_first.after.machine_changes, tool_first.after.tool_changes) == (2, 2)
+    for cfg in (machine_first.config, tool_first.config):
+        assert brute_force_cost(plan, comp, cfg) == (machine_first if cfg.machine_change_weight == 100 else tool_first).after.cost
+    # with reassignment the conflict disappears: everything can run on M1 with grouped tools
+    both = optimize_sequence(plan, comp, CATALOGUE, OptimizationConfig(reassign_resources=True))
+    assert (both.after.machine_changes, both.after.tool_changes) == (0, 2)

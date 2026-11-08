@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "component_id": "synv2_022",
+  "description": "Synthetic prismatic part with 7 features (blind_hole, chamfer, outer_contour, threaded_hole, through_hole).",
+  "material": "steel_s235",
+  "features": [
+    {
+      "feature_id": "F1",
+      "type": "planar_face",
+      "required": true,
+      "description": "Datum face"
+    },
+    {
+      "feature_id": "F2",
+      "type": "threaded_hole",
+      "required": true,
+      "description": "threaded hole",
+      "diameter_mm": 8.0,
+      "depth_mm": 11.0,
+      "required_operation_types": [
+        "drilling",
+        "tapping"
+      ]
+    },
+    {
+      "feature_id": "F3",
+      "type": "blind_hole",
+      "required": true,
+      "description": "blind hole",
+      "diameter_mm": 4.0,
+      "depth_mm": 13.0
+    },
+    {
+      "feature_id": "F4",
+      "type": "blind_hole",
+      "required": true,
+      "description": "blind hole",
+      "diameter_mm": 5.0,
+      "depth_mm": 12.8
+    },
+    {
+      "feature_id": "F5",
+      "type": "through_hole",
+      "required": true,
+      "description": "through hole",
+      "diameter_mm": 6.0
+    },
+    {
+      "feature_id": "F6",
+      "type": "outer_contour",
+      "required": true,
+      "description": "outer contour"
+    },
+    {
+      "feature_id": "F7",
+      "type": "chamfer",
+      "required": false,
+      "description": "chamfer",
+      "width_mm": 1.5
+    }
+  ],
+  "resources": {
+    "machines": [
+      {
+        "machine_id": "M1",
+        "description": "Drill-tap unit",
+        "capabilities": [
+          "spot_drilling",
+          "drilling",
+          "tapping"
+        ]
+      },
+      {
+        "machine_id": "M2",
+        "description": "Slotting and chamfering cell",
+        "capabilities": [
+          "slot_milling",
+          "chamfering",
+          "spot_drilling"
+        ]
+      },
+      {
+        "machine_id": "M3",
+        "description": "Milling centre (no drilling)",
+        "capabilities": [
+          "face_milling",
+          "contour_milling",
+          "pocket_milling",
+          "slot_milling",
+          "chamfering"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "T1",
+        "type": "chamfer_mill"
+      },
+      {
+        "tool_id": "T2",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T3",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T4",
+        "type": "end_mill"
+      },
+      {
+        "tool_id": "T5",
+        "type": "face_mill"
+      },
+      {
+        "tool_id": "T6",
+        "type": "tap"
+      },
+      {
+        "tool_id": "T7",
+        "type": "drill"
+      },
+      {
+        "tool_id": "T8",
+        "type": "reamer"
+      },
+      {
+        "tool_id": "T9",
+        "type": "face_mill"
+      }
+    ]
+  },
+  "precedence_constraints": [
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F2"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F2",
+        "operation_type": "drilling"
+      },
+      "after": {
+        "feature_id": "F2",
+        "operation_type": "tapping"
+      },
+      "rationale": "Tapping requires a pre-drilled hole."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F3"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F4"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F5"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F6"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F1"
+      },
+      "after": {
+        "feature_id": "F7"
+      },
+      "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it."
+    },
+    {
+      "before": {
+        "feature_id": "F6"
+      },
+      "after": {
+        "feature_id": "F7"
+      },
+      "rationale": "Demo assumption: the chamfer is on the contour edge."
+    }
+  ],
+  "assumptions": [
+    "Synthetic component generated for software evaluation; not derived from real geometry.",
+    "Tool size, tool access, collisions and setups are not modelled.",
+    "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+  ],
+  "provenance": {
+    "source_type": "synthetic",
+    "source": "scmpa.evaluation.synthetic v2.0",
+    "notes": "benchmark scmpa_synthetic_v2; index 22"
+  }
+}
