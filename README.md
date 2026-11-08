@@ -46,9 +46,17 @@ Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible b
 | Repair notes claiming changes that were not made | 20% of calls | 2% of calls |
 | Optimizer: machine + tool change cost (B3), median cut | 42% | 48% |
 
+On the harder benchmark v2 (specialised machines, 6–10 features), a larger model of the same family shows how much is size:
+
+| Benchmark v2 | gemma3:4b | qwen3.5:9b | gemma3:27b |
+|---|---|---|---|
+| LLM alone: invalid plans (B0) | 83% | 65% | 38% |
+| With repair loop: correct outcome (B2) | 58% | 94% | 98% |
+| Injected faults repaired (B2, corruption track) | 51% | 95% | 92% |
+
 - **H1:** supported. Detection alone removes every invalid plan from the accepted output.
-- **H2:** supported, and strongly model-dependent.
-- **H3:** supported for the declared metric (change counts, not time). The optimizer never broke a hard constraint in 5,216 runs. On benchmark v2, 17 of 137 LLM plans have a genuine machine/tool trade-off when assignments are fixed, and the weights steer the result as intended.
+- **H2:** supported, and strongly model-dependent. gemma3:4b's weakness is mainly size: gemma3:27b plans better than qwen3.5:9b and repairs as well, and the loop still fixes 8 of its 9 invalid feasible plans.
+- **H3:** supported for the declared metric (change counts, not time). The optimizer never broke a hard constraint in 6,776 runs. On benchmark v2, 23 of 241 LLM plans have a proven machine/tool trade-off when assignments are fixed, and the weights steer the result as intended.
 - **H4:** supported. The computed diff exposed every false repair claim.
 
 All data is synthetic, so these numbers describe software behaviour on a toy benchmark, not industrial performance.

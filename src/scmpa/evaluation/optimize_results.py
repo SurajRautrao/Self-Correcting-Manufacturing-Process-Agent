@@ -156,7 +156,9 @@ def render(exp_id: str, rows: list[dict[str, Any]], summary: list[dict[str, Any]
             f"{_fmt(s['median_cost_reduction'], '{:.0%}')} | {_fmt(s['mean_moved'], '{:.1f}')} | {_fmt(s['mean_reassigned'], '{:.1f}')} |"
         )
     lines += ["", "## Weight sensitivity (all accepted LLM-system plans: B1+opt and B3)", "",
-              "A plan has a *trade-off* if its optimal (machine changes, tool changes) differs between weight settings.", "",
+              "A plan has a *trade-off* if its optimal (machine changes, tool changes) differs between weight settings. "
+              "Only those solved to proven optimality at every weight are genuine; the rest may differ because a solve hit its time limit. "
+              "B1+opt and B3 share the plans that were valid without repair, so such a plan is counted once per system.", "",
               "| Mode | Machine : tool weight | Machine changes after | Tool changes after | Plans improved |", "|---|---|---|---|---|"]
     for mode in MODES:
         sys_rows = [r for r in rows if r["mode"] == mode and r["system"] in ("B1+opt", "B3")]
@@ -168,9 +170,16 @@ def render(exp_id: str, rows: list[dict[str, Any]], summary: list[dict[str, Any]
             lines.append(f"| {mode} | {wm} : {wt} | {_fmt(_mean([r['after_machine_changes'] for r in g]))} | "
                          f"{_fmt(_mean([r['after_tool_changes'] for r in g]))} | {sum(r['status'] == 'optimized' for r in g)}/{len(g)} |")
         per_plan: dict[tuple, set] = {}
+        proven: dict[tuple, bool] = {}
         for r in sys_rows:
-            per_plan.setdefault((r["track"], r["system"], r["component_id"], r["seed"]), set()).add((r["after_machine_changes"], r["after_tool_changes"]))
-        lines.append(f"| {mode} | plans with a trade-off | {sum(len(v) > 1 for v in per_plan.values())}/{len(per_plan)} | | |")
+            key = (r["track"], r["system"], r["component_id"], r["seed"])
+            per_plan.setdefault(key, set()).add((r["after_machine_changes"], r["after_tool_changes"]))
+            proven[key] = proven.get(key, True) and r["solver_status"] == "OPTIMAL"
+        tradeoffs = [k for k, v in per_plan.items() if len(v) > 1]
+        lines.append(f"| {mode} | plans with a trade-off | {len(tradeoffs)}/{len(per_plan)} | | |")
+        # A difference between weight settings is only a genuine trade-off if every setting was solved to
+        # proven optimality; otherwise a time-limited (FEASIBLE) solve can differ for no structural reason.
+        lines.append(f"| {mode} | … of which proven optimal at every weight | {sum(proven[k] for k in tradeoffs)}/{len(per_plan)} | | |")
     invalid = [r for r in rows if not r["valid_after"]]
     lines += ["", f"Plans invalid after optimization: **{len(invalid)}** of {len(rows)} optimizer runs.",
               f"Solver statuses: {dict(sorted(_count(r['solver_status'] for r in rows).items()))}; "

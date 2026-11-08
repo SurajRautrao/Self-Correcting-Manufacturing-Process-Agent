@@ -224,14 +224,50 @@ Same procedure as M6 (`optimize_results` on both experiments). Full tables are i
 
 - **Hard constraints held again:** 0 invalid plans in 2,552 optimizer runs. 2,478 were proven optimal; the other 74 stopped at the deterministic time limit with a feasible, improved plan. The parts are larger (6–10 features), which explains the extra time limits and the ~40 min run.
 - **The gain is larger than on benchmark v1:** median 47–70%, against about 42–64%. Larger plans with more machines leave more changes to remove.
-- **Weight trade-offs now appear, but only with fixed assignments.** In reorder-only mode, 17 of 137 accepted LLM plans (qwen 15/90, gemma 2/47) have a different optimum under different weights; on benchmark v1 it was 0 of 151. The weights move the result in the expected direction: for qwen, 1:10 gives 2.59 machine and 4.99 tool changes, and 10:1 gives 2.38 and 5.17. With reassignment, only 1 of 137 plans has a trade-off, because the optimizer can still regroup operations by machine.
+- **Weight trade-offs now appear, but only with fixed assignments.** In reorder-only mode, 12 of 137 accepted LLM plans (qwen 10/90, gemma 2/47) have a different proven optimum under different weights; on benchmark v1 it was 0 of 151. A further 5 qwen plans differ only because a solve hit its time limit, so they are not counted. The weights move the result in the expected direction: for qwen, 1:10 gives 2.59 machine and 4.99 tool changes, and 10:1 gives 2.38 and 5.17. With reassignment, no plan has a proven trade-off (1 differs at the time limit), because the optimizer can still regroup operations by machine.
+- *Counting note:* B1+opt and B3 share the plans that were valid without repair, so `optimization.md` counts such a plan once per system. The report now also lists how many trade-offs are proven at every weight.
 - So the weighting matters when the shop fixes the machine for each operation, and hardly at all when the optimizer may choose. That confirms the earlier explanation on real model output rather than only on a constructed case.
 
 ### Hypotheses after Runs 4–5
 
 - **H1, H2:** still supported on the harder benchmark. No invalid plan is accepted, and repair beats validation-only for both models with no losses. The size of the repair effect depends strongly on the model (qwen 19/22 vs gemma 11/31 repaired generated plans).
-- **H3:** supported, and the weighting is now tested on LLM plans: trade-offs exist in 12% of plans when assignments are fixed and the weights steer the result as intended.
+- **H3:** supported, and the weighting is now tested on LLM plans: proven trade-offs exist in about 9% of plans when assignments are fixed and the weights steer the result as intended.
 - **Noise:** qwen's B2 results reproduce (3/87 flips); gemma's do not (11/39).
+
+## Run 6: model size (`llm_test_full_gemma3-27b_bench-v2`)
+
+gemma3:4b and qwen3.5:9b differ in both size and family. gemma3:27b keeps gemma's family and changes only the size. Same benchmark v2 test split, prompt, seeds and loop as Run 5; the corruption inputs are identical for all three models (paired).
+
+| Benchmark v2, test | gemma3:4b | qwen3.5:9b | **gemma3:27b** |
+|---|---|---|---|
+| Generation: B0 hard-violation rate | 83% (40/48) | 65% (31/48) | **38%** (18/48) |
+| Feasible parts: valid initial plans | 8 / 39 | 17 / 39 | **30 / 39** |
+| Feasible parts: mean initial hard violations | 4.44 | 2.79 | **0.87** |
+| Parts valid under all 3 seeds | 0 / 13 | 1 / 13 | **9 / 13** |
+| Generation: B0 coverage | 0.75 | 0.97 | **1.00** |
+| Generation: B2 correct outcome | 58% (28/48) | 94% (45/48) | **98%** (47/48) |
+| Corruption: B2 repair success | 51% (20/39) | **95%** (37/39) | 92% (36/39) |
+| B2 stops on a repeated plan (both tracks) | 26 | 1 | 1 |
+| Median planner call | 7.8 s | 8.2 s | 17.2 s |
+
+- **Size fixes gemma's planner.** The 27b model leaves no feature uncovered (R6: 0 violations, against 127 for gemma3:4b) and produces a valid plan on its own for 30 of 39 feasible cases. Its remaining errors are mostly wrong tool (R5, 14 plans). It is the best planner of the three. Paired against qwen it has 15 valid initial plans that qwen lacks and 2 the other way (p = 0.002); against gemma3:4b, 23 to 1 (p < 0.001).
+- **As a repairer it matches qwen, not exceeds it.** On the paired corruption inputs, gemma3:27b and qwen differ in only 3 cases (2 for qwen, 1 for gemma3:27b, p = 1.0). Against gemma3:4b it repairs 16 cases more and none fewer (p < 0.001). Its three corruption failures are all precedence (R9) on seed 2, which is the weak spot of every model.
+- **The loop still adds value on top of a strong planner.** B2 beats B1 by 8 to 0 (4 components, p = 0.008), and B2 ends with 47 of 48 correct outcomes. The single miss is a tool-compatibility error left after 3 rounds (synv2_024 s2).
+- **So the gap between gemma3:4b and qwen was mainly size, not family.** At 27b, gemma reaches qwen's repair level and exceeds its planning level. Planning benefits from size more than repair does: qwen3.5:9b already repairs almost at the ceiling.
+- **Cost:** the planner call takes about twice as long as with the smaller models on this cluster. As before, latency comes from different nodes and is only indicative.
+- **Consequence for the system design:** a stronger planner reduces the work left to the loop (18 initially invalid cases instead of 31–40), but it does not remove the need for it. Validation still catches 9 invalid feasible plans, and no checked system accepts an invalid plan.
+
+### Optimizer on gemma3:27b's plans
+
+| Set (`order+resources`, default weights) | Plans | Valid after | Machine changes | Tool changes | Median cost reduction |
+|---|---|---|---|---|---|
+| gemma3:27b B3, generation | 38 | 38/38 | 6.37 → 1.74 | 10.18 → 4.55 | 67% |
+| gemma3:27b B3, corruption | 36 | 36/36 | 6.31 → 1.61 | 8.89 → 4.19 | 69% |
+
+- **0 invalid plans in 1,560 optimizer runs** (1,489 proven optimal; the rest hit the deterministic time limit with an improved, valid plan).
+- **gemma3:27b plans more operations and sequences them no better.** Its generated plans start at 6.4 machine and 10.2 tool changes, against 5.1 and 9.6 for qwen. Its valid plans are complete, not change-aware, so the optimizer's gain is largest here: 67% median.
+- **Trade-offs:** in reorder-only mode, 11 of 104 plans have a proven trade-off (16 differ in total). With reassignment, 1 plan does (synv2_012 s0, counted under both B1+opt and B3): weights 10:1 and 100:1 give 1 machine and 6 tool changes, and 1:1 and 1:10 give 2 and 5. This is the first genuine trade-off with reassignment in LLM output. The other 8 apparent ones are time-limit artefacts.
+- Across all three models on benchmark v2: 23 of 241 plans have a proven trade-off with fixed assignments, and 2 (one distinct plan) with reassignment.
 
 ## Pending
 

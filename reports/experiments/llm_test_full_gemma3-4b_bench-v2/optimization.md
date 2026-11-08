@@ -21,7 +21,7 @@ Improvement is non-negative by construction, because the input plan is kept when
 
 ## Weight sensitivity (all accepted LLM-system plans: B1+opt and B3)
 
-A plan has a *trade-off* if its optimal (machine changes, tool changes) differs between weight settings.
+A plan has a *trade-off* if its optimal (machine changes, tool changes) differs between weight settings. Only those solved to proven optimality at every weight are genuine; the rest may differ because a solve hit its time limit. B1+opt and B3 share the plans that were valid without repair, so such a plan is counted once per system.
 
 | Mode | Machine : tool weight | Machine changes after | Tool changes after | Plans improved |
 |---|---|---|---|---|
@@ -31,12 +31,14 @@ A plan has a *trade-off* if its optimal (machine changes, tool changes) differs 
 | order | 10 : 1 | 2.60 | 4.66 | 42/47 |
 | order | 100 : 1 | 2.60 | 4.66 | 42/47 |
 | order | plans with a trade-off | 2/47 | | |
+| order | … of which proven optimal at every weight | 2/47 | | |
 | order+resources | (input plans) | 5.04 | 7.79 | – |
 | order+resources | 1 : 1 | 1.57 | 4.57 | 46/47 |
 | order+resources | 1 : 10 | 1.57 | 4.57 | 46/47 |
 | order+resources | 10 : 1 | 1.57 | 4.57 | 46/47 |
 | order+resources | 100 : 1 | 1.57 | 4.57 | 46/47 |
 | order+resources | plans with a trade-off | 0/47 | | |
+| order+resources | … of which proven optimal at every weight | 0/47 | | |
 
 Plans invalid after optimization: **0** of 1104 optimizer runs.
 Solver statuses: {'FEASIBLE': 25, 'OPTIMAL': 1079}; tie-break statuses: {'FEASIBLE': 554, 'OPTIMAL': 550}.
