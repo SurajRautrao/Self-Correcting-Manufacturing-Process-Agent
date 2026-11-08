@@ -1,0 +1,13 @@
+{
+  "experiment_id": "llm_test_full_gemma3-27b_bench-v2",
+  "description": "Model-size check: gemma3:27b on benchmark v2, test split, prompt v1. Same family as gemma3:4b and same settings as llm_test_full_gemma3-4b_bench-v2 and llm_test_full_qwen3.5-9b_bench-v2, so it separates model size from model family. B0/B1/B2 (+R), both tracks, 3 seeds at temperature 0.7.",
+  "benchmark_dir": "data/synthetic/benchmark_v2",
+  "split": "test",
+  "seeds": [0, 1, 2],
+  "tracks": ["generation", "corruption"],
+  "systems": ["B0", "B1", "B2", "R"],
+  "planner": {"provider": "ollama", "model": "gemma3:27b", "temperature": 0.7},
+  "llm_repair": {"provider": "ollama", "model": "gemma3:27b", "temperature": 0.7},
+  "max_repairs": 3,
+  "faults_per_case": 2
+}
