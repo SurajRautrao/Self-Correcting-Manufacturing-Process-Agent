@@ -63,8 +63,36 @@ This run uses the same 48 + 39 initial plans as Run 1, replayed with `initial_pl
 
 Corruption is unchanged: R 39/39, B1 0/39. On the dev split (`rescore_dev_gemma3-4b_v1.2`), all numbers match the dev pilot, so the fix caused no regressions there. No accepted v1.2 plan has a required hole that only gets spot drilling.
 
+## Run 2: `llm_test_full_gemma3-4b_v1.2` (rule set v1.2, with B2)
+
+This run replays Run 1's initial plans, so B0, B1 and R match the re-score above exactly. Only the B2 repair calls are new.
+
+| B2 + LLM repair | Run 1 (v1.1) | Run 2 (v1.2) |
+|---|---|---|
+| Generation: correct outcome | 50% (24/48) | 56% (27/48) |
+| Generation: valid after repair (feasible) | 5 | 8 |
+| Generation: final plan worse than the initial one | 4 | 0 |
+| Generation: paired vs B1 (wins / losses) | 5 / 0, p = 0.06 | 8 / 0, p = 0.008 |
+| Corruption: repair success | 74% (29/39) | 62% (24/39) |
+| Median repair-call latency | 3.8 s | 21.1 s (slower hardware, see below) |
+
+- **The v1.2 fix is a real effect.** In Run 1, syn_006 and syn_019 (6 cases) went to human review without a repair attempt. In Run 2, B2 repaired all 6 and they ended valid. syn_003 (3 cases) is now attempted but still fails (repeated plan).
+- **Best-candidate selection works:** no B2 case ends worse than it started.
+- **B2 beats B1 consistently, but on few parts.** Case-level significance (p = 0.008) overstates the evidence. All 8 wins come from 3 components (syn_006, syn_009, syn_019), so the effective support is 3 parts.
+- **Run-to-run noise is large.** The corruption track's inputs and validator findings are identical in both runs (39/39), and so are the prompts. Yet 11 of 39 B2 outcomes flipped: 8 valid only in Run 1 and 3 valid only in Run 2 (McNemar p = 0.23, not significant). The drop from 74% to 62% is therefore noise, not an effect of v1.2. The 3 generation cases lost in Run 2 (syn_009 s2, syn_022 s1/s2) are noise too. They include 1 new `repair_output_invalid`: gemma produced a duplicate operation ID twice.
+  - **Consequence:** one B2 run cannot resolve differences of about ±5 cases. Report B2 as the range over runs: corruption 62–74%, pooled 68% (53/78).
+  - Seeds at temperature 0.7 do not capture this variation. The seed varies the plan, while this noise comes from re-running the same repair prompt, here on different hardware.
+- **Latency is not comparable between the runs.** Output speed fell from about 200 to about 36 tokens/s with a similar number of tokens, which points to a slower or shared GPU, or a model partly offloaded to the CPU. Check the `ollama ps` line in the job log. Validity results do not depend on speed.
+- **Coverage is gemma's main weakness under v1.2.** R6 now hits 35 of 48 initial plans (92 violations). gemma often gives a hole only a spot drill.
+
+### Hypotheses after Runs 1–2
+
+- **H1 (constraint feedback lowers violations):** supported for detection: invalid plans accepted fall from 79% to 0%. For the violation rate it is moderate: 79% falls to 62–69% for B2, while R, the ceiling of what the feedback allows, reaches 19%.
+- **H2 (the bounded loop repairs a measurable share):** supported. B2 repairs 62–74% of injected faults and 8 of 29 invalid feasible generated plans (v1.2). It never ends worse than it started, and it never made a correct B1 outcome wrong.
+- **H3 (sequencing optimizer):** not tested (M6).
+- **H4 (auditability):** qualitative. Every repair has a computed diff and a stop reason. Repeated plans (15 generation cases in Run 2) and invalid repair outputs are visible as such.
+
 ## Pending
 
-- `llm_test_full_gemma3-4b_v1.2`: B2 under v1.2 on the replayed plans. It needs a GPU (Slurm).
-- `llm_test_full_qwen3.5-9b`: the comparison model, run under v1.2.
+- `llm_test_full_qwen3.5-9b`: the comparison model, run under v1.2. It also gives a third estimate of B2 noise if it is run twice.
 - H3 (sequencing optimizer, M6) has not been tested.
