@@ -1,0 +1,168 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_001_plan_v0",
+    "component_id": "synv2_001",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 30.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "reaming",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 45.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 20.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 30.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 20.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "chamfering",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T2",
+        "duration_min": 30.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "contour_milling",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T5",
+        "duration_min": 90.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 20.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP7",
+        "OP8"
+      ],
+      [
+        "OP8",
+        "OP9"
+      ]
+    ],
+    "explanation": "This plan first mills the outer contour (F8) and then mills the chamfer (F7).  Drilling of holes is sequenced to minimize tool changes. Reaming is performed on F2 after drilling.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "No cutting data available; durations are rough estimates."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:4b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"synv2_001\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 30.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 45.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 20.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 30.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 20.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 30.0\n  },\n  {\n    \"operation_id\": \"OP8\",\n    \"type\": \"contour_milling\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 90.0\n  },\n  {\n    \"operation_id\": \"OP9\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F9\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 20.0\n  }\n], \"precedence\": [\n  [\n    \"OP1\",\n    \"OP2\"\n  ],\n  [\n    \"OP2\",\n    \"OP3\"\n  ],\n  [\n    \"OP1\",\n    \"OP4\"\n  ],\n  [\n    \"OP1\",\n    \"OP5\"\n  ],\n  [\n    \"OP1\",\n    \"OP6\"\n  ],\n  [\n    \"OP7\",\n    \"OP8\"\n  ],\n  [\n    \"OP8\",\n    \"OP9\"\n  ]\n], \"explanation\": \"This plan first mills the outer contour (F8) and then mills the chamfer (F7).  Drilling of holes is sequenced to minimize tool changes. Reaming is performed on F2 after drilling.\",\n\"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n  ],\n  \"uncertainties\": [\n    \"No cutting data available; durations are rough estimates.\"\n  ]\n}",
+      "issues": [],
+      "latency_s": 7.294908193871379,
+      "prompt_tokens": 3038,
+      "completion_tokens": 927
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

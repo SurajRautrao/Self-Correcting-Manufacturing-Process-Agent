@@ -1,0 +1,158 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_004_plan_v0",
+    "component_id": "synv2_004",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 20.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 15.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "slot_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 120.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "contour_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 90.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 15.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 10.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "chamfering",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 30.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ]
+    ],
+    "explanation": "This sequence first faces the datum (F1) then drills the blind holes (F2, F3, F6, F7), slots (F4) and contours (F5). Finally, it chamfers the final feature (F8).",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "The durations are very rough estimates; actual cutting times will vary greatly.",
+      "The specific toolpaths have not been defined; optimal toolpaths would require more detailed analysis."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:4b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"synv2_004\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 20.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 15.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"slot_milling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T7\",\n    \"duration_min\": 120.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"contour_milling\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 90.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 15.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 10.0\n  },\n  {\n    \"operation_id\": \"OP8\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F8\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 30.0\n  }\n], \"precedence\": [\n  [\n    \"OP1\",\n    \"OP2\"\n  ],\n  [\n    \"OP1\",\n    \"OP3\"\n  ],\n  [\n    \"OP1\",\n    \"OP4\"\n  ],\n  [\n    \"OP1\",\n    \"OP5\"\n  ],\n  [\n    \"OP1\",\n    \"OP6\"\n  ],\n  [\n    \"OP1\",\n    \"OP7\"\n  ],\n  [\n    \"OP1\",\n    \"OP8\"\n  ]\n], \"explanation\": \"This sequence first faces the datum (F1) then drills the blind holes (F2, F3, F6, F7), slots (F4) and contours (F5). Finally, it chamfers the final feature (F8).\", \"assumptions\": [\n  \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n  \"Tool size, tool access, collisions and setups are not modelled.\",\n  \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n], \"uncertainties\": [\n  \"The durations are very rough estimates; actual cutting times will vary greatly.\",\n  \"The specific toolpaths have not been defined; optimal toolpaths would require more detailed analysis.\"\n]}",
+      "issues": [],
+      "latency_s": 6.771476347930729,
+      "prompt_tokens": 2830,
+      "completion_tokens": 886
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

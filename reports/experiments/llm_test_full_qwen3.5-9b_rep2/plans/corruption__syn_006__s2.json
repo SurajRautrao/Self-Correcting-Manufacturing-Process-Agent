@@ -1,0 +1,100 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_006_corrupted_s2",
+    "component_id": "syn_006",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T4",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M_UNKNOWN",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": -1.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ]
+    ],
+    "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "planner": "corruption",
+  "model": null,
+  "prompt_refs": [],
+  "attempts": [],
+  "normalization_notes": [],
+  "injected_faults": [
+    {
+      "kind": "invalid_duration",
+      "operation_id": "OP4",
+      "operations": [
+        "OP4"
+      ],
+      "expected_rule": "R11_DURATION",
+      "detail": "duration -> -1.0"
+    },
+    {
+      "kind": "unknown_machine",
+      "operation_id": "OP3",
+      "operations": [
+        "OP3"
+      ],
+      "expected_rule": "R2_MACHINE_EXISTS",
+      "detail": "machine -> M_UNKNOWN"
+    }
+  ],
+  "error": null
+}

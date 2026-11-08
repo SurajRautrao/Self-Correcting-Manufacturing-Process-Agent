@@ -1,0 +1,625 @@
+{
+  "run_id": "generation__validate_only__syn_016__s1",
+  "component_id": "syn_016",
+  "started_at": "2026-11-08T16:25:36+00:00",
+  "duration_s": 0.0,
+  "planner": "llm",
+  "planner_model": "gemma3:4b",
+  "repair_agent": null,
+  "max_repairs": 0,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": null
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "llm",
+    "model": "gemma3:4b",
+    "prompt_refs": [
+      "planner_system@v1#86ada0ca7d3bb324",
+      "planner_user@v1#723b81a7db1f3554"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "raw_output": "{\"component_id\": \"syn_016\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T5\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 4.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"spot_drilling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M4\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 4.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"slot_milling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 12.0\n  }\n], \"precedence\": [\n  [\"OP1\", \"OP2\"],\n  [\"OP2\", \"OP3\"],\n  [\"OP3\", \"OP4\"],\n  [\"OP4\", \"OP5\"],\n  [\"OP5\", \"OP6\"]\n], \"explanation\": \"This plan first faces the datum, then drills and reams the two through-holes, followed by slot milling.\", \"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n  ], \"uncertainties\": [\n    \"No collision detection is performed; tool access is assumed.\"\n  ]}",
+        "issues": [],
+        "latency_s": 5.256691866088659,
+        "prompt_tokens": 2327,
+        "completion_tokens": 610
+      }
+    ],
+    "normalization_notes": [],
+    "injected_faults": [],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_016_plan_v0",
+        "component_id": "syn_016",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T5",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "spot_drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T2",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "reaming",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "spot_drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T2",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "reaming",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "slot_milling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T4",
+            "duration_min": 12.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP2",
+            "OP3"
+          ],
+          [
+            "OP3",
+            "OP4"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ],
+          [
+            "OP5",
+            "OP6"
+          ]
+        ],
+        "explanation": "This plan first faces the datum, then drills and reams the two through-holes, followed by slot milling.",
+        "assumptions": [
+          "Synthetic component generated for software evaluation; not derived from real geometry.",
+          "Tool size, tool access, collisions and setups are not modelled.",
+          "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+        ],
+        "uncertainties": [
+          "No collision detection is performed; tool access is assumed."
+        ],
+        "provenance": null
+      },
+      "plan_hash": "ead5d136b7a14fd1",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T2' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP2",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T2",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP2 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T2' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T2",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP4 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F2' is missing operation(s) ['drilling'].",
+            "operation_id": null,
+            "feature_id": "F2",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "drilling"
+              ],
+              "applied_operation_types": [
+                "reaming",
+                "spot_drilling"
+              ],
+              "resource_options": {
+                "drilling": [
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M4",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M4",
+                    "tool_id": "T3"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F2: drilling on M1 with T2.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F3' is missing operation(s) ['drilling'].",
+            "operation_id": null,
+            "feature_id": "F3",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "drilling"
+              ],
+              "applied_operation_types": [
+                "reaming",
+                "spot_drilling"
+              ],
+              "resource_options": {
+                "drilling": [
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M4",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M4",
+                    "tool_id": "T3"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F3: drilling on M1 with T2.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 4,
+          "covered_features": 2,
+          "missing_features": [
+            "F2",
+            "F3"
+          ]
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "4 hard violation(s)"
+    },
+    {
+      "state": "NEEDS_HUMAN_REVIEW",
+      "iteration": 0,
+      "detail": "0 repair(s) used"
+    }
+  ],
+  "final_status": "NEEDS_HUMAN_REVIEW",
+  "stop_reason": "max_repairs_reached",
+  "stop_detail": "0 repair(s) used",
+  "terminal_repair": null,
+  "final_iteration": 0,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_016_plan_v0",
+    "component_id": "syn_016",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T5",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "spot_drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T2",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "reaming",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "spot_drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T2",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "reaming",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "slot_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 12.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP3",
+        "OP4"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ],
+      [
+        "OP5",
+        "OP6"
+      ]
+    ],
+    "explanation": "This plan first faces the datum, then drills and reams the two through-holes, followed by slot milling.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "No collision detection is performed; tool access is assumed."
+    ],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": false,
+    "hard_constraint_violations": [
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T2' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP2",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T2",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP2 is not needed for coverage: remove it.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T2' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP4",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T2",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP4 is not needed for coverage: remove it.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Required feature 'F2' is missing operation(s) ['drilling'].",
+        "operation_id": null,
+        "feature_id": "F2",
+        "evidence": {
+          "feature_type": "through_hole",
+          "requirement": "all_of",
+          "missing_operation_types": [
+            "drilling"
+          ],
+          "applied_operation_types": [
+            "reaming",
+            "spot_drilling"
+          ],
+          "resource_options": {
+            "drilling": [
+              {
+                "machine_id": "M1",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M1",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M4",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M4",
+                "tool_id": "T3"
+              }
+            ]
+          }
+        },
+        "repair_hint": "Add operation(s) targeting F2: drilling on M1 with T2.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Required feature 'F3' is missing operation(s) ['drilling'].",
+        "operation_id": null,
+        "feature_id": "F3",
+        "evidence": {
+          "feature_type": "through_hole",
+          "requirement": "all_of",
+          "missing_operation_types": [
+            "drilling"
+          ],
+          "applied_operation_types": [
+            "reaming",
+            "spot_drilling"
+          ],
+          "resource_options": {
+            "drilling": [
+              {
+                "machine_id": "M1",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M1",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M4",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M4",
+                "tool_id": "T3"
+              }
+            ]
+          }
+        },
+        "repair_hint": "Add operation(s) targeting F3: drilling on M1 with T2.",
+        "repairable": true
+      }
+    ],
+    "warnings": [],
+    "coverage": {
+      "required_features": 4,
+      "covered_features": 2,
+      "missing_features": [
+        "F2",
+        "F3"
+      ]
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

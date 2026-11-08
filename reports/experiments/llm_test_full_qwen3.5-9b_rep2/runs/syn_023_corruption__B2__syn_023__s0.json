@@ -1,0 +1,577 @@
+{
+  "run_id": "corruption__B2__syn_023__s0",
+  "component_id": "syn_023",
+  "started_at": "2026-11-08T17:50:16+00:00",
+  "duration_s": 6.63,
+  "planner": "corruption",
+  "planner_model": null,
+  "repair_agent": "llm",
+  "max_repairs": 3,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": "qwen3.5:9b"
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "corruption",
+    "model": null,
+    "prompt_refs": [],
+    "attempts": [],
+    "normalization_notes": [],
+    "injected_faults": [
+      {
+        "kind": "swap_precedence",
+        "operation_id": "OP5",
+        "operations": [
+          "OP4",
+          "OP5"
+        ],
+        "expected_rule": "R9_PRECEDENCE_ORDER",
+        "detail": "swapped OP4 and OP5 in sequence"
+      },
+      {
+        "kind": "unknown_operation_type",
+        "operation_id": "OP1",
+        "operations": [
+          "OP1"
+        ],
+        "expected_rule": "R1_OPERATION_TYPE",
+        "detail": "type -> laser_cutting"
+      }
+    ],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_023_corrupted_s0",
+        "component_id": "syn_023",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "laser_cutting",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "contour_milling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "slot_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T2",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T5",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ]
+        ],
+        "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "616cbb5c5646d21b",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R1_OPERATION_TYPE",
+            "severity": "hard",
+            "message": "Operation type 'laser_cutting' is not in the operation catalogue.",
+            "operation_id": "OP1",
+            "feature_id": null,
+            "evidence": {
+              "operation_type": "laser_cutting",
+              "allowed_operation_types": [
+                "face_milling",
+                "contour_milling",
+                "pocket_milling",
+                "slot_milling",
+                "spot_drilling",
+                "drilling",
+                "reaming",
+                "tapping",
+                "chamfering"
+              ]
+            },
+            "repair_hint": "Replace 'laser_cutting' with a catalogue operation suitable for the target feature(s), e.g. ['face_milling'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F1' is not addressed by any suitable operation (one of ['face_milling']).",
+            "operation_id": null,
+            "feature_id": "F1",
+            "evidence": {
+              "feature_type": "planar_face",
+              "requirement": "any_of",
+              "missing_operation_types": [
+                "face_milling"
+              ],
+              "applied_operation_types": [],
+              "resource_options": {
+                "face_milling": [
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T4"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F1: face_milling on M1 with T3.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP4 -> OP5 is violated: OP5 is sequenced before OP4.",
+            "operation_id": "OP5",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 4,
+              "edge": [
+                "OP4",
+                "OP5"
+              ],
+              "positions": {
+                "OP4": 4,
+                "OP5": 3
+              }
+            },
+            "repair_hint": "Move OP4 before OP5 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Component constraint violated: drilling on F4 must precede tapping on F4, but OP5 is sequenced before OP4.",
+            "operation_id": "OP5",
+            "feature_id": "F4",
+            "evidence": {
+              "source": "component_precedence_constraint",
+              "constraint_index": 3,
+              "before": {
+                "feature_id": "F4",
+                "operation_type": "drilling"
+              },
+              "after": {
+                "feature_id": "F4",
+                "operation_type": "tapping"
+              },
+              "rationale": "Tapping requires a pre-drilled hole.",
+              "before_operation": "OP4",
+              "after_operation": "OP5",
+              "positions": {
+                "OP4": 4,
+                "OP5": 3
+              }
+            },
+            "repair_hint": "Move OP4 before OP5.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 4,
+          "covered_features": 3,
+          "missing_features": [
+            "F1"
+          ]
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    },
+    {
+      "index": 1,
+      "source": "repair",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_023_plan_v1",
+        "component_id": "syn_023",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "contour_milling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "slot_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T5",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T2",
+            "duration_min": 1.5,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ]
+        ],
+        "explanation": "Revised plan replaces invalid 'laser_cutting' with 'face_milling' for F1 and reorders operations so drilling (OP4) precedes tapping (OP5) as required by precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "c63c0aa0c32cfe09",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": true,
+        "hard_constraint_violations": [],
+        "warnings": [],
+        "coverage": {
+          "required_features": 4,
+          "covered_features": 4,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": {
+        "status": "repaired",
+        "agent": "llm",
+        "model": "qwen3.5:9b",
+        "changes": [
+          "Replaced operation OP1 type 'laser_cutting' with 'face_milling' to match the catalogue.",
+          "Changed tool_id for OP1 from T3 to T4 (a face_mill compatible with M1) or kept T3 if valid; checking resources: T3 and T4 are both face_mills. The original used T3. I will keep T3 as it is a valid face_mill in resources, but the rule says 'Replace laser_cutting with a catalogue operation'. The tool was T3 (face_mill). Wait, the violation R1 only mentions operation type. However, OP1 originally targeted F1 with T3. Is T3 compatible? Yes, T3 is a face_mill. But let's check the violation R6: 'Required feature F1 is not addressed by any suitable operation... applied_operation_types: []'. This implies after fixing R1, we must ensure it addresses F1. The original OP1 targeted F1. So changing type to 'face_milling' should satisfy R6. However, the tool T3 is listed as 'face_mill' in resources. So OP1 with T3 and face_milling is valid.",
+          "Reordered operations so that drilling (OP4) precedes tapping (OP5) to satisfy precedence constraints.",
+          "Updated the precedence list to reflect the new execution order (OP1 -> OP2, OP1 -> OP3, OP1 -> OP4, OP1 -> OP5, OP4 -> OP5).",
+          "Added an explanation noting the corrected operation type and reordering."
+        ],
+        "missing_information": [],
+        "prompt_refs": [
+          "repair_system@v1#ca428a36f8643353",
+          "repair_user@v1#e0892879cbdae7da"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Replaced operation OP1 type 'laser_cutting' with 'face_milling' to match the catalogue.\",\n    \"Changed tool_id for OP1 from T3 to T4 (a face_mill compatible with M1) or kept T3 if valid; checking resources: T3 and T4 are both face_mills. The original used T3. I will keep T3 as it is a valid face_mill in resources, but the rule says 'Replace laser_cutting with a catalogue operation'. The tool was T3 (face_mill). Wait, the violation R1 only mentions operation type. However, OP1 originally targeted F1 with T3. Is T3 compatible? Yes, T3 is a face_mill. But let's check the violation R6: 'Required feature F1 is not addressed by any suitable operation... applied_operation_types: []'. This implies after fixing R1, we must ensure it addresses F1. The original OP1 targeted F1. So changing type to 'face_milling' should satisfy R6. However, the tool T3 is listed as 'face_mill' in resources. So OP1 with T3 and face_milling is valid.\",\n    \"Reordered operations so that drilling (OP4) precedes tapping (OP5) to satisfy precedence constraints.\",\n    \"Updated the precedence list to reflect the new execution order (OP1 -> OP2, OP1 -> OP3, OP1 -> OP4, OP1 -> OP5, OP4 -> OP5).\",\n    \"Added an explanation noting the corrected operation type and reordering.\"\n  ],\n  \"missing_information\": [],\n  \"plan\": {\n    \"component_id\": \"syn_023\",\n    \"operations\": [\n      {\n        \"operation_id\": \"OP1\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\n          \"F1\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 4.0\n      },\n      {\n        \"operation_id\": \"OP2\",\n        \"type\": \"contour_milling\",\n        \"target_features\": [\n          \"F2\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 5.0\n      },\n      {\n        \"operation_id\": \"OP3\",\n        \"type\": \"slot_milling\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 4.0\n      },\n      {\n        \"operation_id\": \"OP4\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T5\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP5\",\n        \"type\": \"tapping\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T2\",\n        \"duration_min\": 1.5\n      }\n    ],\n    \"precedence\": [\n      [\"OP1\", \"OP2\"],\n      [\"OP1\", \"OP3\"],\n      [\"OP1\", \"OP4\"],\n      [\"OP1\", \"OP5\"],\n      [\"OP4\", \"OP5\"]\n    ],\n    \"explanation\": \"Revised plan replaces invalid 'laser_cutting' with 'face_milling' for F1 and reorders operations so drilling (OP4) precedes tapping (OP5) as required by precedence constraints.\",\n    \"assumptions\": [\n      \"Durations are illustrative placeholders, not calculated from cutting data.\"\n    ],\n    \"uncertainties\": []\n  }\n}",
+            "issues": [],
+            "latency_s": 6.628548658918589,
+            "prompt_tokens": 3735,
+            "completion_tokens": 902
+          }
+        ],
+        "normalization_notes": [],
+        "error": null,
+        "diff": {
+          "added": [],
+          "removed": [],
+          "modified": {
+            "OP1": {
+              "type": [
+                "laser_cutting",
+                "face_milling"
+              ]
+            }
+          },
+          "sequence_changed": true,
+          "precedence_added": [],
+          "precedence_removed": [],
+          "unchanged_operations": [
+            "OP2",
+            "OP3",
+            "OP4",
+            "OP5"
+          ]
+        },
+        "latency_s": 6.629
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "4 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_REPAIRED",
+      "iteration": 1,
+      "detail": "5 change(s)"
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 1,
+      "detail": "0 hard violation(s)"
+    },
+    {
+      "state": "ACCEPTED",
+      "iteration": 1,
+      "detail": "valid"
+    }
+  ],
+  "final_status": "ACCEPTED",
+  "stop_reason": "valid",
+  "stop_detail": "",
+  "terminal_repair": null,
+  "final_iteration": 1,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_023_plan_v1",
+    "component_id": "syn_023",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "contour_milling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "slot_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T5",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 1.5,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ]
+    ],
+    "explanation": "Revised plan replaces invalid 'laser_cutting' with 'face_milling' for F1 and reorders operations so drilling (OP4) precedes tapping (OP5) as required by precedence constraints.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": true,
+    "hard_constraint_violations": [],
+    "warnings": [],
+    "coverage": {
+      "required_features": 4,
+      "covered_features": 4,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

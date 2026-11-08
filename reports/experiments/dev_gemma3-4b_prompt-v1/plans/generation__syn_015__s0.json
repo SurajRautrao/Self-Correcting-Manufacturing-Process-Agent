@@ -1,0 +1,127 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_015_plan_v0",
+    "component_id": "syn_015",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 60.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 15.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "reaming",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 25.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "pocket_milling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 120.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "pocket_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 90.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "slot_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 45.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP5",
+        "OP6"
+      ]
+    ],
+    "explanation": "This plan first faces the datum part (F1). Then, it drills and reams the through hole (F3). Next, it performs two pocket milling operations (F2, F4) and finally, the slot milling operation (F5).",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "No collision detection performed."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:4b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"syn_015\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T1\",\n    \"duration_min\": 60.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 15.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M1\",\n    \"tool_id\": \"T6\",\n    \"duration_min\": 25.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 120.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F4\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 90.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"slot_milling\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 45.0\n  }\n], \"precedence\": [\n  [\"OP1\", \"OP2\"],\n  [\"OP2\", \"OP3\"],\n  [\"OP1\", \"OP4\"],\n  [\"OP1\", \"OP5\"],\n  [\"OP5\", \"OP6\"]\n], \"explanation\": \"This plan first faces the datum part (F1). Then, it drills and reams the through hole (F3). Next, it performs two pocket milling operations (F2, F4) and finally, the slot milling operation (F5).\", \"assumptions\": [\n  \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n  \"Tool size, tool access, collisions and setups are not modelled.\",\n  \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n], \"uncertainties\": [\n  \"No collision detection performed.\"\n]}",
+      "issues": [],
+      "latency_s": 5.771834160666913,
+      "prompt_tokens": 2406,
+      "completion_tokens": 637
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

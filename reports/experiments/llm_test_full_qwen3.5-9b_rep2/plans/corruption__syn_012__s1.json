@@ -1,0 +1,173 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_012_corrupted_s1",
+    "component_id": "syn_012",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": -1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T5",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "tapping",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "contour_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T2",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T5",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "chamfering",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "chamfering",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 1.5,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP4",
+        "OP7"
+      ],
+      [
+        "OP4",
+        "OP8"
+      ],
+      [
+        "OP5",
+        "OP6"
+      ],
+      [
+        "OP6",
+        "OP5"
+      ]
+    ],
+    "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "planner": "corruption",
+  "model": null,
+  "prompt_refs": [],
+  "attempts": [],
+  "normalization_notes": [],
+  "injected_faults": [
+    {
+      "kind": "invalid_duration",
+      "operation_id": "OP1",
+      "operations": [
+        "OP1"
+      ],
+      "expected_rule": "R11_DURATION",
+      "detail": "duration -> -1.0"
+    },
+    {
+      "kind": "precedence_cycle",
+      "operation_id": "OP6",
+      "operations": [
+        "OP5",
+        "OP6"
+      ],
+      "expected_rule": "R8_PRECEDENCE_VALIDITY",
+      "detail": "added reverse edge OP6->OP5"
+    }
+  ],
+  "error": null
+}

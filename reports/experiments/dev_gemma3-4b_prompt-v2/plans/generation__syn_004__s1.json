@@ -1,0 +1,146 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_004_plan_v0",
+    "component_id": "syn_004",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "contour_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 10.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "pocket_milling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T4",
+        "duration_min": 15.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "reaming",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T8",
+        "duration_min": 7.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "chamfering",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "chamfering",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP2",
+        "OP3"
+      ],
+      [
+        "OP3",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ]
+    ],
+    "explanation": "This process plan first mills the outer contour (F3) and pocket (F7) using M3 and T4. Then, it drills and reams the through-hole (F6) with M3 and T7/T8. Finally, it performs chamfers on the two chamfer features (F2 and F5) using M3 and T3.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "The specific depths and widths of the features are not defined; these values are placeholders."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "gemma3:4b",
+  "prompt_refs": [
+    "planner_system@v2#e10c9547583a3bfd",
+    "planner_user@v2#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\"component_id\": \"syn_004\", \"operations\": [\n  {\n    \"operation_id\": \"OP1\",\n    \"type\": \"face_milling\",\n    \"target_features\": [\"F1\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T2\",\n    \"duration_min\": 5.0\n  },\n  {\n    \"operation_id\": \"OP2\",\n    \"type\": \"contour_milling\",\n    \"target_features\": [\"F3\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 10.0\n  },\n  {\n    \"operation_id\": \"OP3\",\n    \"type\": \"pocket_milling\",\n    \"target_features\": [\"F7\"],\n    \"machine_id\": \"M2\",\n    \"tool_id\": \"T4\",\n    \"duration_min\": 15.0\n  },\n  {\n    \"operation_id\": \"OP4\",\n    \"type\": \"drilling\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T7\",\n    \"duration_min\": 3.0\n  },\n  {\n    \"operation_id\": \"OP5\",\n    \"type\": \"reaming\",\n    \"target_features\": [\"F6\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T8\",\n    \"duration_min\": 7.0\n  },\n  {\n    \"operation_id\": \"OP6\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F2\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 2.0\n  },\n  {\n    \"operation_id\": \"OP7\",\n    \"type\": \"chamfering\",\n    \"target_features\": [\"F5\"],\n    \"machine_id\": \"M3\",\n    \"tool_id\": \"T3\",\n    \"duration_min\": 2.0\n  }\n], \"precedence\": [\n  [\n    \"OP1\",\n    \"OP2\"\n  ],\n  [\n    \"OP2\",\n    \"OP3\"\n  ],\n  [\n    \"OP3\",\n    \"OP5\"\n  ],\n  [\n    \"OP1\",\n    \"OP4\"\n  ],\n  [\n    \"OP4\",\n    \"OP5\"\n  ],\n  [\n    \"OP1\",\n    \"OP6\"\n  ],\n  [\n    \"OP1\",\n    \"OP7\"\n  ]\n], \"explanation\": \"This process plan first mills the outer contour (F3) and pocket (F7) using M3 and T4. Then, it drills and reams the through-hole (F6) with M3 and T7/T8. Finally, it performs chamfers on the two chamfer features (F2 and F5) using M3 and T3.\", \"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n  ], \"uncertainties\": [\n    \"The specific depths and widths of the features are not defined; these values are placeholders.\"\n  ]}",
+      "issues": [],
+      "latency_s": 6.06196676613763,
+      "prompt_tokens": 2948,
+      "completion_tokens": 816
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

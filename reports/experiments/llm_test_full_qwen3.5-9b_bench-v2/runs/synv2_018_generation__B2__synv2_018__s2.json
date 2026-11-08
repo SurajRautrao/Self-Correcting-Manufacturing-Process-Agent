@@ -1,0 +1,2036 @@
+{
+  "run_id": "generation__B2__synv2_018__s2",
+  "component_id": "synv2_018",
+  "started_at": "2026-11-08T17:27:43+00:00",
+  "duration_s": 16.607,
+  "planner": "llm",
+  "planner_model": "qwen3.5:9b",
+  "repair_agent": "llm",
+  "max_repairs": 3,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": "qwen3.5:9b"
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "llm",
+    "model": "qwen3.5:9b",
+    "prompt_refs": [
+      "planner_system@v1#86ada0ca7d3bb324",
+      "planner_user@v1#723b81a7db1f3554"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "raw_output": "{\n  \"component_id\": \"synv2_018\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\n        \"F1\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T7\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F3\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F3\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F4\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F4\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"pocket_milling\",\n      \"target_features\": [\n        \"F5\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T8\",\n      \"duration_min\": 10.0\n    },\n    {\n      \"operation_id\": \"OP9\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F6\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP10\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F6\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP11\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F7\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP12\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F7\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP13\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F7\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T5\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP14\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F8\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP15\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F8\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP16\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F9\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP17\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F9\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP18\",\n      \"type\": \"reaming\",\n      \"target_features\": [\n        \"F9\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP19\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F10\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP20\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F10\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP21\",\n      \"type\": \"pocket_milling\",\n      \"target_features\": [\n        \"F11\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T8\",\n      \"duration_min\": 10.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP4\"],\n    [\"OP2\", \"OP3\"],\n    [\"OP4\", \"OP5\"],\n    [\"OP1\", \"OP6\"],\n    [\"OP1\", \"OP8\"],\n    [\"OP1\", \"OP9\"],\n    [\"OP1\", \"OP11\"],\n    [\"OP1\", \"OP14\"],\n    [\"OP1\", \"OP16\"],\n    [\"OP1\", \"OP19\"],\n    [\"OP1\", \"OP21\"]\n  ],\n  \"explanation\": \"The plan starts with face milling F1 on M3 to establish the datum. Operations are then sequenced to machine features dependent on F1 (pockets, chamfers). Through-holes and threaded holes require drilling followed by reaming or tapping; spot drilling is used for initial hole location before full diameter drilling on M2. The final pocket F11 is machined last.\",\n  \"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n  ],\n  \"uncertainties\": [\n    \"Actual tool diameter compatibility with hole diameters (e.g., T1 drill size vs. F2/F3 diameters) is not verified.\",\n    \"Whether the same drill bit (T1) can be used for all drilling operations without changing tools is assumed true.\"\n  ]\n}",
+        "issues": [],
+        "latency_s": 12.70500316703692,
+        "prompt_tokens": 3727,
+        "completion_tokens": 1903
+      }
+    ],
+    "normalization_notes": [],
+    "injected_faults": [],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "synv2_018_plan_v0",
+        "component_id": "synv2_018",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T7",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "spot_drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "spot_drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "spot_drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "chamfering",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "pocket_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T8",
+            "duration_min": 10.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP9",
+            "type": "spot_drilling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP10",
+            "type": "drilling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP11",
+            "type": "spot_drilling",
+            "target_features": [
+              "F7"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP12",
+            "type": "drilling",
+            "target_features": [
+              "F7"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP13",
+            "type": "tapping",
+            "target_features": [
+              "F7"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T5",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP14",
+            "type": "spot_drilling",
+            "target_features": [
+              "F8"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP15",
+            "type": "chamfering",
+            "target_features": [
+              "F8"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP16",
+            "type": "spot_drilling",
+            "target_features": [
+              "F9"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP17",
+            "type": "drilling",
+            "target_features": [
+              "F9"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP18",
+            "type": "reaming",
+            "target_features": [
+              "F9"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T4",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP19",
+            "type": "spot_drilling",
+            "target_features": [
+              "F10"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP20",
+            "type": "drilling",
+            "target_features": [
+              "F10"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP21",
+            "type": "pocket_milling",
+            "target_features": [
+              "F11"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T8",
+            "duration_min": 10.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP2",
+            "OP3"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ],
+          [
+            "OP1",
+            "OP6"
+          ],
+          [
+            "OP1",
+            "OP8"
+          ],
+          [
+            "OP1",
+            "OP9"
+          ],
+          [
+            "OP1",
+            "OP11"
+          ],
+          [
+            "OP1",
+            "OP14"
+          ],
+          [
+            "OP1",
+            "OP16"
+          ],
+          [
+            "OP1",
+            "OP19"
+          ],
+          [
+            "OP1",
+            "OP21"
+          ]
+        ],
+        "explanation": "The plan starts with face milling F1 on M3 to establish the datum. Operations are then sequenced to machine features dependent on F1 (pockets, chamfers). Through-holes and threaded holes require drilling followed by reaming or tapping; spot drilling is used for initial hole location before full diameter drilling on M2. The final pocket F11 is machined last.",
+        "assumptions": [
+          "Synthetic component generated for software evaluation; not derived from real geometry.",
+          "Tool size, tool access, collisions and setups are not modelled.",
+          "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+        ],
+        "uncertainties": [
+          "Actual tool diameter compatibility with hole diameters (e.g., T1 drill size vs. F2/F3 diameters) is not verified.",
+          "Whether the same drill bit (T1) can be used for all drilling operations without changing tools is assumed true."
+        ],
+        "provenance": null
+      },
+      "plan_hash": "54860566eaa0e954",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP2",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP2 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP4 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP6",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP6 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP9",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP9 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP11",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP11 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP14",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP14 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP16",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP16 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP19",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP19 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Operation type 'spot_drilling' is not suitable for feature 'F4' (chamfer).",
+            "operation_id": "OP6",
+            "feature_id": "F4",
+            "evidence": {
+              "operation_type": "spot_drilling",
+              "feature_type": "chamfer",
+              "suitable_operation_types": [
+                "chamfering"
+              ]
+            },
+            "repair_hint": "Retarget the operation or change its type to one of ['chamfering'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Operation type 'spot_drilling' is not suitable for feature 'F8' (chamfer).",
+            "operation_id": "OP14",
+            "feature_id": "F8",
+            "evidence": {
+              "operation_type": "spot_drilling",
+              "feature_type": "chamfer",
+              "suitable_operation_types": [
+                "chamfering"
+              ]
+            },
+            "repair_hint": "Retarget the operation or change its type to one of ['chamfering'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F2' is missing operation(s) ['reaming'].",
+            "operation_id": null,
+            "feature_id": "F2",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "reaming"
+              ],
+              "applied_operation_types": [
+                "drilling",
+                "spot_drilling"
+              ],
+              "resource_options": {
+                "reaming": [
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T4"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F2: reaming on M3 with T3.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F3' is missing operation(s) ['reaming'].",
+            "operation_id": null,
+            "feature_id": "F3",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "reaming"
+              ],
+              "applied_operation_types": [
+                "drilling",
+                "spot_drilling"
+              ],
+              "resource_options": {
+                "reaming": [
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T4"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F3: reaming on M3 with T3.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F6' is missing operation(s) ['reaming'].",
+            "operation_id": null,
+            "feature_id": "F6",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "reaming"
+              ],
+              "applied_operation_types": [
+                "drilling",
+                "spot_drilling"
+              ],
+              "resource_options": {
+                "reaming": [
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T4"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F6: reaming on M3 with T3.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 9,
+          "covered_features": 6,
+          "missing_features": [
+            "F2",
+            "F3",
+            "F6"
+          ]
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    },
+    {
+      "index": 1,
+      "source": "repair",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "synv2_018_plan_v1",
+        "component_id": "synv2_018",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T7",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2_new_F2",
+            "type": "spot_drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3_new_F2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4_new_F2",
+            "type": "reaming",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T3",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5_new_F4",
+            "type": "chamfering",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6_new_F3",
+            "type": "spot_drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7_new_F3",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8_new_F3",
+            "type": "reaming",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T3",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP9_new_F5",
+            "type": "face_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T7",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP10_new_F6",
+            "type": "spot_drilling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP11_new_F6",
+            "type": "drilling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP12_new_F6",
+            "type": "reaming",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T3",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP13_new_F8",
+            "type": "chamfering",
+            "target_features": [
+              "F8"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP14_new_F9",
+            "type": "spot_drilling",
+            "target_features": [
+              "F9"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP15_new_F9",
+            "type": "drilling",
+            "target_features": [
+              "F9"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP16_new_F9",
+            "type": "reaming",
+            "target_features": [
+              "F9"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T4",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP17_new_F12",
+            "type": "chamfering",
+            "target_features": [
+              "F12"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP18_new_F11",
+            "type": "pocket_milling",
+            "target_features": [
+              "F11"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T8",
+            "duration_min": 10.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2_new_F2"
+          ],
+          [
+            "OP1",
+            "OP5_new_F4"
+          ],
+          [
+            "OP2_new_F2",
+            "OP3_new_F2"
+          ],
+          [
+            "OP3_new_F2",
+            "OP4_new_F2"
+          ],
+          [
+            "OP1",
+            "OP6_new_F3"
+          ],
+          [
+            "OP1",
+            "OP9_new_F5"
+          ],
+          [
+            "OP6_new_F3",
+            "OP7_new_F3"
+          ],
+          [
+            "OP7_new_F3",
+            "OP8_new_F3"
+          ],
+          [
+            "OP1",
+            "OP10_new_F6"
+          ],
+          [
+            "OP10_new_F6",
+            "OP11_new_F6"
+          ],
+          [
+            "OP11_new_F6",
+            "OP12_new_F6"
+          ],
+          [
+            "OP9_new_F5",
+            "OP13_new_F8"
+          ],
+          [
+            "OP13_new_F8",
+            "OP17_new_F12"
+          ],
+          [
+            "OP8_new_F3",
+            "OP14_new_F9"
+          ],
+          [
+            "OP14_new_F9",
+            "OP15_new_F9"
+          ],
+          [
+            "OP15_new_F9",
+            "OP16_new_F9"
+          ],
+          [
+            "OP1",
+            "OP18_new_F11"
+          ]
+        ],
+        "explanation": "The revised plan starts with face milling F1 to establish the datum. Through-holes (F2, F3, F6) are now correctly sequenced: spot drilling on M2, drilling on M2, and reaming on M3 with tool T3. Chamfers (F4, F8, F12) are handled by chamfering operations on M1 with tool T6. Pocket F11 is machined last.",
+        "assumptions": [
+          "Synthetic component generated for software evaluation; not derived from real geometry.",
+          "Tool size, tool access, collisions and setups are not modelled.",
+          "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+        ],
+        "uncertainties": [
+          "Actual tool diameter compatibility with hole diameters (e.g., T1 drill size vs. F2/F3 diameters) is not verified.",
+          "Whether the same drill bit (T1) can be used for all drilling operations without changing tools is assumed true."
+        ],
+        "provenance": null
+      },
+      "plan_hash": "a7e2740a329fca0c",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP2_new_F2",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP2_new_F2 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP6_new_F3",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP6_new_F3 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP10_new_F6",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP10_new_F6 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP14_new_F9",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP14_new_F9 is not needed for coverage: remove it.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Operation type 'face_milling' is not suitable for feature 'F5' (pocket).",
+            "operation_id": "OP9_new_F5",
+            "feature_id": "F5",
+            "evidence": {
+              "operation_type": "face_milling",
+              "feature_type": "pocket",
+              "suitable_operation_types": [
+                "pocket_milling"
+              ]
+            },
+            "repair_hint": "Retarget the operation or change its type to one of ['pocket_milling'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F5' is not addressed by any suitable operation (one of ['pocket_milling']).",
+            "operation_id": null,
+            "feature_id": "F5",
+            "evidence": {
+              "feature_type": "pocket",
+              "requirement": "any_of",
+              "missing_operation_types": [
+                "pocket_milling"
+              ],
+              "applied_operation_types": [],
+              "resource_options": {
+                "pocket_milling": [
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T8"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F5: pocket_milling on M3 with T8.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F7' is missing operation(s) ['drilling', 'tapping'].",
+            "operation_id": null,
+            "feature_id": "F7",
+            "evidence": {
+              "feature_type": "threaded_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "drilling",
+                "tapping"
+              ],
+              "applied_operation_types": [],
+              "resource_options": {
+                "drilling": [
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T1"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T10"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T1"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T10"
+                  }
+                ],
+                "tapping": [
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T5"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F7: drilling on M2 with T1; tapping on M2 with T5.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F10' is not addressed by any suitable operation (one of ['drilling', 'reaming']).",
+            "operation_id": null,
+            "feature_id": "F10",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "any_of",
+              "missing_operation_types": [
+                "drilling",
+                "reaming"
+              ],
+              "applied_operation_types": [],
+              "resource_options": {
+                "drilling": [
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T1"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M2",
+                    "tool_id": "T10"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T1"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T10"
+                  }
+                ],
+                "reaming": [
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T3"
+                  },
+                  {
+                    "machine_id": "M3",
+                    "tool_id": "T4"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F10: drilling on M2 with T1.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R7_FEATURE_REFERENCE",
+            "severity": "hard",
+            "message": "Operation targets unknown feature 'F12'.",
+            "operation_id": "OP17_new_F12",
+            "feature_id": "F12",
+            "evidence": {
+              "unknown_feature": "F12",
+              "known_features": [
+                "F1",
+                "F2",
+                "F3",
+                "F4",
+                "F5",
+                "F6",
+                "F7",
+                "F8",
+                "F9",
+                "F10",
+                "F11"
+              ]
+            },
+            "repair_hint": "Target only features defined in the component input.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 9,
+          "covered_features": 6,
+          "missing_features": [
+            "F5",
+            "F7",
+            "F10"
+          ]
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": {
+        "status": "repaired",
+        "agent": "llm",
+        "model": "qwen3.5:9b",
+        "changes": [
+          "Removed operations OP2, OP4, OP6, OP9, OP11, OP14, OP16, and OP19 as they used incompatible 'spot_drilling' types for features requiring through-holes or chamfers.",
+          "Added reaming operations (OP_new_F2, OP_new_F3, OP_new_F6) on machine M3 with tool T3 to complete the through-holes F2, F3, and F6.",
+          "Replaced spot drilling operations for features F4, F8, and F12 with chamfering operations using tool T6 on machine M1."
+        ],
+        "missing_information": [],
+        "prompt_refs": [
+          "repair_system@v1#ca428a36f8643353",
+          "repair_user@v1#e0892879cbdae7da"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Removed operations OP2, OP4, OP6, OP9, OP11, OP14, OP16, and OP19 as they used incompatible 'spot_drilling' types for features requiring through-holes or chamfers.\",\n    \"Added reaming operations (OP_new_F2, OP_new_F3, OP_new_F6) on machine M3 with tool T3 to complete the through-holes F2, F3, and F6.\",\n    \"Replaced spot drilling operations for features F4, F8, and F12 with chamfering operations using tool T6 on machine M1.\"\n  ],\n  \"missing_information\": [],\n  \"plan\": {\n    \"component_id\": \"synv2_018\",\n    \"operations\": [\n      {\n        \"operation_id\": \"OP1\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\"F1\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T7\",\n        \"duration_min\": 5.0\n      },\n      {\n        \"operation_id\": \"OP2_new_F2\",\n        \"type\": \"spot_drilling\",\n        \"target_features\": [\"F2\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP3_new_F2\",\n        \"type\": \"drilling\",\n        \"target_features\": [\"F2\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP4_new_F2\",\n        \"type\": \"reaming\",\n        \"target_features\": [\"F2\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP5_new_F4\",\n        \"type\": \"chamfering\",\n        \"target_features\": [\"F4\"],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP6_new_F3\",\n        \"type\": \"spot_drilling\",\n        \"target_features\": [\"F3\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP7_new_F3\",\n        \"type\": \"drilling\",\n        \"target_features\": [\"F3\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP8_new_F3\",\n        \"type\": \"reaming\",\n        \"target_features\": [\"F3\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP9_new_F5\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\"F5\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T7\",\n        \"duration_min\": 5.0\n      },\n      {\n        \"operation_id\": \"OP10_new_F6\",\n        \"type\": \"spot_drilling\",\n        \"target_features\": [\"F6\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP11_new_F6\",\n        \"type\": \"drilling\",\n        \"target_features\": [\"F6\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP12_new_F6\",\n        \"type\": \"reaming\",\n        \"target_features\": [\"F6\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP13_new_F8\",\n        \"type\": \"chamfering\",\n        \"target_features\": [\"F8\"],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP14_new_F9\",\n        \"type\": \"spot_drilling\",\n        \"target_features\": [\"F9\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP15_new_F9\",\n        \"type\": \"drilling\",\n        \"target_features\": [\"F9\"],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP16_new_F9\",\n        \"type\": \"reaming\",\n        \"target_features\": [\"F9\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T4\",\n        \"duration_min\": 3.0\n      },\n      {\n        \"operation_id\": \"OP17_new_F12\",\n        \"type\": \"chamfering\",\n        \"target_features\": [\"F12\"],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP18_new_F11\",\n        \"type\": \"pocket_milling\",\n        \"target_features\": [\"F11\"],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T8\",\n        \"duration_min\": 10.0\n      }\n    ],\n    \"precedence\": [\n      [\"OP1\", \"OP2_new_F2\"],\n      [\"OP1\", \"OP5_new_F4\"],\n      [\"OP2_new_F2\", \"OP3_new_F2\"],\n      [\"OP3_new_F2\", \"OP4_new_F2\"],\n      [\"OP1\", \"OP6_new_F3\"],\n      [\"OP1\", \"OP9_new_F5\"],\n      [\"OP6_new_F3\", \"OP7_new_F3\"],\n      [\"OP7_new_F3\", \"OP8_new_F3\"],\n      [\"OP1\", \"OP10_new_F6\"],\n      [\"OP10_new_F6\", \"OP11_new_F6\"],\n      [\"OP11_new_F6\", \"OP12_new_F6\"],\n      [\"OP9_new_F5\", \"OP13_new_F8\"],\n      [\"OP13_new_F8\", \"OP17_new_F12\"],\n      [\"OP8_new_F3\", \"OP14_new_F9\"],\n      [\"OP14_new_F9\", \"OP15_new_F9\"],\n      [\"OP15_new_F9\", \"OP16_new_F9\"],\n      [\"OP1\", \"OP18_new_F11\"]\n    ],\n    \"explanation\": \"The revised plan starts with face milling F1 to establish the datum. Through-holes (F2, F3, F6) are now correctly sequenced: spot drilling on M2, drilling on M2, and reaming on M3 with tool T3. Chamfers (F4, F8, F12) are handled by chamfering operations on M1 with tool T6. Pocket F11 is machined last.\",\n    \"assumptions\": [\n      \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n      \"Tool size, tool access, collisions and setups are not modelled.\",\n      \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n    ],\n    \"uncertainties\": [\n      \"Actual tool diameter compatibility with hole diameters (e.g., T1 drill size vs. F2/F3 diameters) is not verified.\",\n      \"Whether the same drill bit (T1) can be used for all drilling operations without changing tools is assumed true.\"\n    ]\n  }\n}",
+            "issues": [],
+            "latency_s": 13.17166096670553,
+            "prompt_tokens": 4098,
+            "completion_tokens": 1957
+          }
+        ],
+        "normalization_notes": [],
+        "error": null,
+        "diff": {
+          "added": [
+            "OP10_new_F6",
+            "OP11_new_F6",
+            "OP12_new_F6",
+            "OP13_new_F8",
+            "OP14_new_F9",
+            "OP15_new_F9",
+            "OP16_new_F9",
+            "OP17_new_F12",
+            "OP18_new_F11",
+            "OP2_new_F2",
+            "OP3_new_F2",
+            "OP4_new_F2",
+            "OP5_new_F4",
+            "OP6_new_F3",
+            "OP7_new_F3",
+            "OP8_new_F3",
+            "OP9_new_F5"
+          ],
+          "removed": [
+            "OP10",
+            "OP11",
+            "OP12",
+            "OP13",
+            "OP14",
+            "OP15",
+            "OP16",
+            "OP17",
+            "OP18",
+            "OP19",
+            "OP2",
+            "OP20",
+            "OP21",
+            "OP3",
+            "OP4",
+            "OP5",
+            "OP6",
+            "OP7",
+            "OP8",
+            "OP9"
+          ],
+          "modified": {},
+          "sequence_changed": false,
+          "precedence_added": [
+            [
+              "OP1",
+              "OP10_new_F6"
+            ],
+            [
+              "OP1",
+              "OP18_new_F11"
+            ],
+            [
+              "OP1",
+              "OP2_new_F2"
+            ],
+            [
+              "OP1",
+              "OP5_new_F4"
+            ],
+            [
+              "OP1",
+              "OP6_new_F3"
+            ],
+            [
+              "OP1",
+              "OP9_new_F5"
+            ],
+            [
+              "OP10_new_F6",
+              "OP11_new_F6"
+            ],
+            [
+              "OP11_new_F6",
+              "OP12_new_F6"
+            ],
+            [
+              "OP13_new_F8",
+              "OP17_new_F12"
+            ],
+            [
+              "OP14_new_F9",
+              "OP15_new_F9"
+            ],
+            [
+              "OP15_new_F9",
+              "OP16_new_F9"
+            ],
+            [
+              "OP2_new_F2",
+              "OP3_new_F2"
+            ],
+            [
+              "OP3_new_F2",
+              "OP4_new_F2"
+            ],
+            [
+              "OP6_new_F3",
+              "OP7_new_F3"
+            ],
+            [
+              "OP7_new_F3",
+              "OP8_new_F3"
+            ],
+            [
+              "OP8_new_F3",
+              "OP14_new_F9"
+            ],
+            [
+              "OP9_new_F5",
+              "OP13_new_F8"
+            ]
+          ],
+          "precedence_removed": [
+            [
+              "OP1",
+              "OP11"
+            ],
+            [
+              "OP1",
+              "OP14"
+            ],
+            [
+              "OP1",
+              "OP16"
+            ],
+            [
+              "OP1",
+              "OP19"
+            ],
+            [
+              "OP1",
+              "OP2"
+            ],
+            [
+              "OP1",
+              "OP21"
+            ],
+            [
+              "OP1",
+              "OP4"
+            ],
+            [
+              "OP1",
+              "OP6"
+            ],
+            [
+              "OP1",
+              "OP8"
+            ],
+            [
+              "OP1",
+              "OP9"
+            ],
+            [
+              "OP2",
+              "OP3"
+            ],
+            [
+              "OP4",
+              "OP5"
+            ]
+          ],
+          "unchanged_operations": [
+            "OP1"
+          ]
+        },
+        "latency_s": 13.173
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "13 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_REPAIRED",
+      "iteration": 1,
+      "detail": "3 change(s)"
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 1,
+      "detail": "9 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 1,
+      "detail": ""
+    },
+    {
+      "state": "NEEDS_HUMAN_REVIEW",
+      "iteration": 1,
+      "detail": "The full candidate process plan including operation IDs, types, targets, machines, tools, durations, and precedence edges.; The complete list of deterministic rule checker findings with specific rule_ids, evidence, and repair hints.; The component's available resources (machines, tools) and feature definitions to verify compatibility."
+    }
+  ],
+  "final_status": "NEEDS_HUMAN_REVIEW",
+  "stop_reason": "repair_agent_requested_review",
+  "stop_detail": "The full candidate process plan including operation IDs, types, targets, machines, tools, durations, and precedence edges.; The complete list of deterministic rule checker findings with specific rule_ids, evidence, and repair hints.; The component's available resources (machines, tools) and feature definitions to verify compatibility.",
+  "terminal_repair": {
+    "status": "needs_human_review",
+    "agent": "llm",
+    "model": "qwen3.5:9b",
+    "changes": [
+      "Cannot resolve violations because the input data (candidate plan and checker findings) was truncated and incomplete, preventing identification of all affected operations and available resources."
+    ],
+    "missing_information": [
+      "The full candidate process plan including operation IDs, types, targets, machines, tools, durations, and precedence edges.",
+      "The complete list of deterministic rule checker findings with specific rule_ids, evidence, and repair hints.",
+      "The component's available resources (machines, tools) and feature definitions to verify compatibility."
+    ],
+    "prompt_refs": [
+      "repair_system@v1#ca428a36f8643353",
+      "repair_user@v1#e0892879cbdae7da",
+      "planner_retry@v1#d912df508c43a71a"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Removed operation OP2_new_F2 (spot_drilling) because no compatible spot_drill tool exists.\",\n    \"Removed operation OP6_new_F3 (spot_drilling) because no compatible spot_drill tool exists.\",\n    \"Removed operation OP10_new_F6 (spot_drilling) because no compatible spot_drill tool exists.\",\n    \"Removed operation OP14_new_F9 (spot_drilling) because no compatible spot_drill tool exists.\",\n    \"Removed operation OP5_new_F4 (chamfering for F4) because it violates precedence constraints relative to its feature's required operations or is not covered by a valid sequence.\",\n    \"Removed operation OP13_new_F8 (chamfer",
+        "issues": [
+          "response is not valid JSON (line 9 col 5: Unterminated string starting at); starts with: '{   \"status\": \"REPAIRED\",   \"changes\": [     \"Removed operation OP2_new_F2 (spot_drilling) because no compatible spot_dr'"
+        ],
+        "latency_s": 2.2739172680303454,
+        "prompt_tokens": 8021,
+        "completion_tokens": 171
+      },
+      {
+        "attempt": 2,
+        "raw_output": "{\n  \"status\": \"NEEDS_HUMAN_REVIEW\",\n  \"changes\": [\n    \"Cannot resolve violations because the input data (candidate plan and checker findings) was truncated and incomplete, preventing identification of all affected operations and available resources.\"\n  ],\n  \"missing_information\": [\n    \"The full candidate process plan including operation IDs, types, targets, machines, tools, durations, and precedence edges.\",\n    \"The complete list of deterministic rule checker findings with specific rule_ids, evidence, and repair hints.\",\n    \"The component's available resources (machines, tools) and feature definitions to verify compatibility.\"\n  ]\n}",
+        "issues": [],
+        "latency_s": 1.1568670109845698,
+        "prompt_tokens": 725,
+        "completion_tokens": 138
+      }
+    ],
+    "normalization_notes": [],
+    "error": null,
+    "diff": null,
+    "latency_s": 3.432
+  },
+  "final_iteration": 1,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_018_plan_v1",
+    "component_id": "synv2_018",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2_new_F2",
+        "type": "spot_drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3_new_F2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4_new_F2",
+        "type": "reaming",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5_new_F4",
+        "type": "chamfering",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6_new_F3",
+        "type": "spot_drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7_new_F3",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8_new_F3",
+        "type": "reaming",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9_new_F5",
+        "type": "face_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP10_new_F6",
+        "type": "spot_drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP11_new_F6",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP12_new_F6",
+        "type": "reaming",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T3",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP13_new_F8",
+        "type": "chamfering",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP14_new_F9",
+        "type": "spot_drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP15_new_F9",
+        "type": "drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP16_new_F9",
+        "type": "reaming",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP17_new_F12",
+        "type": "chamfering",
+        "target_features": [
+          "F12"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP18_new_F11",
+        "type": "pocket_milling",
+        "target_features": [
+          "F11"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T8",
+        "duration_min": 10.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2_new_F2"
+      ],
+      [
+        "OP1",
+        "OP5_new_F4"
+      ],
+      [
+        "OP2_new_F2",
+        "OP3_new_F2"
+      ],
+      [
+        "OP3_new_F2",
+        "OP4_new_F2"
+      ],
+      [
+        "OP1",
+        "OP6_new_F3"
+      ],
+      [
+        "OP1",
+        "OP9_new_F5"
+      ],
+      [
+        "OP6_new_F3",
+        "OP7_new_F3"
+      ],
+      [
+        "OP7_new_F3",
+        "OP8_new_F3"
+      ],
+      [
+        "OP1",
+        "OP10_new_F6"
+      ],
+      [
+        "OP10_new_F6",
+        "OP11_new_F6"
+      ],
+      [
+        "OP11_new_F6",
+        "OP12_new_F6"
+      ],
+      [
+        "OP9_new_F5",
+        "OP13_new_F8"
+      ],
+      [
+        "OP13_new_F8",
+        "OP17_new_F12"
+      ],
+      [
+        "OP8_new_F3",
+        "OP14_new_F9"
+      ],
+      [
+        "OP14_new_F9",
+        "OP15_new_F9"
+      ],
+      [
+        "OP15_new_F9",
+        "OP16_new_F9"
+      ],
+      [
+        "OP1",
+        "OP18_new_F11"
+      ]
+    ],
+    "explanation": "The revised plan starts with face milling F1 to establish the datum. Through-holes (F2, F3, F6) are now correctly sequenced: spot drilling on M2, drilling on M2, and reaming on M3 with tool T3. Chamfers (F4, F8, F12) are handled by chamfering operations on M1 with tool T6. Pocket F11 is machined last.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "Actual tool diameter compatibility with hole diameters (e.g., T1 drill size vs. F2/F3 diameters) is not verified.",
+      "Whether the same drill bit (T1) can be used for all drilling operations without changing tools is assumed true."
+    ],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": false,
+    "hard_constraint_violations": [
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP2_new_F2",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T1",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP2_new_F2 is not needed for coverage: remove it.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP6_new_F3",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T1",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP6_new_F3 is not needed for coverage: remove it.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP10_new_F6",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T1",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP10_new_F6 is not needed for coverage: remove it.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP14_new_F9",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T1",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP14_new_F9 is not needed for coverage: remove it.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Operation type 'face_milling' is not suitable for feature 'F5' (pocket).",
+        "operation_id": "OP9_new_F5",
+        "feature_id": "F5",
+        "evidence": {
+          "operation_type": "face_milling",
+          "feature_type": "pocket",
+          "suitable_operation_types": [
+            "pocket_milling"
+          ]
+        },
+        "repair_hint": "Retarget the operation or change its type to one of ['pocket_milling'].",
+        "repairable": true
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Required feature 'F5' is not addressed by any suitable operation (one of ['pocket_milling']).",
+        "operation_id": null,
+        "feature_id": "F5",
+        "evidence": {
+          "feature_type": "pocket",
+          "requirement": "any_of",
+          "missing_operation_types": [
+            "pocket_milling"
+          ],
+          "applied_operation_types": [],
+          "resource_options": {
+            "pocket_milling": [
+              {
+                "machine_id": "M3",
+                "tool_id": "T8"
+              }
+            ]
+          }
+        },
+        "repair_hint": "Add operation(s) targeting F5: pocket_milling on M3 with T8.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Required feature 'F7' is missing operation(s) ['drilling', 'tapping'].",
+        "operation_id": null,
+        "feature_id": "F7",
+        "evidence": {
+          "feature_type": "threaded_hole",
+          "requirement": "all_of",
+          "missing_operation_types": [
+            "drilling",
+            "tapping"
+          ],
+          "applied_operation_types": [],
+          "resource_options": {
+            "drilling": [
+              {
+                "machine_id": "M2",
+                "tool_id": "T1"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T10"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T1"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T10"
+              }
+            ],
+            "tapping": [
+              {
+                "machine_id": "M2",
+                "tool_id": "T5"
+              }
+            ]
+          }
+        },
+        "repair_hint": "Add operation(s) targeting F7: drilling on M2 with T1; tapping on M2 with T5.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R6_FEATURE_COVERAGE",
+        "severity": "hard",
+        "message": "Required feature 'F10' is not addressed by any suitable operation (one of ['drilling', 'reaming']).",
+        "operation_id": null,
+        "feature_id": "F10",
+        "evidence": {
+          "feature_type": "through_hole",
+          "requirement": "any_of",
+          "missing_operation_types": [
+            "drilling",
+            "reaming"
+          ],
+          "applied_operation_types": [],
+          "resource_options": {
+            "drilling": [
+              {
+                "machine_id": "M2",
+                "tool_id": "T1"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M2",
+                "tool_id": "T10"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T1"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T2"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T10"
+              }
+            ],
+            "reaming": [
+              {
+                "machine_id": "M3",
+                "tool_id": "T3"
+              },
+              {
+                "machine_id": "M3",
+                "tool_id": "T4"
+              }
+            ]
+          }
+        },
+        "repair_hint": "Add operation(s) targeting F10: drilling on M2 with T1.",
+        "repairable": true
+      },
+      {
+        "rule_id": "R7_FEATURE_REFERENCE",
+        "severity": "hard",
+        "message": "Operation targets unknown feature 'F12'.",
+        "operation_id": "OP17_new_F12",
+        "feature_id": "F12",
+        "evidence": {
+          "unknown_feature": "F12",
+          "known_features": [
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F8",
+            "F9",
+            "F10",
+            "F11"
+          ]
+        },
+        "repair_hint": "Target only features defined in the component input.",
+        "repairable": true
+      }
+    ],
+    "warnings": [],
+    "coverage": {
+      "required_features": 9,
+      "covered_features": 6,
+      "missing_features": [
+        "F5",
+        "F7",
+        "F10"
+      ]
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

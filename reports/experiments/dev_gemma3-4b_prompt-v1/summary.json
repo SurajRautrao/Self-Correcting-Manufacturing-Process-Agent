@@ -1,0 +1,263 @@
+[
+  {
+    "track": "generation",
+    "system": "B0",
+    "n_cases": 24,
+    "n_components": 8,
+    "n_seeds": 3,
+    "planner_failure": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.13798057582897535
+    },
+    "initial_hard_violation_rate": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "hard_violation_rate": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "hard_violation_rate_seed_sd": 0.0,
+    "mean_final_violations": 2.2916666666666665,
+    "repair_success": {
+      "k": 0,
+      "n": 15,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.20388926630434784
+    },
+    "repair_success_feasible_only": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.2991527535509594
+    },
+    "mean_feature_coverage": 0.81875,
+    "mean_precedence_accuracy": 0.7,
+    "mean_sequence_similarity": 0.9555555555555555,
+    "repair_iterations_mean": null,
+    "repair_iterations_median": null,
+    "human_review_rate": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.13798057582897535
+    },
+    "human_review_recall": {
+      "k": 0,
+      "n": 6,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.3903430336530645
+    },
+    "human_review_precision": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "ci_low": null,
+      "ci_high": null
+    },
+    "correct_outcome": {
+      "k": 9,
+      "n": 24,
+      "rate": 0.375,
+      "ci_low": 0.21159133433631458,
+      "ci_high": 0.5729038096209293
+    },
+    "invalid_plan_accepted": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "mean_latency_s": 5.877,
+    "total_latency_s": 141.04800000000003,
+    "mean_tokens": 3197.3333333333335
+  },
+  {
+    "track": "generation",
+    "system": "B1",
+    "n_cases": 24,
+    "n_components": 8,
+    "n_seeds": 3,
+    "planner_failure": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.13798057582897535
+    },
+    "initial_hard_violation_rate": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "hard_violation_rate": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "hard_violation_rate_seed_sd": 0.0,
+    "mean_final_violations": 2.2916666666666665,
+    "repair_success": {
+      "k": 0,
+      "n": 15,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.20388926630434784
+    },
+    "repair_success_feasible_only": {
+      "k": 0,
+      "n": 9,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.2991527535509594
+    },
+    "mean_feature_coverage": 0.81875,
+    "mean_precedence_accuracy": 0.7,
+    "mean_sequence_similarity": 0.9555555555555555,
+    "repair_iterations_mean": null,
+    "repair_iterations_median": null,
+    "human_review_rate": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "human_review_recall": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "ci_low": 0.6096569663469354,
+      "ci_high": 1.0
+    },
+    "human_review_precision": {
+      "k": 6,
+      "n": 15,
+      "rate": 0.4,
+      "ci_low": 0.19824228082594664,
+      "ci_high": 0.642535572434923
+    },
+    "correct_outcome": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "invalid_plan_accepted": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.13798057582897535
+    },
+    "mean_latency_s": 5.877,
+    "total_latency_s": 141.04800000000003,
+    "mean_tokens": 3197.3333333333335
+  },
+  {
+    "track": "generation",
+    "system": "R",
+    "n_cases": 24,
+    "n_components": 8,
+    "n_seeds": 3,
+    "planner_failure": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.13798057582897535
+    },
+    "initial_hard_violation_rate": {
+      "k": 15,
+      "n": 24,
+      "rate": 0.625,
+      "ci_low": 0.42709619037907065,
+      "ci_high": 0.7884086656636855
+    },
+    "hard_violation_rate": {
+      "k": 6,
+      "n": 24,
+      "rate": 0.25,
+      "ci_low": 0.1199920347934233,
+      "ci_high": 0.4489982531210644
+    },
+    "hard_violation_rate_seed_sd": 0.0,
+    "mean_final_violations": 0.625,
+    "repair_success": {
+      "k": 9,
+      "n": 15,
+      "rate": 0.6,
+      "ci_low": 0.357464427565077,
+      "ci_high": 0.8017577191740534
+    },
+    "repair_success_feasible_only": {
+      "k": 9,
+      "n": 9,
+      "rate": 1.0,
+      "ci_low": 0.7008472464490407,
+      "ci_high": 1.0
+    },
+    "mean_feature_coverage": 0.975,
+    "mean_precedence_accuracy": 0.9666666666666666,
+    "mean_sequence_similarity": 0.896164021164021,
+    "repair_iterations_mean": 1.0,
+    "repair_iterations_median": 1,
+    "human_review_rate": {
+      "k": 6,
+      "n": 24,
+      "rate": 0.25,
+      "ci_low": 0.1199920347934233,
+      "ci_high": 0.4489982531210644
+    },
+    "human_review_recall": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "ci_low": 0.6096569663469354,
+      "ci_high": 1.0
+    },
+    "human_review_precision": {
+      "k": 6,
+      "n": 6,
+      "rate": 1.0,
+      "ci_low": 0.6096569663469354,
+      "ci_high": 1.0
+    },
+    "correct_outcome": {
+      "k": 24,
+      "n": 24,
+      "rate": 1.0,
+      "ci_low": 0.8620194241710247,
+      "ci_high": 1.0
+    },
+    "invalid_plan_accepted": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 0.13798057582897535
+    },
+    "mean_latency_s": 5.877041666666667,
+    "total_latency_s": 141.04900000000004,
+    "mean_tokens": 3197.3333333333335
+  }
+]

@@ -1,0 +1,154 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_022_plan_v0",
+    "component_id": "syn_022",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "pocket_milling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "pocket_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T6",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T2",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "tapping",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP5",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP7",
+        "OP8"
+      ]
+    ],
+    "explanation": "The plan starts with face milling F1 to establish the datum. Once the datum is set, pocketing operations (F2, F5) proceed on M2. Drilling for through-hole F3 and threaded hole F4 also proceeds on M2. Tapping for F4 moves to M1 after drilling is complete. Similarly, drilling and then tapping for F6 are performed, with the tap operation deferred until after the drill step.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "Which specific drill diameter corresponds to T1 vs T2 is undefined in the input.",
+      "Which end mill (T3 or T6) is used for which pocket is arbitrary as both are generic 'end_mill' types."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "qwen3.5:9b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\n  \"component_id\": \"syn_022\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\"F1\"],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T5\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"pocket_milling\",\n      \"target_features\": [\"F2\"],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T3\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"pocket_milling\",\n      \"target_features\": [\"F5\"],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F3\"],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 1.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F4\"],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 1.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"tapping\",\n      \"target_features\": [\"F4\"],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F6\"],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 1.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"tapping\",\n      \"target_features\": [\"F6\"],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 2.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP3\"],\n    [\"OP1\", \"OP4\"],\n    [\"OP5\", \"OP6\"],\n    [\"OP1\", \"OP7\"],\n    [\"OP7\", \"OP8\"]\n  ],\n  \"explanation\": \"The plan starts with face milling F1 to establish the datum. Once the datum is set, pocketing operations (F2, F5) proceed on M2. Drilling for through-hole F3 and threaded hole F4 also proceeds on M2. Tapping for F4 moves to M1 after drilling is complete. Similarly, drilling and then tapping for F6 are performed, with the tap operation deferred until after the drill step.\",\n  \"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n  ],\n  \"uncertainties\": [\n    \"Which specific drill diameter corresponds to T1 vs T2 is undefined in the input.\",\n    \"Which end mill (T3 or T6) is used for which pocket is arbitrary as both are generic 'end_mill' types.\"\n  ]\n}",
+      "issues": [],
+      "latency_s": 18.758607808034867,
+      "prompt_tokens": 2528,
+      "completion_tokens": 841
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

@@ -1,0 +1,459 @@
+{
+  "run_id": "corruption__B2__syn_005__s2",
+  "component_id": "syn_005",
+  "started_at": "2026-11-08T17:47:35+00:00",
+  "duration_s": 3.781,
+  "planner": "corruption",
+  "planner_model": null,
+  "repair_agent": "llm",
+  "max_repairs": 3,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": "qwen3.5:9b"
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "corruption",
+    "model": null,
+    "prompt_refs": [],
+    "attempts": [],
+    "normalization_notes": [],
+    "injected_faults": [
+      {
+        "kind": "incapable_machine",
+        "operation_id": "OP1",
+        "operations": [
+          "OP1"
+        ],
+        "expected_rule": "R3_MACHINE_CAPABILITY",
+        "detail": "machine -> M1"
+      },
+      {
+        "kind": "incompatible_tool",
+        "operation_id": "OP3",
+        "operations": [
+          "OP3"
+        ],
+        "expected_rule": "R5_TOOL_COMPATIBILITY",
+        "detail": "tool -> T3"
+      }
+    ],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_005_corrupted_s2",
+        "component_id": "syn_005",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "chamfering",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ]
+        ],
+        "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "c00f7b1ec90f4b15",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R3_MACHINE_CAPABILITY",
+            "severity": "hard",
+            "message": "Machine 'M1' cannot perform 'face_milling'.",
+            "operation_id": "OP1",
+            "feature_id": null,
+            "evidence": {
+              "selected_machine": "M1",
+              "operation_type": "face_milling",
+              "machine_capabilities": [
+                "drilling",
+                "tapping",
+                "chamfering"
+              ],
+              "capable_machines": [
+                "M2"
+              ],
+              "operation_removable": false
+            },
+            "repair_hint": "Assign a machine capable of 'face_milling': ['M2'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T3' (type 'drill') is incompatible with 'chamfering'.",
+            "operation_id": "OP3",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T3",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "chamfer_mill"
+              ],
+              "compatible_available_tools": [
+                "T4"
+              ],
+              "operation_removable": false
+            },
+            "repair_hint": "Select a compatible tool: ['T4'].",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 4,
+          "covered_features": 4,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    },
+    {
+      "index": 1,
+      "source": "repair",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_005_plan_v1",
+        "component_id": "syn_005",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "chamfering",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ]
+        ],
+        "explanation": "Revised plan assigns M2 to OP1 for face_milling and T4 to OP3 for chamfering, resolving all hard violations while preserving operation order.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "9f70ef78b379945a",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": true,
+        "hard_constraint_violations": [],
+        "warnings": [],
+        "coverage": {
+          "required_features": 4,
+          "covered_features": 4,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": {
+        "status": "repaired",
+        "agent": "llm",
+        "model": "qwen3.5:9b",
+        "changes": [
+          "Changed machine for OP1 from M1 to M2 to satisfy face_milling capability.",
+          "Changed tool for OP3 from T3 to T4 to satisfy chamfering compatibility."
+        ],
+        "missing_information": [],
+        "prompt_refs": [
+          "repair_system@v1#ca428a36f8643353",
+          "repair_user@v1#e0892879cbdae7da"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Changed machine for OP1 from M1 to M2 to satisfy face_milling capability.\",\n    \"Changed tool for OP3 from T3 to T4 to satisfy chamfering compatibility.\"\n  ],\n  \"missing_information\": [],\n  \"plan\": {\n    \"component_id\": \"syn_005\",\n    \"operations\": [\n      {\n        \"operation_id\": \"OP1\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\n          \"F1\"\n        ],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 4.0\n      },\n      {\n        \"operation_id\": \"OP2\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F2\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP3\",\n        \"type\": \"chamfering\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T4\",\n        \"duration_min\": 1.5\n      },\n      {\n        \"operation_id\": \"OP4\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 2.0\n      }\n    ],\n    \"precedence\": [\n      [\n        \"OP1\",\n        \"OP2\"\n      ],\n      [\n        \"OP1\",\n        \"OP3\"\n      ],\n      [\n        \"OP1\",\n        \"OP4\"\n      ]\n    ],\n    \"explanation\": \"Revised plan assigns M2 to OP1 for face_milling and T4 to OP3 for chamfering, resolving all hard violations while preserving operation order.\",\n    \"assumptions\": [\n      \"Durations are illustrative placeholders, not calculated from cutting data.\"\n    ],\n    \"uncertainties\": []\n  }\n}",
+            "issues": [],
+            "latency_s": 3.7795991799794137,
+            "prompt_tokens": 2866,
+            "completion_tokens": 530
+          }
+        ],
+        "normalization_notes": [],
+        "error": null,
+        "diff": {
+          "added": [],
+          "removed": [],
+          "modified": {
+            "OP1": {
+              "machine_id": [
+                "M1",
+                "M2"
+              ]
+            },
+            "OP3": {
+              "tool_id": [
+                "T3",
+                "T4"
+              ]
+            }
+          },
+          "sequence_changed": false,
+          "precedence_added": [],
+          "precedence_removed": [],
+          "unchanged_operations": [
+            "OP2",
+            "OP4"
+          ]
+        },
+        "latency_s": 3.78
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "2 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_REPAIRED",
+      "iteration": 1,
+      "detail": "2 change(s)"
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 1,
+      "detail": "0 hard violation(s)"
+    },
+    {
+      "state": "ACCEPTED",
+      "iteration": 1,
+      "detail": "valid"
+    }
+  ],
+  "final_status": "ACCEPTED",
+  "stop_reason": "valid",
+  "stop_detail": "",
+  "terminal_repair": null,
+  "final_iteration": 1,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_005_plan_v1",
+    "component_id": "syn_005",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "chamfering",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ]
+    ],
+    "explanation": "Revised plan assigns M2 to OP1 for face_milling and T4 to OP3 for chamfering, resolving all hard violations while preserving operation order.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": true,
+    "hard_constraint_violations": [],
+    "warnings": [],
+    "coverage": {
+      "required_features": 4,
+      "covered_features": 4,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

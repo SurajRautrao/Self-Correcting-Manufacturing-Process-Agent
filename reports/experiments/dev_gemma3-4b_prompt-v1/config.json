@@ -1,0 +1,43 @@
+{
+  "experiment_id": "dev_gemma3-4b_prompt-v1",
+  "description": "Prompt development on the DEV split: planner prompt v1, gemma3:4b, 8 dev parts x 3 seeds, B0/B1/R only (planner calls, no LLM repair). Compare dev_gemma3-4b_prompt-v1 with -v2; not a reportable result.",
+  "benchmark_dir": "data/synthetic/benchmark_v1",
+  "split": "dev",
+  "limit": null,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "tracks": [
+    "generation"
+  ],
+  "systems": [
+    "B0",
+    "B1",
+    "R"
+  ],
+  "planner": {
+    "provider": "ollama",
+    "model": "gemma3:4b",
+    "temperature": 0.7,
+    "prompt_version": "v1"
+  },
+  "llm_repair": null,
+  "max_repairs": 3,
+  "corruption_faults": [
+    "incapable_machine",
+    "incompatible_tool",
+    "invalid_duration",
+    "missing_operation",
+    "precedence_cycle",
+    "swap_precedence",
+    "unknown_feature",
+    "unknown_machine",
+    "unknown_operation_type",
+    "unknown_tool"
+  ],
+  "faults_per_case": 2,
+  "output_dir": "reports/experiments",
+  "initial_plans_from": null
+}

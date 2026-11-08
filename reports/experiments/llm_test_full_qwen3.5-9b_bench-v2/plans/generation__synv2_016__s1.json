@@ -1,0 +1,205 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_016_plan_v0",
+    "component_id": "synv2_016",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "chamfering",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T7",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "chamfering",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T7",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "pocket_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 10.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "chamfering",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T7",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "slot_milling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 8.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "drilling",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T6",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "tapping",
+        "target_features": [
+          "F8"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP10",
+        "type": "drilling",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T6",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP11",
+        "type": "tapping",
+        "target_features": [
+          "F9"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 4.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ],
+      [
+        "OP1",
+        "OP10"
+      ],
+      [
+        "OP8",
+        "OP9"
+      ],
+      [
+        "OP10",
+        "OP11"
+      ]
+    ],
+    "explanation": "The sequence begins with face milling F1 on M3 using a face mill. Subsequently, all other features (F2-F9) are machined on their respective machines (M1 for milling operations on the datum face, M3 for through-hole drilling, M2 for threaded holes). Drilling precedes tapping for features F8 and F9 as required by precedence constraints.",
+    "assumptions": [
+      "The part is held in a fixture that allows access to all features after F1 milling, assuming standard setup times not modeled.",
+      "Tool changes between operations are instantaneous.",
+      "The 'spot_drilling' operation type was omitted for through_hole F7 as it only lists drilling in required_operation_types; however, the catalogue feature_types for through_hole includes spot_drilling. Given the constraint to include ONLY listed types for features with 'required_operation_types' (which is absent for F7), we use 'drilling'.",
+      "Tool IDs T2 and T6 are used for drilling holes of different diameters without size-specific distinction in the resources list.",
+      "No reaming is performed on F7 as no tool or operation type was strictly required, and it's not in the default catalogue mapping for this specific feature unless specified."
+    ],
+    "uncertainties": [
+      "The specific geometry of F1 (datum face) relative to other features implies an orientation that allows simultaneous access to F2-F9 without collision; this is unverified.",
+      "Tool T6 is used for both F8 and F9 drilling; if diameters differ significantly, the tool might need replacement not reflected in the resources."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "qwen3.5:9b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\n  \"component_id\": \"synv2_016\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\n        \"F1\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T7\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F3\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T7\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"pocket_milling\",\n      \"target_features\": [\n        \"F4\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T8\",\n      \"duration_min\": 10.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F5\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T7\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"slot_milling\",\n      \"target_features\": [\n        \"F6\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T8\",\n      \"duration_min\": 8.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F7\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F8\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP9\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F8\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T5\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP10\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F9\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP11\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F9\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T5\",\n      \"duration_min\": 4.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP3\"],\n    [\"OP1\", \"OP4\"],\n    [\"OP1\", \"OP5\"],\n    [\"OP1\", \"OP6\"],\n    [\"OP1\", \"OP7\"],\n    [\"OP1\", \"OP8\"],\n    [\"OP1\", \"OP10\"],\n    [\"OP8\", \"OP9\"],\n    [\"OP10\", \"OP11\"]\n  ],\n  \"explanation\": \"The sequence begins with face milling F1 on M3 using a face mill. Subsequently, all other features (F2-F9) are machined on their respective machines (M1 for milling operations on the datum face, M3 for through-hole drilling, M2 for threaded holes). Drilling precedes tapping for features F8 and F9 as required by precedence constraints.\",\n  \"assumptions\": [\n    \"The part is held in a fixture that allows access to all features after F1 milling, assuming standard setup times not modeled.\",\n    \"Tool changes between operations are instantaneous.\",\n    \"The 'spot_drilling' operation type was omitted for through_hole F7 as it only lists drilling in required_operation_types; however, the catalogue feature_types for through_hole includes spot_drilling. Given the constraint to include ONLY listed types for features with 'required_operation_types' (which is absent for F7), we use 'drilling'.\",\n    \"Tool IDs T2 and T6 are used for drilling holes of different diameters without size-specific distinction in the resources list.\",\n    \"No reaming is performed on F7 as no tool or operation type was strictly required, and it's not in the default catalogue mapping for this specific feature unless specified.\"\n  ],\n  \"uncertainties\": [\n    \"The specific geometry of F1 (datum face) relative to other features implies an orientation that allows simultaneous access to F2-F9 without collision; this is unverified.\",\n    \"Tool T6 is used for both F8 and F9 drilling; if diameters differ significantly, the tool might need replacement not reflected in the resources.\"\n  ]\n}",
+      "issues": [],
+      "latency_s": 8.440803692676127,
+      "prompt_tokens": 3117,
+      "completion_tokens": 1290
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}

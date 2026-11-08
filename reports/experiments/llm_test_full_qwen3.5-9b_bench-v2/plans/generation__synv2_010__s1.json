@@ -1,0 +1,178 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "synv2_010_plan_v0",
+    "component_id": "synv2_010",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "spot_drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T1",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "tapping",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "slot_milling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T6",
+        "duration_min": 6.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "pocket_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 8.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "drilling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP9",
+        "type": "tapping",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T7",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP10",
+        "type": "spot_drilling",
+        "target_features": [
+          "F7"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T8",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ],
+      [
+        "OP1",
+        "OP10"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ],
+      [
+        "OP8",
+        "OP9"
+      ]
+    ],
+    "explanation": "Face milling of datum F1 on M1. Spot drilling F2, then drilling on M1. Drilling F3 (M3) followed by tapping (M3). Slotting F4 on M2. Pocketing F5 on M1. Drilling and tapping F6 on M3. Spot drilling F7 on M1.",
+    "assumptions": [
+      "Tool T1 used for both F2 and F3/F6 drilling operations assuming generic drill bit covers all required diameters.",
+      "Tool T7 used for both F3 and F6 tapping operations assuming same tap geometry is sufficient."
+    ],
+    "uncertainties": [
+      "Exact tool diameter sizes not specified in catalogue; assumed availability of appropriate drill bits for 10mm and 8mm features."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "qwen3.5:9b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\n  \"component_id\": \"synv2_010\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\n        \"F1\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T3\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T8\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F3\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F3\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T7\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"slot_milling\",\n      \"target_features\": [\n        \"F4\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 6.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"pocket_milling\",\n      \"target_features\": [\n        \"F5\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T6\",\n      \"duration_min\": 8.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F6\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP9\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F6\"\n      ],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T7\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP10\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\n        \"F7\"\n      ],\n      \"machine_id\": \"M1\",\n      \"tool_id\": \"T8\",\n      \"duration_min\": 2.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP4\"],\n    [\"OP1\", \"OP6\"],\n    [\"OP1\", \"OP8\"],\n    [\"OP1\", \"OP10\"],\n    [\"OP4\", \"OP5\"],\n    [\"OP8\", \"OP9\"]\n  ],\n  \"explanation\": \"Face milling of datum F1 on M1. Spot drilling F2, then drilling on M1. Drilling F3 (M3) followed by tapping (M3). Slotting F4 on M2. Pocketing F5 on M1. Drilling and tapping F6 on M3. Spot drilling F7 on M1.\",\n  \"assumptions\": [\n    \"Tool T1 used for both F2 and F3/F6 drilling operations assuming generic drill bit covers all required diameters.\",\n    \"Tool T7 used for both F3 and F6 tapping operations assuming same tap geometry is sufficient.\"\n  ],\n  \"uncertainties\": [\n    \"Exact tool diameter sizes not specified in catalogue; assumed availability of appropriate drill bits for 10mm and 8mm features.\"\n  ]\n}",
+      "issues": [],
+      "latency_s": 6.53895167587325,
+      "prompt_tokens": 2776,
+      "completion_tokens": 1005
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}
