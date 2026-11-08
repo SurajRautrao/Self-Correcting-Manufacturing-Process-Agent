@@ -1,0 +1,365 @@
+{
+  "run_id": "generation__validate_only__syn_012__s2",
+  "component_id": "syn_012",
+  "started_at": "2026-11-08T13:42:05+00:00",
+  "duration_s": 0.001,
+  "planner": "llm",
+  "planner_model": "qwen3.5:9b",
+  "repair_agent": null,
+  "max_repairs": 0,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": null
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "llm",
+    "model": "qwen3.5:9b",
+    "prompt_refs": [
+      "planner_system@v1#86ada0ca7d3bb324",
+      "planner_user@v1#723b81a7db1f3554"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "raw_output": "{\n  \"component_id\": \"syn_012\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\n        \"F1\"\n      ],\n      \"machine_id\": \"M4\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"contour_milling\",\n      \"target_features\": [\n        \"F3\"\n      ],\n      \"machine_id\": \"M4\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 8.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F5\"\n      ],\n      \"machine_id\": \"M4\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"chamfering\",\n      \"target_features\": [\n        \"F6\"\n      ],\n      \"machine_id\": \"M4\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T5\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F2\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T3\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"drilling\",\n      \"target_features\": [\n        \"F4\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T5\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"tapping\",\n      \"target_features\": [\n        \"F4\"\n      ],\n      \"machine_id\": \"M2\",\n      \"tool_id\": \"T3\",\n      \"duration_min\": 4.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP3\"],\n    [\"OP1\", \"OP4\"],\n    [\"OP5\", \"OP6\"],\n    [\"OP7\", \"OP8\"]\n  ],\n  \"explanation\": \"Sequence starts with face milling the datum (F1), followed by contour milling (F3) and chamfers (F5, F6). Threaded holes F2 and F4 are processed after drilling then tapping. Precedence edges enforce datum-first operations and drill-before-tap logic.\",\n  \"assumptions\": [\n    \"Tool T1 is used for both chamfer features despite width differences; tool selection does not account for specific width requirements.\",\n    \"Machine M2 is selected for all drilling/tapping on threaded holes as it is the only machine with explicit tapping capability listed in resources, though M3 also has it.\"\n  ],\n  \"uncertainties\": [\n    \"The catalogue lists 'spot_drilling' for hole operations but no spot drill tool is provided; drilling is used instead.\",\n    \"Collision between spindle and existing features (e.g., chamfers) during contour milling or drilling is not checked.\"\n  ]\n}",
+        "issues": [],
+        "latency_s": 17.756677605211735,
+        "prompt_tokens": 2751,
+        "completion_tokens": 865
+      }
+    ],
+    "normalization_notes": [],
+    "injected_faults": [],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_012_plan_v0",
+        "component_id": "syn_012",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T4",
+            "duration_min": 5.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "contour_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T2",
+            "duration_min": 8.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "chamfering",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "chamfering",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M4",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T5",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "tapping",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T5",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP5",
+            "OP6"
+          ],
+          [
+            "OP7",
+            "OP8"
+          ]
+        ],
+        "explanation": "Sequence starts with face milling the datum (F1), followed by contour milling (F3) and chamfers (F5, F6). Threaded holes F2 and F4 are processed after drilling then tapping. Precedence edges enforce datum-first operations and drill-before-tap logic.",
+        "assumptions": [
+          "Tool T1 is used for both chamfer features despite width differences; tool selection does not account for specific width requirements.",
+          "Machine M2 is selected for all drilling/tapping on threaded holes as it is the only machine with explicit tapping capability listed in resources, though M3 also has it."
+        ],
+        "uncertainties": [
+          "The catalogue lists 'spot_drilling' for hole operations but no spot drill tool is provided; drilling is used instead.",
+          "Collision between spindle and existing features (e.g., chamfers) during contour milling or drilling is not checked."
+        ],
+        "provenance": null
+      },
+      "plan_hash": "37dc331a975d461e",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": true,
+        "hard_constraint_violations": [],
+        "warnings": [],
+        "coverage": {
+          "required_features": 6,
+          "covered_features": 6,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "0 hard violation(s)"
+    },
+    {
+      "state": "ACCEPTED",
+      "iteration": 0,
+      "detail": "valid"
+    }
+  ],
+  "final_status": "ACCEPTED",
+  "stop_reason": "valid",
+  "stop_detail": "",
+  "terminal_repair": null,
+  "final_iteration": 0,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_012_plan_v0",
+    "component_id": "syn_012",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T4",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "contour_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T2",
+        "duration_min": 8.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "chamfering",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "chamfering",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M4",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "tapping",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T5",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 4.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP5",
+        "OP6"
+      ],
+      [
+        "OP7",
+        "OP8"
+      ]
+    ],
+    "explanation": "Sequence starts with face milling the datum (F1), followed by contour milling (F3) and chamfers (F5, F6). Threaded holes F2 and F4 are processed after drilling then tapping. Precedence edges enforce datum-first operations and drill-before-tap logic.",
+    "assumptions": [
+      "Tool T1 is used for both chamfer features despite width differences; tool selection does not account for specific width requirements.",
+      "Machine M2 is selected for all drilling/tapping on threaded holes as it is the only machine with explicit tapping capability listed in resources, though M3 also has it."
+    ],
+    "uncertainties": [
+      "The catalogue lists 'spot_drilling' for hole operations but no spot drill tool is provided; drilling is used instead.",
+      "Collision between spindle and existing features (e.g., chamfers) during contour milling or drilling is not checked."
+    ],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": true,
+    "hard_constraint_violations": [],
+    "warnings": [],
+    "coverage": {
+      "required_features": 6,
+      "covered_features": 6,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

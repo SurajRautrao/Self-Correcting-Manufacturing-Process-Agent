@@ -1,0 +1,501 @@
+{
+  "run_id": "generation__B2__syn_008__s0",
+  "component_id": "syn_008",
+  "started_at": "2026-11-08T13:38:36+00:00",
+  "duration_s": 0.0,
+  "planner": "llm",
+  "planner_model": "qwen3.5:9b",
+  "repair_agent": "llm",
+  "max_repairs": 3,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": "qwen3.5:9b"
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "llm",
+    "model": "qwen3.5:9b",
+    "prompt_refs": [
+      "planner_system@v1#86ada0ca7d3bb324",
+      "planner_user@v1#723b81a7db1f3554"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "raw_output": "{\n  \"component_id\": \"syn_008\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\"F1\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"contour_milling\",\n      \"target_features\": [\"F5\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 3.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"slot_milling\",\n      \"target_features\": [\"F6\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"slot_milling\",\n      \"target_features\": [\"F3\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\"F2\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 1.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F2\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F4\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F4\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP3\"],\n    [\"OP1\", \"OP4\"],\n    [\"OP1\", \"OP5\"],\n    [\"OP1\", \"OP6\"],\n    [\"OP1\", \"OP7\"],\n    [\"OP1\", \"OP8\"]\n  ],\n  \"explanation\": \"Face milling establishes the datum (F1). Contour milling creates the outer profile (F5). Slot milling removes slots F3 and F6. Spot drilling and drilling create blind holes F2 and F4. All operations are performed on M3 using compatible tools T2, T1, or T4.\",\n  \"assumptions\": [\n    \"Synthetic component generated for software evaluation; not derived from real geometry.\",\n    \"Tool size, tool access, collisions and setups are not modelled.\",\n    \"Precedence constraints are generated demo assumptions, not general manufacturing rules.\"\n  ],\n  \"uncertainties\": [\n    \"No specific drill bit diameters provided for F2 (6mm) or F4 (5mm), assumed available in T1.\",\n    \"Tool compatibility mapping assumes generic 'drill' tool covers all blind hole depths without change.\"\n  ]\n}",
+        "issues": [],
+        "latency_s": 17.456460053101182,
+        "prompt_tokens": 2245,
+        "completion_tokens": 826
+      }
+    ],
+    "normalization_notes": [],
+    "injected_faults": [],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_008_plan_v0",
+        "component_id": "syn_008",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "contour_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T2",
+            "duration_min": 3.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "slot_milling",
+            "target_features": [
+              "F6"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T2",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "slot_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T2",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "spot_drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T1",
+            "duration_min": 1.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T1",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP1",
+            "OP6"
+          ],
+          [
+            "OP1",
+            "OP7"
+          ],
+          [
+            "OP1",
+            "OP8"
+          ]
+        ],
+        "explanation": "Face milling establishes the datum (F1). Contour milling creates the outer profile (F5). Slot milling removes slots F3 and F6. Spot drilling and drilling create blind holes F2 and F4. All operations are performed on M3 using compatible tools T2, T1, or T4.",
+        "assumptions": [
+          "Synthetic component generated for software evaluation; not derived from real geometry.",
+          "Tool size, tool access, collisions and setups are not modelled.",
+          "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+        ],
+        "uncertainties": [
+          "No specific drill bit diameters provided for F2 (6mm) or F4 (5mm), assumed available in T1.",
+          "Tool compatibility mapping assumes generic 'drill' tool covers all blind hole depths without change."
+        ],
+        "provenance": null
+      },
+      "plan_hash": "d8b2e5a53b18d566",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R3_MACHINE_CAPABILITY",
+            "severity": "hard",
+            "message": "Machine 'M3' cannot perform 'contour_milling'.",
+            "operation_id": "OP2",
+            "feature_id": null,
+            "evidence": {
+              "selected_machine": "M3",
+              "operation_type": "contour_milling",
+              "machine_capabilities": [
+                "face_milling",
+                "pocket_milling",
+                "slot_milling",
+                "spot_drilling",
+                "drilling",
+                "chamfering"
+              ],
+              "capable_machines": [],
+              "operation_removable": false
+            },
+            "repair_hint": "No available machine can perform 'contour_milling'; human review needed.",
+            "repairable": false
+          },
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+            "operation_id": "OP5",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T1",
+              "selected_tool_type": "drill",
+              "allowed_tool_types": [
+                "spot_drill"
+              ],
+              "compatible_available_tools": [],
+              "operation_removable": true
+            },
+            "repair_hint": "No available tool of type ['spot_drill'] exists, but OP5 is not needed for coverage: remove it.",
+            "repairable": true
+          }
+        ],
+        "warnings": [
+          {
+            "rule_id": "R10_DUPLICATE_OPERATION",
+            "severity": "warning",
+            "message": "Feature 'F4' receives 'drilling' 2 times (['OP7', 'OP8']).",
+            "operation_id": "OP8",
+            "feature_id": "F4",
+            "evidence": {
+              "operation_type": "drilling",
+              "operation_ids": [
+                "OP7",
+                "OP8"
+              ]
+            },
+            "repair_hint": "Remove the redundant operation(s), keeping OP7, unless repeated passes are intended.",
+            "repairable": true
+          }
+        ],
+        "coverage": {
+          "required_features": 6,
+          "covered_features": 6,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "2 hard violation(s)"
+    },
+    {
+      "state": "NEEDS_HUMAN_REVIEW",
+      "iteration": 0,
+      "detail": "R3_MACHINE_CAPABILITY: No available machine can perform 'contour_milling'; human review needed."
+    }
+  ],
+  "final_status": "NEEDS_HUMAN_REVIEW",
+  "stop_reason": "non_repairable_violation",
+  "stop_detail": "R3_MACHINE_CAPABILITY: No available machine can perform 'contour_milling'; human review needed.",
+  "terminal_repair": null,
+  "final_iteration": 0,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_008_plan_v0",
+    "component_id": "syn_008",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "contour_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 3.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "slot_milling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "slot_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "spot_drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 1.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP1",
+        "OP8"
+      ]
+    ],
+    "explanation": "Face milling establishes the datum (F1). Contour milling creates the outer profile (F5). Slot milling removes slots F3 and F6. Spot drilling and drilling create blind holes F2 and F4. All operations are performed on M3 using compatible tools T2, T1, or T4.",
+    "assumptions": [
+      "Synthetic component generated for software evaluation; not derived from real geometry.",
+      "Tool size, tool access, collisions and setups are not modelled.",
+      "Precedence constraints are generated demo assumptions, not general manufacturing rules."
+    ],
+    "uncertainties": [
+      "No specific drill bit diameters provided for F2 (6mm) or F4 (5mm), assumed available in T1.",
+      "Tool compatibility mapping assumes generic 'drill' tool covers all blind hole depths without change."
+    ],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": false,
+    "hard_constraint_violations": [
+      {
+        "rule_id": "R3_MACHINE_CAPABILITY",
+        "severity": "hard",
+        "message": "Machine 'M3' cannot perform 'contour_milling'.",
+        "operation_id": "OP2",
+        "feature_id": null,
+        "evidence": {
+          "selected_machine": "M3",
+          "operation_type": "contour_milling",
+          "machine_capabilities": [
+            "face_milling",
+            "pocket_milling",
+            "slot_milling",
+            "spot_drilling",
+            "drilling",
+            "chamfering"
+          ],
+          "capable_machines": [],
+          "operation_removable": false
+        },
+        "repair_hint": "No available machine can perform 'contour_milling'; human review needed.",
+        "repairable": false
+      },
+      {
+        "rule_id": "R5_TOOL_COMPATIBILITY",
+        "severity": "hard",
+        "message": "Tool 'T1' (type 'drill') is incompatible with 'spot_drilling'.",
+        "operation_id": "OP5",
+        "feature_id": null,
+        "evidence": {
+          "selected_tool": "T1",
+          "selected_tool_type": "drill",
+          "allowed_tool_types": [
+            "spot_drill"
+          ],
+          "compatible_available_tools": [],
+          "operation_removable": true
+        },
+        "repair_hint": "No available tool of type ['spot_drill'] exists, but OP5 is not needed for coverage: remove it.",
+        "repairable": true
+      }
+    ],
+    "warnings": [
+      {
+        "rule_id": "R10_DUPLICATE_OPERATION",
+        "severity": "warning",
+        "message": "Feature 'F4' receives 'drilling' 2 times (['OP7', 'OP8']).",
+        "operation_id": "OP8",
+        "feature_id": "F4",
+        "evidence": {
+          "operation_type": "drilling",
+          "operation_ids": [
+            "OP7",
+            "OP8"
+          ]
+        },
+        "repair_hint": "Remove the redundant operation(s), keeping OP7, unless repeated passes are intended.",
+        "repairable": true
+      }
+    ],
+    "coverage": {
+      "required_features": 6,
+      "covered_features": 6,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

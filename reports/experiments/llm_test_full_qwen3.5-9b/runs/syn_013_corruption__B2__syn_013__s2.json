@@ -1,0 +1,1047 @@
+{
+  "run_id": "corruption__B2__syn_013__s2",
+  "component_id": "syn_013",
+  "started_at": "2026-11-08T14:00:59+00:00",
+  "duration_s": 41.575,
+  "planner": "corruption",
+  "planner_model": null,
+  "repair_agent": "llm",
+  "max_repairs": 3,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": "qwen3.5:9b"
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "corruption",
+    "model": null,
+    "prompt_refs": [],
+    "attempts": [],
+    "normalization_notes": [],
+    "injected_faults": [
+      {
+        "kind": "swap_precedence",
+        "operation_id": "OP5",
+        "operations": [
+          "OP1",
+          "OP5"
+        ],
+        "expected_rule": "R9_PRECEDENCE_ORDER",
+        "detail": "swapped OP1 and OP5 in sequence"
+      },
+      {
+        "kind": "unknown_operation_type",
+        "operation_id": "OP4",
+        "operations": [
+          "OP4"
+        ],
+        "expected_rule": "R1_OPERATION_TYPE",
+        "detail": "type -> laser_cutting"
+      }
+    ],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_013_corrupted_s2",
+        "component_id": "syn_013",
+        "operations": [
+          {
+            "operation_id": "OP5",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "laser_cutting",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T2",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T7",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "pocket_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T3",
+            "duration_min": 6.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP1",
+            "OP6"
+          ],
+          [
+            "OP1",
+            "OP7"
+          ],
+          [
+            "OP3",
+            "OP4"
+          ],
+          [
+            "OP5",
+            "OP6"
+          ]
+        ],
+        "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "3c3307235f5cd695",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R1_OPERATION_TYPE",
+            "severity": "hard",
+            "message": "Operation type 'laser_cutting' is not in the operation catalogue.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "operation_type": "laser_cutting",
+              "allowed_operation_types": [
+                "face_milling",
+                "contour_milling",
+                "pocket_milling",
+                "slot_milling",
+                "spot_drilling",
+                "drilling",
+                "reaming",
+                "tapping",
+                "chamfering"
+              ]
+            },
+            "repair_hint": "Replace 'laser_cutting' with a catalogue operation suitable for the target feature(s), e.g. ['drilling', 'reaming', 'spot_drilling'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R6_FEATURE_COVERAGE",
+            "severity": "hard",
+            "message": "Required feature 'F3' is missing operation(s) ['reaming'].",
+            "operation_id": null,
+            "feature_id": "F3",
+            "evidence": {
+              "feature_type": "through_hole",
+              "requirement": "all_of",
+              "missing_operation_types": [
+                "reaming"
+              ],
+              "applied_operation_types": [
+                "drilling"
+              ],
+              "resource_options": {
+                "reaming": [
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T2"
+                  },
+                  {
+                    "machine_id": "M1",
+                    "tool_id": "T5"
+                  }
+                ]
+              }
+            },
+            "repair_hint": "Add operation(s) targeting F3: reaming on M1 with T2.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP1 -> OP3 is violated: OP3 is sequenced before OP1.",
+            "operation_id": "OP3",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 0,
+              "edge": [
+                "OP1",
+                "OP3"
+              ],
+              "positions": {
+                "OP1": 4,
+                "OP3": 2
+              }
+            },
+            "repair_hint": "Move OP1 before OP3 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP1 -> OP4 is violated: OP4 is sequenced before OP1.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 1,
+              "edge": [
+                "OP1",
+                "OP4"
+              ],
+              "positions": {
+                "OP1": 4,
+                "OP4": 3
+              }
+            },
+            "repair_hint": "Move OP1 before OP4 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP1 -> OP5 is violated: OP5 is sequenced before OP1.",
+            "operation_id": "OP5",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 2,
+              "edge": [
+                "OP1",
+                "OP5"
+              ],
+              "positions": {
+                "OP1": 4,
+                "OP5": 0
+              }
+            },
+            "repair_hint": "Move OP1 before OP5 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Component constraint violated: all work on F1 must precede all work on F3, but OP3 is sequenced before OP1.",
+            "operation_id": "OP3",
+            "feature_id": "F3",
+            "evidence": {
+              "source": "component_precedence_constraint",
+              "constraint_index": 0,
+              "before": {
+                "feature_id": "F1",
+                "operation_type": null
+              },
+              "after": {
+                "feature_id": "F3",
+                "operation_type": null
+              },
+              "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it.",
+              "before_operation": "OP1",
+              "after_operation": "OP3",
+              "positions": {
+                "OP1": 4,
+                "OP3": 2
+              }
+            },
+            "repair_hint": "Move OP1 before OP3.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Component constraint violated: all work on F1 must precede all work on F3, but OP4 is sequenced before OP1.",
+            "operation_id": "OP4",
+            "feature_id": "F3",
+            "evidence": {
+              "source": "component_precedence_constraint",
+              "constraint_index": 0,
+              "before": {
+                "feature_id": "F1",
+                "operation_type": null
+              },
+              "after": {
+                "feature_id": "F3",
+                "operation_type": null
+              },
+              "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it.",
+              "before_operation": "OP1",
+              "after_operation": "OP4",
+              "positions": {
+                "OP1": 4,
+                "OP4": 3
+              }
+            },
+            "repair_hint": "Move OP1 before OP4.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Component constraint violated: all work on F1 must precede all work on F4, but OP5 is sequenced before OP1.",
+            "operation_id": "OP5",
+            "feature_id": "F4",
+            "evidence": {
+              "source": "component_precedence_constraint",
+              "constraint_index": 2,
+              "before": {
+                "feature_id": "F1",
+                "operation_type": null
+              },
+              "after": {
+                "feature_id": "F4",
+                "operation_type": null
+              },
+              "rationale": "Demo assumption: F1 is the datum face; this feature is located or dimensioned from it.",
+              "before_operation": "OP1",
+              "after_operation": "OP5",
+              "positions": {
+                "OP1": 4,
+                "OP5": 0
+              }
+            },
+            "repair_hint": "Move OP1 before OP5.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 5,
+          "covered_features": 4,
+          "missing_features": [
+            "F3"
+          ]
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    },
+    {
+      "index": 1,
+      "source": "repair",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_013_plan_v1",
+        "component_id": "syn_013",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "reaming",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T5",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T2",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T7",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "pocket_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T3",
+            "duration_min": 6.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP1",
+            "OP6"
+          ],
+          [
+            "OP1",
+            "OP7"
+          ],
+          [
+            "OP3",
+            "OP8"
+          ]
+        ],
+        "explanation": "Face milling (F1) is performed first to satisfy all datum dependencies. Drilling for F4, F2, and F3 follows. Reaming for F3 follows its drilling. Tapping for F4 follows drilling of F4. Pocket milling for F5 follows face milling.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "96d16199576cad22",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R5_TOOL_COMPATIBILITY",
+            "severity": "hard",
+            "message": "Tool 'T2' (type 'reamer') is incompatible with 'drilling'.",
+            "operation_id": "OP4",
+            "feature_id": null,
+            "evidence": {
+              "selected_tool": "T2",
+              "selected_tool_type": "reamer",
+              "allowed_tool_types": [
+                "drill"
+              ],
+              "compatible_available_tools": [
+                "T6"
+              ],
+              "operation_removable": false
+            },
+            "repair_hint": "Select a compatible tool: ['T6'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Component constraint violated: drilling on F3 must precede reaming on F3, but OP8 is sequenced before OP4.",
+            "operation_id": "OP8",
+            "feature_id": "F3",
+            "evidence": {
+              "source": "component_precedence_constraint",
+              "constraint_index": 1,
+              "before": {
+                "feature_id": "F3",
+                "operation_type": "drilling"
+              },
+              "after": {
+                "feature_id": "F3",
+                "operation_type": "reaming"
+              },
+              "rationale": "Reaming requires a pre-drilled hole.",
+              "before_operation": "OP4",
+              "after_operation": "OP8",
+              "positions": {
+                "OP4": 5,
+                "OP8": 4
+              }
+            },
+            "repair_hint": "Move OP4 before OP8.",
+            "repairable": true
+          }
+        ],
+        "warnings": [
+          {
+            "rule_id": "R10_DUPLICATE_OPERATION",
+            "severity": "warning",
+            "message": "Feature 'F3' receives 'drilling' 2 times (['OP3', 'OP4']).",
+            "operation_id": "OP4",
+            "feature_id": "F3",
+            "evidence": {
+              "operation_type": "drilling",
+              "operation_ids": [
+                "OP3",
+                "OP4"
+              ]
+            },
+            "repair_hint": "Remove the redundant operation(s), keeping OP3, unless repeated passes are intended.",
+            "repairable": true
+          }
+        ],
+        "coverage": {
+          "required_features": 5,
+          "covered_features": 5,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": {
+        "status": "repaired",
+        "agent": "llm",
+        "model": "qwen3.5:9b",
+        "changes": [
+          "Replaced invalid operation type 'laser_cutting' with 'drilling' for feature F3 to match catalogue.",
+          "Added a new reaming operation (OP8) targeting feature F3 using machine M1 and tool T5 to satisfy feature coverage.",
+          "Removed precedence edge OP3 -> OP4 from the plan's precedence list as it was invalid due to the removed/replaced operation type logic.",
+          "Reordered the operations array so that face_milling (OP1) precedes all drilling operations (OP5, OP2, OP3)."
+        ],
+        "missing_information": [],
+        "prompt_refs": [
+          "repair_system@v1#ca428a36f8643353",
+          "repair_user@v1#e0892879cbdae7da"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Replaced invalid operation type 'laser_cutting' with 'drilling' for feature F3 to match catalogue.\",\n    \"Added a new reaming operation (OP8) targeting feature F3 using machine M1 and tool T5 to satisfy feature coverage.\",\n    \"Removed precedence edge OP3 -> OP4 from the plan's precedence list as it was invalid due to the removed/replaced operation type logic.\",\n    \"Reordered the operations array so that face_milling (OP1) precedes all drilling operations (OP5, OP2, OP3).\"\n  ],\n  \"missing_information\": [],\n  \"plan\": {\n    \"component_id\": \"syn_013\",\n    \"operations\": [\n      {\n        \"operation_id\": \"OP1\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\n          \"F1\"\n        ],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 4.0\n      },\n      {\n        \"operation_id\": \"OP5\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP2\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F2\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP3\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP8\",\n        \"type\": \"reaming\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T5\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP4\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T2\",\n        \"duration_min\": 1.5\n      },\n      {\n        \"operation_id\": \"OP6\",\n        \"type\": \"tapping\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T7\",\n        \"duration_min\": 1.5\n      },\n      {\n        \"operation_id\": \"OP7\",\n        \"type\": \"pocket_milling\",\n        \"target_features\": [\n          \"F5\"\n        ],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 6.0\n      }\n    ],\n    \"precedence\": [\n      [\n        \"OP1\",\n        \"OP3\"\n      ],\n      [\n        \"OP1\",\n        \"OP4\"\n      ],\n      [\n        \"OP1\",\n        \"OP5\"\n      ],\n      [\n        \"OP1\",\n        \"OP6\"\n      ],\n      [\n        \"OP1\",\n        \"OP7\"\n      ],\n      [\n        \"OP3\",\n        \"OP8\"\n      ]\n    ],\n    \"explanation\": \"Face milling (F1) is performed first to satisfy all datum dependencies. Drilling for F4, F2, and F3 follows. Reaming for F3 follows its drilling. Tapping for F4 follows drilling of F4. Pocket milling for F5 follows face milling.\",\n    \"assumptions\": [\n      \"Durations are illustrative placeholders, not calculated from cutting data.\"\n    ],\n    \"uncertainties\": []\n  }\n}",
+            "issues": [],
+            "latency_s": 22.445750638842583,
+            "prompt_tokens": 5112,
+            "completion_tokens": 971
+          }
+        ],
+        "normalization_notes": [],
+        "error": null,
+        "diff": {
+          "added": [
+            "OP8"
+          ],
+          "removed": [],
+          "modified": {
+            "OP4": {
+              "type": [
+                "laser_cutting",
+                "drilling"
+              ]
+            }
+          },
+          "sequence_changed": true,
+          "precedence_added": [
+            [
+              "OP3",
+              "OP8"
+            ]
+          ],
+          "precedence_removed": [
+            [
+              "OP3",
+              "OP4"
+            ],
+            [
+              "OP5",
+              "OP6"
+            ]
+          ],
+          "unchanged_operations": [
+            "OP1",
+            "OP2",
+            "OP3",
+            "OP5",
+            "OP6",
+            "OP7"
+          ]
+        },
+        "latency_s": 22.447
+      }
+    },
+    {
+      "index": 2,
+      "source": "repair",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_013_plan_v2",
+        "component_id": "syn_013",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T1",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "drilling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T6",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP8",
+            "type": "reaming",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T5",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "tapping",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T7",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP7",
+            "type": "pocket_milling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M2",
+            "tool_id": "T3",
+            "duration_min": 6.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP3"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP1",
+            "OP6"
+          ],
+          [
+            "OP1",
+            "OP7"
+          ],
+          [
+            "OP3",
+            "OP8"
+          ]
+        ],
+        "explanation": "Face milling (F1) is performed first to satisfy all datum dependencies. Drilling for F4 and F2 follows. A single drilling for F3 follows, then reaming for F3. Tapping for F4 follows drilling of F4. Pocket milling for F5 follows face milling.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "7be8d169498f9c9b",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": true,
+        "hard_constraint_violations": [],
+        "warnings": [],
+        "coverage": {
+          "required_features": 5,
+          "covered_features": 5,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": {
+        "status": "repaired",
+        "agent": "llm",
+        "model": "qwen3.5:9b",
+        "changes": [
+          "Replaced tool T2 with T6 in operation OP4 to fix the tool compatibility violation.",
+          "Removed the redundant drilling operation OP4 for feature F3 to eliminate the duplicate operation warning.",
+          "Removed precedence edge between OP4 and OP8 since OP4 no longer exists.",
+          "Re-ordered the operations array so that the remaining drilling on F3 (OP3) is followed by reaming on F3 (OP8), satisfying the precedence constraint."
+        ],
+        "missing_information": [],
+        "prompt_refs": [
+          "repair_system@v1#ca428a36f8643353",
+          "repair_user@v1#e0892879cbdae7da"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Replaced tool T2 with T6 in operation OP4 to fix the tool compatibility violation.\",\n    \"Removed the redundant drilling operation OP4 for feature F3 to eliminate the duplicate operation warning.\",\n    \"Removed precedence edge between OP4 and OP8 since OP4 no longer exists.\",\n    \"Re-ordered the operations array so that the remaining drilling on F3 (OP3) is followed by reaming on F3 (OP8), satisfying the precedence constraint.\"\n  ],\n  \"missing_information\": [],\n  \"plan\": {\n    \"component_id\": \"syn_013\",\n    \"operations\": [\n      {\n        \"operation_id\": \"OP1\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\n          \"F1\"\n        ],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T1\",\n        \"duration_min\": 4.0\n      },\n      {\n        \"operation_id\": \"OP5\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP2\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F2\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP3\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP8\",\n        \"type\": \"reaming\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T5\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP6\",\n        \"type\": \"tapping\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T7\",\n        \"duration_min\": 1.5\n      },\n      {\n        \"operation_id\": \"OP7\",\n        \"type\": \"pocket_milling\",\n        \"target_features\": [\n          \"F5\"\n        ],\n        \"machine_id\": \"M2\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 6.0\n      }\n    ],\n    \"precedence\": [\n      [\n        \"OP1\",\n        \"OP3\"\n      ],\n      [\n        \"OP1\",\n        \"OP5\"\n      ],\n      [\n        \"OP1\",\n        \"OP6\"\n      ],\n      [\n        \"OP1\",\n        \"OP7\"\n      ],\n      [\n        \"OP3\",\n        \"OP8\"\n      ]\n    ],\n    \"explanation\": \"Face milling (F1) is performed first to satisfy all datum dependencies. Drilling for F4 and F2 follows. A single drilling for F3 follows, then reaming for F3. Tapping for F4 follows drilling of F4. Pocket milling for F5 follows face milling.\",\n    \"assumptions\": [\n      \"Durations are illustrative placeholders, not calculated from cutting data.\"\n    ],\n    \"uncertainties\": []\n  }\n}",
+            "issues": [],
+            "latency_s": 19.12564630387351,
+            "prompt_tokens": 3990,
+            "completion_tokens": 864
+          }
+        ],
+        "normalization_notes": [],
+        "error": null,
+        "diff": {
+          "added": [],
+          "removed": [
+            "OP4"
+          ],
+          "modified": {},
+          "sequence_changed": false,
+          "precedence_added": [],
+          "precedence_removed": [
+            [
+              "OP1",
+              "OP4"
+            ]
+          ],
+          "unchanged_operations": [
+            "OP1",
+            "OP2",
+            "OP3",
+            "OP5",
+            "OP6",
+            "OP7",
+            "OP8"
+          ]
+        },
+        "latency_s": 19.127
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "8 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_REPAIRED",
+      "iteration": 1,
+      "detail": "4 change(s)"
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 1,
+      "detail": "2 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 1,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_REPAIRED",
+      "iteration": 2,
+      "detail": "4 change(s)"
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 2,
+      "detail": "0 hard violation(s)"
+    },
+    {
+      "state": "ACCEPTED",
+      "iteration": 2,
+      "detail": "valid"
+    }
+  ],
+  "final_status": "ACCEPTED",
+  "stop_reason": "valid",
+  "stop_detail": "",
+  "terminal_repair": null,
+  "final_iteration": 2,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_013_plan_v2",
+    "component_id": "syn_013",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "drilling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T6",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "reaming",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T5",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "tapping",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T7",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "pocket_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M2",
+        "tool_id": "T3",
+        "duration_min": 6.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP1",
+        "OP6"
+      ],
+      [
+        "OP1",
+        "OP7"
+      ],
+      [
+        "OP3",
+        "OP8"
+      ]
+    ],
+    "explanation": "Face milling (F1) is performed first to satisfy all datum dependencies. Drilling for F4 and F2 follows. A single drilling for F3 follows, then reaming for F3. Tapping for F4 follows drilling of F4. Pocket milling for F5 follows face milling.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": true,
+    "hard_constraint_violations": [],
+    "warnings": [],
+    "coverage": {
+      "required_features": 5,
+      "covered_features": 5,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

@@ -1,0 +1,557 @@
+{
+  "run_id": "corruption__B2__syn_003__s0",
+  "component_id": "syn_003",
+  "started_at": "2026-11-08T13:55:59+00:00",
+  "duration_s": 27.149,
+  "planner": "corruption",
+  "planner_model": null,
+  "repair_agent": "llm",
+  "max_repairs": 3,
+  "validation_config": {
+    "duplicate_severity": "warning",
+    "allowed_duplicate_operation_types": [],
+    "max_duration_min": 240.0,
+    "duration_bound_severity": "warning"
+  },
+  "versions": {
+    "schema_version": "1.0",
+    "rule_set_version": "1.2",
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "repair_model": "qwen3.5:9b"
+  },
+  "planner_result": {
+    "status": "ok",
+    "plan": null,
+    "planner": "corruption",
+    "model": null,
+    "prompt_refs": [],
+    "attempts": [],
+    "normalization_notes": [],
+    "injected_faults": [
+      {
+        "kind": "unknown_machine",
+        "operation_id": "OP3",
+        "operations": [
+          "OP3"
+        ],
+        "expected_rule": "R2_MACHINE_EXISTS",
+        "detail": "machine -> M_UNKNOWN"
+      },
+      {
+        "kind": "precedence_cycle",
+        "operation_id": "OP4",
+        "operations": [
+          "OP1",
+          "OP4"
+        ],
+        "expected_rule": "R8_PRECEDENCE_VALIDITY",
+        "detail": "added reverse edge OP4->OP1"
+      }
+    ],
+    "error": null
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "source": "planner",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_003_corrupted_s0",
+        "component_id": "syn_003",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "pocket_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M_UNKNOWN",
+            "tool_id": "T2",
+            "duration_min": 6.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "reaming",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T6",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "drilling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ],
+          [
+            "OP4",
+            "OP1"
+          ]
+        ],
+        "explanation": "Mock plan: one operation per needed operation type using the first available capable machine and compatible tool, ordered to satisfy the component's declared precedence constraints.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "1b971eaccda9b9ca",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": false,
+        "hard_constraint_violations": [
+          {
+            "rule_id": "R2_MACHINE_EXISTS",
+            "severity": "hard",
+            "message": "Machine 'M_UNKNOWN' is not among the available machines.",
+            "operation_id": "OP3",
+            "feature_id": null,
+            "evidence": {
+              "selected_machine": "M_UNKNOWN",
+              "available_machines": [
+                "M1",
+                "M2",
+                "M3"
+              ]
+            },
+            "repair_hint": "Use an available machine capable of 'pocket_milling': ['M1'].",
+            "repairable": true
+          },
+          {
+            "rule_id": "R8_PRECEDENCE_VALIDITY",
+            "severity": "hard",
+            "message": "Precedence edges contain a cycle: OP1 -> OP4 -> OP1.",
+            "operation_id": "OP1",
+            "feature_id": null,
+            "evidence": {
+              "cycle": [
+                "OP1",
+                "OP4",
+                "OP1"
+              ]
+            },
+            "repair_hint": "Remove or reverse at least one edge in the cycle so that a valid order exists.",
+            "repairable": true
+          },
+          {
+            "rule_id": "R9_PRECEDENCE_ORDER",
+            "severity": "hard",
+            "message": "Declared precedence OP4 -> OP1 is violated: OP1 is sequenced before OP4.",
+            "operation_id": "OP1",
+            "feature_id": null,
+            "evidence": {
+              "source": "plan_precedence",
+              "edge_index": 4,
+              "edge": [
+                "OP4",
+                "OP1"
+              ],
+              "positions": {
+                "OP4": 3,
+                "OP1": 0
+              }
+            },
+            "repair_hint": "Move OP4 before OP1 in the operation sequence, or remove the edge if it is not required.",
+            "repairable": true
+          }
+        ],
+        "warnings": [],
+        "coverage": {
+          "required_features": 5,
+          "covered_features": 5,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": null
+    },
+    {
+      "index": 1,
+      "source": "repair",
+      "plan": {
+        "schema_version": "1.0",
+        "plan_id": "syn_003_plan_v1",
+        "component_id": "syn_003",
+        "operations": [
+          {
+            "operation_id": "OP1",
+            "type": "face_milling",
+            "target_features": [
+              "F1"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T3",
+            "duration_min": 4.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP2",
+            "type": "drilling",
+            "target_features": [
+              "F2"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP3",
+            "type": "pocket_milling",
+            "target_features": [
+              "F3"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T2",
+            "duration_min": 6.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP4",
+            "type": "drilling",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP5",
+            "type": "reaming",
+            "target_features": [
+              "F4"
+            ],
+            "machine_id": "M3",
+            "tool_id": "T6",
+            "duration_min": 1.5,
+            "notes": ""
+          },
+          {
+            "operation_id": "OP6",
+            "type": "drilling",
+            "target_features": [
+              "F5"
+            ],
+            "machine_id": "M1",
+            "tool_id": "T4",
+            "duration_min": 2.0,
+            "notes": ""
+          }
+        ],
+        "precedence": [
+          [
+            "OP1",
+            "OP2"
+          ],
+          [
+            "OP1",
+            "OP4"
+          ],
+          [
+            "OP1",
+            "OP5"
+          ],
+          [
+            "OP4",
+            "OP5"
+          ]
+        ],
+        "explanation": "Repaired machine assignment for OP3, removed invalid precedence edge causing cycle and order violation.",
+        "assumptions": [
+          "Durations are illustrative placeholders, not calculated from cutting data."
+        ],
+        "uncertainties": [],
+        "provenance": null
+      },
+      "plan_hash": "83639852fdf90a32",
+      "validation": {
+        "schema_version": "1.0",
+        "valid": true,
+        "hard_constraint_violations": [],
+        "warnings": [],
+        "coverage": {
+          "required_features": 5,
+          "covered_features": 5,
+          "missing_features": []
+        },
+        "catalogue_id": "scmpa_demo_catalogue_v1",
+        "rule_set_version": "1.2"
+      },
+      "repair": {
+        "status": "repaired",
+        "agent": "llm",
+        "model": "qwen3.5:9b",
+        "changes": [
+          "Changed OP3 machine_id from 'M_UNKNOWN' to 'M1' to resolve R2_MACHINE_EXISTS.",
+          "Removed precedence edge ['OP4', 'OP1'] and reversed it to ['OP1', 'OP4'] (now redundant but harmless) or kept existing valid edges and removed the cycle-inducing one to resolve R8_PRECEDENCE_VALIDITY and R9_PRECEDENCE_ORDER. Since OP4 must be after OP1 per precedence constraints (F1 datum -> F2/F4), and the plan had OP1 then OP4, the only error was the explicit edge 'OP4->OP1' claiming OP4 before OP1 which contradicts the plan order. The hint says 'Move OP4 before OP1'. However, component constraints say F1 (OP1 target) must be before F2/F4 (OP2/OP4 targets). So the natural order is OP1 -> OP2/OP4. The constraint OP4->OP1 in precedence edges means 'OP4 must precede OP1'. But manufacturing logic says OP1 (face) must precede OP4 (drilling hole on that face). Thus the edge is wrong direction. We should remove the edge ['OP4', 'OP1'] entirely as it is a false constraint based on component semantics? The rule checker says 'Move OP4 before OP1' to fix R9. But moving OP4 before OP1 would violate F1 datum requirement (Rationale: F1 is datum face; this feature is located or dimensioned from it). So we cannot move OP4 before OP1. Therefore the edge ['OP4', 'OP1'] must be removed because it is an invalid constraint that conflicts with physical reality? But rule 1 says checker findings are authoritative. The checker says 'Move OP4 before OP1' to fix R9. This implies the checker thinks OP4 should come first. But component constraints say F1 before F4. Let's re-read: precedence_constraints in component have: [F1, F2], [F1, F4]. So OP1 must be before OP2 and OP4. The plan has OP1 at index 0, OP4 at index 3 (OP1->OP4). This satisfies F1 before F4. But the precedence array in the plan also has an edge ['OP4', 'OP1'] which is wrong. The checker wants to remove or reverse it. Since reversing would put OP4 before OP1 (violating datum), we must remove the edge. So we delete ['OP4', 'OP1']. And for R8 cycle: the cycle was OP1->OP4->OP1, which came from edges ['OP1','OP4'] and ['OP4','OP1']. Removing ['OP4','OP1'] breaks the cycle.",
+          "Updated precedence array to remove the invalid edge ['OP4', 'OP1']."
+        ],
+        "missing_information": [],
+        "prompt_refs": [
+          "repair_system@v1#ca428a36f8643353",
+          "repair_user@v1#e0892879cbdae7da"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "raw_output": "{\n  \"status\": \"REPAIRED\",\n  \"changes\": [\n    \"Changed OP3 machine_id from 'M_UNKNOWN' to 'M1' to resolve R2_MACHINE_EXISTS.\",\n    \"Removed precedence edge ['OP4', 'OP1'] and reversed it to ['OP1', 'OP4'] (now redundant but harmless) or kept existing valid edges and removed the cycle-inducing one to resolve R8_PRECEDENCE_VALIDITY and R9_PRECEDENCE_ORDER. Since OP4 must be after OP1 per precedence constraints (F1 datum -> F2/F4), and the plan had OP1 then OP4, the only error was the explicit edge 'OP4->OP1' claiming OP4 before OP1 which contradicts the plan order. The hint says 'Move OP4 before OP1'. However, component constraints say F1 (OP1 target) must be before F2/F4 (OP2/OP4 targets). So the natural order is OP1 -> OP2/OP4. The constraint OP4->OP1 in precedence edges means 'OP4 must precede OP1'. But manufacturing logic says OP1 (face) must precede OP4 (drilling hole on that face). Thus the edge is wrong direction. We should remove the edge ['OP4', 'OP1'] entirely as it is a false constraint based on component semantics? The rule checker says 'Move OP4 before OP1' to fix R9. But moving OP4 before OP1 would violate F1 datum requirement (Rationale: F1 is datum face; this feature is located or dimensioned from it). So we cannot move OP4 before OP1. Therefore the edge ['OP4', 'OP1'] must be removed because it is an invalid constraint that conflicts with physical reality? But rule 1 says checker findings are authoritative. The checker says 'Move OP4 before OP1' to fix R9. This implies the checker thinks OP4 should come first. But component constraints say F1 before F4. Let's re-read: precedence_constraints in component have: [F1, F2], [F1, F4]. So OP1 must be before OP2 and OP4. The plan has OP1 at index 0, OP4 at index 3 (OP1->OP4). This satisfies F1 before F4. But the precedence array in the plan also has an edge ['OP4', 'OP1'] which is wrong. The checker wants to remove or reverse it. Since reversing would put OP4 before OP1 (violating datum), we must remove the edge. So we delete ['OP4', 'OP1']. And for R8 cycle: the cycle was OP1->OP4->OP1, which came from edges ['OP1','OP4'] and ['OP4','OP1']. Removing ['OP4','OP1'] breaks the cycle.\",\n    \"Updated precedence array to remove the invalid edge ['OP4', 'OP1'].\"\n  ],\n  \"missing_information\": [],\n  \"plan\": {\n    \"component_id\": \"syn_003\",\n    \"operations\": [\n      {\n        \"operation_id\": \"OP1\",\n        \"type\": \"face_milling\",\n        \"target_features\": [\n          \"F1\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T3\",\n        \"duration_min\": 4.0\n      },\n      {\n        \"operation_id\": \"OP2\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F2\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T4\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP3\",\n        \"type\": \"pocket_milling\",\n        \"target_features\": [\n          \"F3\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T2\",\n        \"duration_min\": 6.0\n      },\n      {\n        \"operation_id\": \"OP4\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T4\",\n        \"duration_min\": 2.0\n      },\n      {\n        \"operation_id\": \"OP5\",\n        \"type\": \"reaming\",\n        \"target_features\": [\n          \"F4\"\n        ],\n        \"machine_id\": \"M3\",\n        \"tool_id\": \"T6\",\n        \"duration_min\": 1.5\n      },\n      {\n        \"operation_id\": \"OP6\",\n        \"type\": \"drilling\",\n        \"target_features\": [\n          \"F5\"\n        ],\n        \"machine_id\": \"M1\",\n        \"tool_id\": \"T4\",\n        \"duration_min\": 2.0\n      }\n    ],\n    \"precedence\": [\n      [\n        \"OP1\",\n        \"OP2\"\n      ],\n      [\n        \"OP1\",\n        \"OP4\"\n      ],\n      [\n        \"OP1\",\n        \"OP5\"\n      ],\n      [\n        \"OP4\",\n        \"OP5\"\n      ]\n    ],\n    \"explanation\": \"Repaired machine assignment for OP3, removed invalid precedence edge causing cycle and order violation.\",\n    \"assumptions\": [\n      \"Durations are illustrative placeholders, not calculated from cutting data.\"\n    ],\n    \"uncertainties\": []\n  }\n}",
+            "issues": [],
+            "latency_s": 27.147711611818522,
+            "prompt_tokens": 3437,
+            "completion_tokens": 1235
+          }
+        ],
+        "normalization_notes": [],
+        "error": null,
+        "diff": {
+          "added": [],
+          "removed": [],
+          "modified": {
+            "OP3": {
+              "machine_id": [
+                "M_UNKNOWN",
+                "M1"
+              ]
+            }
+          },
+          "sequence_changed": false,
+          "precedence_added": [],
+          "precedence_removed": [
+            [
+              "OP4",
+              "OP1"
+            ]
+          ],
+          "unchanged_operations": [
+            "OP1",
+            "OP2",
+            "OP4",
+            "OP5",
+            "OP6"
+          ]
+        },
+        "latency_s": 27.149
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "state": "RECEIVED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "INPUT_VALIDATED",
+      "iteration": null,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_GENERATED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 0,
+      "detail": "3 hard violation(s)"
+    },
+    {
+      "state": "REPAIR_REQUESTED",
+      "iteration": 0,
+      "detail": ""
+    },
+    {
+      "state": "PLAN_REPAIRED",
+      "iteration": 1,
+      "detail": "3 change(s)"
+    },
+    {
+      "state": "PLAN_VALIDATED",
+      "iteration": 1,
+      "detail": "0 hard violation(s)"
+    },
+    {
+      "state": "ACCEPTED",
+      "iteration": 1,
+      "detail": "valid"
+    }
+  ],
+  "final_status": "ACCEPTED",
+  "stop_reason": "valid",
+  "stop_detail": "",
+  "terminal_repair": null,
+  "final_iteration": 1,
+  "final_plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_003_plan_v1",
+    "component_id": "syn_003",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T3",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "pocket_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T2",
+        "duration_min": 6.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "reaming",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T6",
+        "duration_min": 1.5,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "drilling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M1",
+        "tool_id": "T4",
+        "duration_min": 2.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ],
+      [
+        "OP1",
+        "OP5"
+      ],
+      [
+        "OP4",
+        "OP5"
+      ]
+    ],
+    "explanation": "Repaired machine assignment for OP3, removed invalid precedence edge causing cycle and order violation.",
+    "assumptions": [
+      "Durations are illustrative placeholders, not calculated from cutting data."
+    ],
+    "uncertainties": [],
+    "provenance": null
+  },
+  "final_validation": {
+    "schema_version": "1.0",
+    "valid": true,
+    "hard_constraint_violations": [],
+    "warnings": [],
+    "coverage": {
+      "required_features": 5,
+      "covered_features": 5,
+      "missing_features": []
+    },
+    "catalogue_id": "scmpa_demo_catalogue_v1",
+    "rule_set_version": "1.2"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "status": "ok",
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "syn_008_plan_v0",
+    "component_id": "syn_008",
+    "operations": [
+      {
+        "operation_id": "OP1",
+        "type": "face_milling",
+        "target_features": [
+          "F1"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T4",
+        "duration_min": 5.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP2",
+        "type": "contour_milling",
+        "target_features": [
+          "F5"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 8.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP3",
+        "type": "slot_milling",
+        "target_features": [
+          "F6"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 12.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP4",
+        "type": "spot_drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP5",
+        "type": "drilling",
+        "target_features": [
+          "F2"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 4.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP6",
+        "type": "slot_milling",
+        "target_features": [
+          "F3"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T2",
+        "duration_min": 10.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP7",
+        "type": "spot_drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 2.0,
+        "notes": ""
+      },
+      {
+        "operation_id": "OP8",
+        "type": "drilling",
+        "target_features": [
+          "F4"
+        ],
+        "machine_id": "M3",
+        "tool_id": "T1",
+        "duration_min": 5.0,
+        "notes": ""
+      }
+    ],
+    "precedence": [
+      [
+        "OP1",
+        "OP2"
+      ],
+      [
+        "OP1",
+        "OP3"
+      ],
+      [
+        "OP1",
+        "OP4"
+      ]
+    ],
+    "explanation": "The plan starts with face milling (F1) to establish the datum, followed by contour and slot operations on F5 and F6. Blind holes F2 and F4 are processed via spot drilling then drilling, respecting the precedence that F1 must precede hole operations.",
+    "assumptions": [
+      "Spot drilling is applied as a preliminary step for blind holes to ensure accuracy before final drilling.",
+      "The same drill tool (T1) is used for all drilling operations regardless of specific diameter differences in this simplified plan."
+    ],
+    "uncertainties": [
+      "Collision avoidance between the slot tool and hole drills not modelled.",
+      "Specific drill diameters matching the hole sizes are assumed to exist in T1."
+    ],
+    "provenance": null
+  },
+  "planner": "llm",
+  "model": "qwen3.5:9b",
+  "prompt_refs": [
+    "planner_system@v1#86ada0ca7d3bb324",
+    "planner_user@v1#723b81a7db1f3554"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "raw_output": "{\n  \"component_id\": \"syn_008\",\n  \"operations\": [\n    {\n      \"operation_id\": \"OP1\",\n      \"type\": \"face_milling\",\n      \"target_features\": [\"F1\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T4\",\n      \"duration_min\": 5.0\n    },\n    {\n      \"operation_id\": \"OP2\",\n      \"type\": \"contour_milling\",\n      \"target_features\": [\"F5\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 8.0\n    },\n    {\n      \"operation_id\": \"OP3\",\n      \"type\": \"slot_milling\",\n      \"target_features\": [\"F6\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 12.0\n    },\n    {\n      \"operation_id\": \"OP4\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\"F2\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP5\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F2\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 4.0\n    },\n    {\n      \"operation_id\": \"OP6\",\n      \"type\": \"slot_milling\",\n      \"target_features\": [\"F3\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T2\",\n      \"duration_min\": 10.0\n    },\n    {\n      \"operation_id\": \"OP7\",\n      \"type\": \"spot_drilling\",\n      \"target_features\": [\"F4\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 2.0\n    },\n    {\n      \"operation_id\": \"OP8\",\n      \"type\": \"drilling\",\n      \"target_features\": [\"F4\"],\n      \"machine_id\": \"M3\",\n      \"tool_id\": \"T1\",\n      \"duration_min\": 5.0\n    }\n  ],\n  \"precedence\": [\n    [\"OP1\", \"OP2\"],\n    [\"OP1\", \"OP3\"],\n    [\"OP1\", \"OP4\"]\n  ],\n  \"explanation\": \"The plan starts with face milling (F1) to establish the datum, followed by contour and slot operations on F5 and F6. Blind holes F2 and F4 are processed via spot drilling then drilling, respecting the precedence that F1 must precede hole operations.\",\n  \"assumptions\": [\n    \"Spot drilling is applied as a preliminary step for blind holes to ensure accuracy before final drilling.\",\n    \"The same drill tool (T1) is used for all drilling operations regardless of specific diameter differences in this simplified plan.\"\n  ],\n  \"uncertainties\": [\n    \"Collision avoidance between the slot tool and hole drills not modelled.\",\n    \"Specific drill diameters matching the hole sizes are assumed to exist in T1.\"\n  ]\n}",
+      "issues": [],
+      "latency_s": 16.242988490965217,
+      "prompt_tokens": 2245,
+      "completion_tokens": 762
+    }
+  ],
+  "normalization_notes": [],
+  "injected_faults": [],
+  "error": null
+}
