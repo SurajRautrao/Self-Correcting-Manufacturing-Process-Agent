@@ -218,7 +218,7 @@ python -m scmpa.evaluation.report reports/experiments/<experiment_id>      # reb
 python -m scmpa.evaluation.optimize_results reports/experiments/<experiment_id>
 ```
 
-Every reported experiment has its config in `configs/experiments/` and its frozen inputs, cached plans, run records and tables in `reports/experiments/<experiment_id>/`. Cluster runs use `scripts/hpc/slurm_experiment.sh`. Detailed per-run analysis is in [`results.md`](results.md), and worked traces in [`examples.md`](examples.md).
+Every reported experiment has its config in `configs/experiments/` and its frozen inputs, cached plans, run records and tables in `reports/experiments/<experiment_id>/`. Cluster runs use `scripts/hpc/slurm_experiment.sh`. Detailed per-run analysis is in [`results.md`](results.md), and worked traces in [`examples.md`](examples.md). The order in which everything was built and checked is in [`project_walkthrough.md`](project_walkthrough.md).
 
 ## References
 

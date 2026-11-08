@@ -37,7 +37,7 @@ The validator alone decides validity. Every repaired or optimized plan is checke
 
 ## Results at a glance
 
-The full write-up is the [final report](docs/report.md). Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible by design. Details, caveats and the validator flaws found along the way are in [`docs/results.md`](docs/results.md); worked traces are in [`docs/examples.md`](docs/examples.md).
+The full write-up is the [final report](docs/report.md); how the project was built, step by step, is in the [project walkthrough](docs/project_walkthrough.md). Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible by design. Details, caveats and the validator flaws found along the way are in [`docs/results.md`](docs/results.md); worked traces are in [`docs/examples.md`](docs/examples.md).
 
 | | gemma3:4b | qwen3.5:9b |
 |---|---|---|
@@ -71,7 +71,7 @@ All data is synthetic, so these numbers describe software behaviour on a toy ben
 | M1 | Deterministic validator (rules R1–R12) with unit tests | ✅ done |
 | M2 | Planner interface, Ollama adapter, mock planner | ✅ done |
 | M3 | Bounded generate–validate–repair loop | ✅ done |
-| M4 | Synthetic benchmark, baselines B0/B1/B2, metrics, reports | ✅ done (gemma3:4b and qwen3.5:9b test runs, see `docs/results.md`) |
+| M4 | Synthetic benchmark, baselines B0/B1/B2, metrics, reports | ✅ done (gemma3:4b, qwen3.5:9b and gemma3:27b test runs, two benchmarks, see `docs/results.md`) |
 | M5 | Streamlit demo | ✅ done |
 | M6 | Optional: OR-Tools sequencing (B3, H3) | ✅ done |
 | M6 | Optional: FabriCAD investigation and importer (derived data, not redistributed) | ✅ done, see `docs/fabricad.md` |
@@ -203,7 +203,7 @@ sbatch scripts/hpc/slurm_experiment.sh                          # main run (llm_
 CONFIG=configs/experiments/llm_test_full_gemma3-4b_v1.2.json sbatch scripts/hpc/slurm_experiment.sh   # v1.2 re-run on the same plans
 ```
 
-Results so far, including two validator flaws found on the test split and fixed in rule set v1.2, are in [`docs/results.md`](docs/results.md).
+Results, including the validator flaws found on the test split and fixed in rule set v1.2, are in [`docs/results.md`](docs/results.md).
 
 The job is resumable: if it hits its time limit, resubmit the same command. The script header lists every override (`CONFIG`, `LIMIT`, `FRESH`, `VENV`, `PY_MODULE`, ...). It needs Python 3.11 or newer on the cluster.
 
@@ -234,13 +234,14 @@ Checks happen at two stages:
 ## Repository layout
 
 ```
-data/            catalogue, examples, synthetic/benchmark_v1 (all synthetic)
+data/            catalogue, examples, synthetic/benchmark_v1 and benchmark_v2 (all synthetic); external/ is git-ignored
 configs/         experiment configs
-docs/            architecture, assumptions/limits, constraint catalogue, evaluation, results, examples, FabriCAD, CAD extraction, data card
+docs/            final report, project walkthrough, results, examples, architecture, assumptions/limits, constraint catalogue, evaluation, FabriCAD, CAD extraction, data card
 src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, optimization/, importers/, cad/, evaluation/, app/, prompt_templates/
-scripts/         run_demo.py, make_synthetic_data.py, make_examples.py, hpc/slurm_experiment.sh, freecad/ (fixture builder, FabriCAD evaluation)
-tests/           unit/ and integration/ tests
-reports/         generated experiment output (git-ignored)
+scripts/         run_demo.py, make_synthetic_data.py, make_examples.py, check_reproducible.py, hpc/slurm_experiment.sh, freecad/ (fixture builder, FabriCAD evaluation)
+tests/           unit/ and integration/ tests, fixtures (CAD test part, FabriCAD-format samples)
+reports/         experiment output; git-ignored by default, reported experiments are committed with git add -f
+.github/         CI: tests and reproducibility check on Python 3.11 and 3.12
 ```
 
 ## License
