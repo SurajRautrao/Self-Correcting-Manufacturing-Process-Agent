@@ -48,7 +48,7 @@ Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible b
 
 - **H1:** supported. Detection alone removes every invalid plan from the accepted output.
 - **H2:** supported, and strongly model-dependent.
-- **H3:** supported for the declared metric (change counts, not time). The optimizer never broke a hard constraint in 2,664 runs; its weighting is verified on a constructed case, and benchmark v2 runs will test it on LLM plans.
+- **H3:** supported for the declared metric (change counts, not time). The optimizer never broke a hard constraint in 5,216 runs. On benchmark v2, 17 of 137 LLM plans have a genuine machine/tool trade-off when assignments are fixed, and the weights steer the result as intended.
 - **H4:** supported. The computed diff exposed every false repair claim.
 
 All data is synthetic, so these numbers describe software behaviour on a toy benchmark, not industrial performance.

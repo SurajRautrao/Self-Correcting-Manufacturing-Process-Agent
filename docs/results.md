@@ -157,11 +157,82 @@ Mode `order+resources` (reorder and reassign eligible machine/tool pairs), defau
 
 - **H1 (constraint feedback lowers violations):** supported. Invalid plans accepted fall to 0% with either model (qwen's raw 54% includes 10 plans that fail only on an optional spot step; see the audit above). The hard-violation rate falls from 79% to 62–69% with gemma and from 54% to 19% with qwen. The 19% left are exactly the infeasible cases.
 - **H2 (the bounded loop repairs a measurable share):** supported, and strongly model-dependent. On injected faults, gemma repairs 62–74% and qwen 97%. On generated plans, gemma repairs 8 of 29 and qwen 17 of 17. Neither model ever made a correct validator-only outcome wrong, and with best-candidate selection no run ends worse than it started.
-- **H3 (sequencing optimizer):** supported for the declared metrics. The optimizer roughly halves the machine- and tool-change cost of accepted plans and never breaks a hard constraint (0 of 2,664 runs across both experiments, all modes and all weights). The improvement is non-negative by construction. The measured effect is its size, and it is about counts, not time. The weighting is untested on benchmark v1, because neither model's plans contain a conflict; it is verified on a constructed case and is to be measured on benchmark v2.
+- **H3 (sequencing optimizer):** supported for the declared metrics. The optimizer roughly halves the machine- and tool-change cost of accepted plans and never breaks a hard constraint (0 of 2,664 runs across both experiments, all modes and all weights). The improvement is non-negative by construction. The measured effect is its size, and it is about counts, not time. The weighting is untested on benchmark v1, because neither model's plans contain a conflict; it is verified on a constructed case and was then measured on benchmark v2 (Run 5).
 - **H4 (auditability):** supported with a concrete measure. The model's own change notes were false (claimed changes, none made) in 20% of gemma's repair calls and 2% of qwen's. The computed diff and repeated-plan detection exposed every case. Every repair also has a stop reason, and both models' diffs show small, targeted edits (median 1–2 operations). Representative traces are in `examples.md`.
+
+## Run 4: qwen run-to-run noise (`llm_test_full_qwen3.5-9b_rep2`)
+
+This run replays Run 3's initial plans: the initial violation counts match in all 87 cases. Only the B2 repair calls are new.
+
+| B2 + LLM repair (qwen) | Run 3 | Run 4 | Flips |
+|---|---|---|---|
+| Generation: correct outcome | 100% (48/48) | 98% (47/48) | 1 (syn_003 s2: max repairs reached in Run 4) |
+| Corruption: repair success | 97% (38/39) | 97% (38/39) | 2, one each way (syn_023 s1 failed only in Run 3, syn_013 s1 only in Run 4) |
+
+- **qwen's repair loop is stable.** 3 of 87 outcomes flipped between runs, against 11 of 39 for gemma on the corruption track alone (Runs 1–2). Together the two runs give a pooled corruption repair rate of 97% (76/78).
+- So the noise found in Run 2 belongs to the weaker model, not to the loop. A model that repairs at the ceiling has little room to flip.
+
+## Prompt v2 on the dev split (`dev_gemma3-4b_prompt-v1` vs `-v2`)
+
+Planner prompt v2 (preparatory operations, tool look-up, self-check) was compared with v1 on the dev split, gemma3:4b, 8 parts × 3 seeds, B0/B1/R. Both runs use the same seeds and settings.
+
+| gemma3:4b, dev | Prompt v1 | Prompt v2 |
+|---|---|---|
+| B0 hard-violation rate | 62% (15/24) | 58% (14/24) |
+| Feasible parts with a valid initial plan | 9 / 18 | 10 / 18 |
+| Mean initial hard violations | 2.29 | 1.75 |
+| Mean coverage | 0.82 | 0.86 |
+| Paired (v1 only / v2 only valid) | 2 / 3, p = 1.0 | |
+
+- **No measurable effect.** The 5 discordant cases sit in two parts that moved in opposite directions: syn_007 became valid under all three seeds with v2, and syn_010 lost 2 of 3. Fewer violations per plan (R5 27 → 19, R6 20 → 17) do not turn into more valid plans.
+- **Decision: the test-split run (`llm_test_full_gemma3-4b_prompt-v2`) is not run.** On this evidence it would spend test data on an effect the dev split cannot distinguish from noise. Prompt v1 stays the default. gemma's coverage gap is a model limit that the prompt does not fix; the validator and repair loop are what handle it.
+
+## Run 5: benchmark v2 (`llm_test_full_*_bench-v2`)
+
+Benchmark v2 has specialised machines with partial overlap, 6–10 features and denser precedence (test split, 16 parts × 3 seeds, prompt v1). Only the benchmark changes versus Runs 2 and 3. The corruption inputs are identical for both models (paired).
+
+| | gemma v1 | gemma **v2** | qwen v1 | qwen **v2** |
+|---|---|---|---|---|
+| Generation: B0 hard-violation rate | 79% | 83% (40/48) | 54% | 65% (31/48) |
+| Generation: mean initial hard violations (feasible parts) | 3.77 | 4.44 | 1.00 | 2.79 |
+| Generation: B0 coverage | 0.67 | 0.75 | 0.96 | 0.97 |
+| Generation: B2 correct outcome | 56% | 58% (28/48) | 100% | 94% (45/48) |
+| Generation: B2 feasible plans repaired | 8 / 29 | 11 / 31 | 17 / 17 | 19 / 22 |
+| Corruption: B2 repair success | 62–74% | 51% (20/39) | 97% | 95% (37/39) |
+| Generation: R correct outcome | 100% | 100% | 100% | 100% |
+
+- **The harder benchmark hurts the planners, especially qwen.** qwen's initial plans now carry almost 3× as many violations (1.0 → 2.8 per feasible plan). They are almost all wrong-machine (R3: 42 violations in 19 plans) and wrong-tool (R5) errors, which is what the specialised machines were built to provoke. Its coverage stays at 0.97.
+- **The repair loop still closes most of the gap with qwen.** It repairs 19 of 22 invalid feasible plans and 37 of 39 corrupted ones. The 3 generation failures and both corruption failures involve precedence (R9) again.
+- **gemma's repair is weaker on larger parts.** Its corruption repair success falls to 51%, below its 62–74% range on benchmark v1. 15 of its 19 failures stop on a repeated plan, and coverage (R6) is still the most common remaining violation.
+- **The validator and loop remain safe.** No invalid plan is accepted by any checked system, and the rule-based reference R reaches 100% correct outcomes on both tracks.
+- **Paired model comparisons:**
+  - Corruption: qwen repaired 18 cases that gemma did not, and gemma 1 that qwen did not (p < 0.001, 10 components).
+  - Generation: qwen's B2 was correct in 17 cases where gemma's was not, and never the reverse (p < 0.001).
+  - Within each model, B2 beats B1 with no losses: gemma 11 / 0 (7 components, p = 0.001), qwen 19 / 0 (12 components, p < 0.001).
+
+### Optimizer on benchmark v2 (B3)
+
+Same procedure as M6 (`optimize_results` on both experiments). Full tables are in each folder's `optimization.md`.
+
+| Set (`order+resources`, default weights) | Plans | Valid after | Machine changes | Tool changes | Median cost reduction |
+|---|---|---|---|---|---|
+| qwen B3, generation | 36 | 36/36 | 5.08 → 1.75 | 9.64 → 4.61 | 64% |
+| qwen B3, corruption | 37 | 37/37 | 6.35 → 1.59 | 8.81 → 4.11 | 70% |
+| gemma B3, generation | 19 | 19/19 | 4.21 → 1.74 | 6.74 → 5.05 | 47% |
+| gemma B3, corruption | 20 | 20/20 | 6.35 → 1.60 | 9.10 → 4.35 | 70% |
+| reference plans (test split) | 13 | 13/13 | 6.46 → 1.62 | 9.00 → 4.15 | 69% |
+
+- **Hard constraints held again:** 0 invalid plans in 2,552 optimizer runs. 2,478 were proven optimal; the other 74 stopped at the deterministic time limit with a feasible, improved plan. The parts are larger (6–10 features), which explains the extra time limits and the ~40 min run.
+- **The gain is larger than on benchmark v1:** median 47–70%, against about 42–64%. Larger plans with more machines leave more changes to remove.
+- **Weight trade-offs now appear, but only with fixed assignments.** In reorder-only mode, 17 of 137 accepted LLM plans (qwen 15/90, gemma 2/47) have a different optimum under different weights; on benchmark v1 it was 0 of 151. The weights move the result in the expected direction: for qwen, 1:10 gives 2.59 machine and 4.99 tool changes, and 10:1 gives 2.38 and 5.17. With reassignment, only 1 of 137 plans has a trade-off, because the optimizer can still regroup operations by machine.
+- So the weighting matters when the shop fixes the machine for each operation, and hardly at all when the optimizer may choose. That confirms the earlier explanation on real model output rather than only on a constructed case.
+
+### Hypotheses after Runs 4–5
+
+- **H1, H2:** still supported on the harder benchmark. No invalid plan is accepted, and repair beats validation-only for both models with no losses. The size of the repair effect depends strongly on the model (qwen 19/22 vs gemma 11/31 repaired generated plans).
+- **H3:** supported, and the weighting is now tested on LLM plans: trade-offs exist in 12% of plans when assignments are fixed and the weights steer the result as intended.
+- **Noise:** qwen's B2 results reproduce (3/87 flips); gemma's do not (11/39).
 
 ## Pending
 
-- Prompt v2 (planner): dev comparison `dev_gemma3-4b_prompt-v1` vs `-v2`, then `llm_test_full_gemma3-4b_prompt-v2` on test.
-- Benchmark v2: `llm_test_full_gemma3-4b_bench-v2` and `llm_test_full_qwen3.5-9b_bench-v2`, then `optimize_results` on them (weight trade-offs in reorder-only mode).
-- `llm_test_full_qwen3.5-9b_rep2`: qwen run-to-run noise.
+- Optional: rule set v1.3 with auxiliary operations (chamfering any hole edge, entry holes for pockets), decided on the dev split; see the validator audit.
