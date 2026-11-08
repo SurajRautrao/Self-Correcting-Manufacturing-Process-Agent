@@ -25,9 +25,10 @@ Hypotheses (to be tested, not assumed):
 | M1 | Deterministic validator (rules R1–R12) with unit tests | ✅ done |
 | M2 | Planner interface, Ollama adapter, mock planner | ✅ done |
 | M3 | Bounded generate–validate–repair loop | ✅ done |
-| M4 | Synthetic benchmark, baselines B0/B1/B2, metrics, reports | ✅ done (LLM test-split run pending) |
+| M4 | Synthetic benchmark, baselines B0/B1/B2, metrics, reports | ✅ done (gemma3:4b and qwen3.5:9b test runs, see `docs/results.md`) |
 | M5 | Streamlit demo | ✅ done |
-| M6 | Optional: OR-Tools sequencing, FabriCAD importer, FreeCAD features | optional |
+| M6 | Optional: OR-Tools sequencing (B3, H3) | ✅ done |
+| M6 | Optional: FabriCAD importer, FreeCAD feature extraction | not started |
 
 ## Quick start
 
@@ -134,6 +135,15 @@ python -m scmpa.evaluation.run_experiments --config configs/experiments/llm_test
 
 The runner compares B0 (LLM only), B1 (+ validator), B2 (+ LLM repair loop) and R (rule-based reference) on the **same** initial plans. It does this on two tracks: generation, and repair of injected faults. Results go to `reports/experiments/<id>/`: raw per-case CSV/JSONL, `summary.md`, a chart, and every run record. See [`docs/evaluation.md`](docs/evaluation.md) for the method and [`docs/DATA_CARD.md`](docs/DATA_CARD.md) for the synthetic benchmark (24 components, 20% deliberately infeasible, split by component into dev and test).
 
+### Sequence optimization (M6)
+
+```bash
+pip install -e ".[opt]"
+python -m scmpa.evaluation.optimize_results reports/experiments/llm_test_full_qwen3.5-9b   # B3: optimize every accepted plan
+```
+
+`scmpa.optimization.optimize_sequence` takes a *valid* plan and uses OR-Tools CP-SAT to reorder its operations, optionally also reassigning eligible machine/tool pairs. It minimises `10 × machine changes + 1 × tool changes` subject to the declared precedence and resource eligibility, and the validator re-checks the result. It refuses invalid plans, because optimization is not repair. Total duration is fixed, so no time saving is claimed. The demo UI offers the same step on an accepted plan.
+
 ### Running on a Slurm GPU cluster
 
 `scripts/hpc/slurm_experiment.sh` starts Ollama from an Apptainer image on a GPU node, downloads the models named in the config, and runs the experiment. Submit it from the repo root:
@@ -180,7 +190,7 @@ Checks happen at two stages:
 data/            catalogue, examples, synthetic/benchmark_v1 (all synthetic)
 configs/         experiment configs
 docs/            architecture, assumptions/limits, constraint catalogue, evaluation, data card
-src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, evaluation/, app/, prompt_templates/
+src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, optimization/, evaluation/, app/, prompt_templates/
 scripts/         run_demo.py, make_synthetic_data.py, hpc/slurm_experiment.sh
 tests/           unit/ and integration/ tests
 reports/         generated experiment output (git-ignored)

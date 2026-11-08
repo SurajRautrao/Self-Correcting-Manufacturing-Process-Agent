@@ -47,3 +47,13 @@ The input stage deliberately does **not** reject a component whose required feat
 ## Data provenance
 
 All examples are **synthetic**: hand-written toy specifications for testing the software. Reference plans were authored under each component's declared assumptions and have **not** been reviewed by a manufacturing expert. They are one valid sequence among possibly several. Results obtained on this data must not be presented as industrial performance.
+
+## Optimization objective (M6)
+
+The sequence optimizer's objective is a demo assumption, not a cost model:
+
+- A **machine change** between consecutive operations stands in for a transfer and re-fixturing. A **tool change** stands in for a tool swap. Both are counted, not timed.
+- The default weights 10 : 1 assume that one machine change costs about as much as ten tool changes. `optimize_results` reports a sensitivity check at 1:1, 1:10, 10:1 and 100:1.
+- Setups within a machine, travel, tool-magazine positions and tool-change times are not modelled. Because SCMPA has no setup model, two operations on the same machine are assumed to need no re-fixturing.
+- Total duration is a sum of fixed per-operation estimates, so reordering cannot shorten it, and no time saving is claimed.
+- Reassignment chooses only among machine/tool pairs the validator already accepts (R3, R5). Tool size is not modelled, so in reality a reassigned drill of the same type may have the wrong diameter. This is the same known false-pass class as for the validator.

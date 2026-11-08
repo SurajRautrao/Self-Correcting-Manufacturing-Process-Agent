@@ -97,3 +97,17 @@ def test_app_other_views_render() -> None:
         at.sidebar.radio[0].set_value(view)
         at.run()
         assert not at.exception, view
+
+
+def test_app_optimizer_section() -> None:
+    pytest.importorskip("ortools")
+    at = streamlit_testing.AppTest.from_file(APP, default_timeout=60)
+    at.run()
+    at.sidebar.multiselect[0].set_value(["incompatible_tool"])
+    at.sidebar.button[0].click()
+    at.run()
+    [opt] = [b for b in at.button if b.label == "Optimize sequence"]
+    opt.click()
+    at.run()
+    assert not at.exception
+    assert any("Already optimal" in i.value for i in at.info) or any("Revalidated: valid" in s.value for s in at.success)

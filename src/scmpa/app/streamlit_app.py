@@ -143,7 +143,7 @@ def render_trace(record: RunRecord) -> None:
                 st.error(t.error)
 
 
-def render_final(record: RunRecord) -> None:
+def render_final(record: RunRecord, component: Component | None = None) -> None:
     if record.final_plan is None:
         st.info("No plan was produced.")
         return
@@ -171,6 +171,49 @@ def render_final(record: RunRecord) -> None:
         "Download full run log (JSON)", record.model_dump_json(indent=2),
         file_name=f"{record.component_id}_{record.run_id}.json", mime="application/json",
     )
+    if accepted and component is not None:
+        render_optimizer(record, component)
+
+
+def render_optimizer(record: RunRecord, component: Component) -> None:
+    """Optional M6 step: optimize the accepted plan's sequence. Kept separate from repair."""
+    st.markdown("#### Optional: optimize the sequence (M6, OR-Tools CP-SAT)")
+    try:
+        from scmpa.optimization import OptimizationConfig, optimize_sequence
+    except ImportError:  # pragma: no cover
+        st.info("Install the optimizer with `pip install -e .[opt]`.")
+        return
+    st.caption(
+        "Reorders operations (and optionally reassigns eligible machine/tool pairs) to reduce machine and tool changes. "
+        "Precedence and eligibility are hard constraints, and the validator re-checks the result. Total duration cannot change."
+    )
+    c1, c2, c3 = st.columns(3)
+    wm = c1.number_input("Weight per machine change", min_value=0, max_value=100, value=10, step=1)
+    wt = c2.number_input("Weight per tool change", min_value=0, max_value=100, value=1, step=1)
+    reassign = c3.checkbox("Allow machine/tool reassignment", value=True)
+    if not st.button("Optimize sequence"):
+        return
+    try:
+        result = optimize_sequence(record.final_plan, component, catalogue(),
+                                   OptimizationConfig(machine_change_weight=int(wm), tool_change_weight=int(wt), reassign_resources=reassign))
+    except ImportError:
+        st.info("Install the optimizer with `pip install -e .[opt]`.")
+        return
+    if result.status == "optimized":
+        b, a = result.before, result.after
+        st.success(
+            f"Cost {b.cost} → {a.cost}: machine changes {b.machine_changes} → {a.machine_changes}, "
+            f"tool changes {b.tool_changes} → {a.tool_changes}. Revalidated: valid. Solver: {result.solver_status}."
+        )
+        table(plan_rows(result.plan, result.validation))
+        for c in result.changes:
+            st.markdown(f"- {c}")
+        st.download_button("Download optimized plan (JSON)", result.plan.model_dump_json(indent=2),
+                           file_name=f"{result.plan.plan_id}.json", mime="application/json")
+    elif result.status == "unchanged":
+        st.info(f"Already optimal for this objective (cost {result.before.cost}); the plan is unchanged.")
+    else:
+        st.warning(f"{result.status}: {result.detail}")
 
 
 def find_component(component_id: str) -> Component | None:
@@ -190,7 +233,7 @@ def render_record_tabs(record: RunRecord, component: Component | None) -> None:
     with tabs[1]:
         render_trace(record)
     with tabs[2]:
-        render_final(record)
+        render_final(record, component)
     with tabs[3]:
         render_rules()
 

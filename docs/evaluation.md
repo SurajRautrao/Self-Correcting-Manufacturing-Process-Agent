@@ -47,6 +47,7 @@ python -m scmpa.evaluation.run_experiments --config configs/experiments/pilot_mo
 python -m scmpa.evaluation.run_experiments --config configs/experiments/llm_pilot_dev_gemma3-4b.json   # dev pilot, about 1 h on CPU
 python -m scmpa.evaluation.run_experiments --config configs/experiments/llm_test_full_gemma3-4b.json   # main run: many hours on CPU; resumable
 python -m scmpa.evaluation.report reports/experiments/<experiment_id>                        # rebuild tables and chart only
+python -m scmpa.evaluation.optimize_results reports/experiments/<experiment_id>              # B3: optimize accepted plans (needs .[opt]); writes optimization.md
 ```
 
 Each experiment writes its output to `reports/experiments/<experiment_id>/`:
@@ -60,6 +61,7 @@ Each experiment writes its output to `reports/experiments/<experiment_id>/`:
 | `summary.md`, `summary.csv`, `summary.json` | Aggregate tables |
 | `violations_by_rule.csv` | Violation counts per rule |
 | `hard_violation_rate.png` | Chart of hard-violation rates |
+| `optimization.jsonl`, `optimization.md` | Optimizer results for accepted plans (B3, H3), from `optimize_results` |
 
 An interrupted run resumes from the cache when the same command is run again. A different config under the same `experiment_id` is refused. So is a cache produced under a different rule-set version, catalogue (sha256) or benchmark manifest.
 

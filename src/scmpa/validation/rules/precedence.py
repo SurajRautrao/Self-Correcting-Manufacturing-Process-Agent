@@ -62,6 +62,21 @@ def _describe(ref: PrecedenceRef) -> str:
     return f"{ref.operation_type} on {ref.feature_id}" if ref.operation_type else f"all work on {ref.feature_id}"
 
 
+def required_order_pairs(plan: ProcessPlan, ctx: ValidationContext) -> set[tuple[str, str]]:
+    """Every ``(a, b)`` where operation ``a`` must come before ``b``: plan edges plus component constraints.
+
+    The same semantics as R9, as a pair set (used by the sequence optimizer). Pairs where
+    one operation sits on both sides of a component constraint are returned as ``(x, x)``.
+    """
+    known = set(plan.sequence)
+    pairs = {(a, b) for a, b in plan.precedence if a in known and b in known and a != b}
+    for pc in ctx.component.precedence_constraints:
+        before = [op.operation_id for op in plan.operations if _matches(op, pc.before)]
+        after = [op.operation_id for op in plan.operations if _matches(op, pc.after)]
+        pairs |= {(x, y) for x in before for y in after}
+    return pairs
+
+
 def check_precedence_order(plan: ProcessPlan, ctx: ValidationContext) -> list[Violation]:
     """R9: the operation sequence respects plan precedence edges and component precedence constraints."""
     out: list[Violation] = []

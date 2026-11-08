@@ -33,12 +33,14 @@ The `workflow.solve()` call returns a `RunRecord` holding every candidate plan, 
 | `planning/` | `LLMPlanner`, `MockPlanner`, normalizer, fault injection | LLM: no; mock: yes |
 | `repair/` | `LLMRepairAgent`, `RuleBasedRepairAgent` | LLM: no; rule-based: yes |
 | `workflow/` | Bounded loop, state machine, run records | yes, given its components |
+| `optimization/` | CP-SAT sequence optimizer for *valid* plans (M6); separate from repair | yes (deterministic time limits, one worker, fixed seed) |
 
 ## Authority boundaries
 
 - The **validator** is the only component that decides validity. A repair agent's claim that a plan is fixed is ignored, because every repaired plan is revalidated.
 - The **normalizer** may only make the shape fixes it documents, and it records each one. It never changes IDs or values. Semantic errors pass through so that the validator reports them.
 - **Planner retries** report schema and parse problems only, never validator findings. `LLMPlanner` alone is therefore an honest LLM-only baseline.
+- The **optimizer** never sees an invalid plan (it refuses them), cannot trade a hard constraint for a lower cost (precedence and eligibility are model constraints), and its output is revalidated. If revalidation fails, the input plan is kept.
 - The **human-review gate** is reached by any of five routes: a violation the validator marks as non-repairable, a repeated plan, an exhausted budget, an explicit `NEEDS_HUMAN_REVIEW` from the repair agent, or unusable model output.
 
 ## Baselines this structure supports (used in M4)
@@ -49,3 +51,4 @@ The `workflow.solve()` call returns a `RunRecord` holding every candidate plan, 
 | B1 LLM + validator | `solve(..., repair_agent=None)` |
 | B2 LLM + repair loop | `solve(..., repair_agent=LLMRepairAgent(...))` |
 | (reference) rule-based repair | `solve(..., repair_agent=RuleBasedRepairAgent())`; not an AI result |
+| B3 repair + optimizer (M6) | `optimize_sequence(record.final_plan, ...)` on accepted B2 plans; offline via `python -m scmpa.evaluation.optimize_results <experiment>` |

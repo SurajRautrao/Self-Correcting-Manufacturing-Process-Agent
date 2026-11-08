@@ -109,14 +109,36 @@ This uses the same test split, seeds, prompts, rule set and loop as Run 2. The p
   - This is a single run. Run 2 showed that B2 outcomes can flip in about a quarter of cases between runs. qwen's per-seed SD is 0.00–0.04 and its results sit at the ceiling, so the noise is probably smaller here, but that is not yet measured.
   - Latency was measured on a different partition from the gemma runs, so the latencies are not comparable.
 
-### Hypotheses after Runs 1–3
+## M6: sequence optimization (B3, H3)
+
+The CP-SAT optimizer (`scmpa.optimization`) was applied offline to every accepted plan of Runs 2 and 3 (`python -m scmpa.evaluation.optimize_results`). The objective is 10 × machine changes + 1 × tool changes between consecutive operations. The hard constraints are the declared precedence and eligible resources. Full tables are in each experiment's `optimization.md`.
+
+Mode `order+resources` (reorder and reassign eligible machine/tool pairs), default weights:
+
+| Set | Plans | Improved | Valid after | Machine changes | Tool changes | Median cost reduction |
+|---|---|---|---|---|---|---|
+| qwen B3, generation | 39 | 35 | 39/39 | 2.31 → 1.00 | 5.97 → 3.59 | 48% |
+| qwen B3, corruption | 38 | 36 | 38/38 | 3.11 → 1.08 | 5.32 → 3.47 | 64% |
+| gemma B3, generation | 18 | 13 | 18/18 | 2.06 → 1.00 | 4.28 → 3.50 | 42% |
+| gemma B3, corruption | 24 | 18 | 24/24 | 2.67 → 1.17 | 4.75 → 3.38 | 56% |
+| reference plans (test split) | 13 | 12 | 13/13 | 3.00 → 1.08 | 5.23 → 3.46 | 64% |
+
+- **Hard constraints held everywhere.** All 1,665 optimizer runs across both experiments, every mode and every weight setting ended with a valid plan, re-checked by the validator. 1,660 of 1,665 were proven optimal. The other 5 hit the deterministic time limit with a feasible, improved plan.
+- **The gain is large:** at the median, the change cost is cut by about half. Machine changes fall to about 1 per plan, which is close to the floor, because most parts need two machines. Reordering alone gets most of the gain (median 26–48%); reassignment adds the rest.
+- **LLM plans are not sequenced for changes.** qwen's initially valid plans start at a cost of 30.0 and end at 14.0. gemma's few initially valid plans were already well grouped: median 4%, and only 5 of 10 improved.
+- **The weights do not matter on this benchmark.** In all 190 qwen plans, and in gemma's, the optimum is the same at 1:1, 1:10, 10:1 and 100:1. Grouping operations by machine also groups their tools, so the two objectives never conflict here. The sensitivity check therefore passes only trivially. A benchmark with real trade-offs, such as the same tool type on different machines, would be needed to test the weighting.
+- **The result is deterministic.** Each solve uses a deterministic time limit, one worker and a fixed seed. Repeated runs give identical plans, and the reference-plan rows match exactly across both experiment folders.
+- **Limits:** this measures change counts, not time. Durations are fixed, setups within a machine are not modelled, and a reassigned tool may differ in unmodelled size (see `assumptions_and_limits.md`).
+
+### Hypotheses after Runs 1–3 and M6
 
 - **H1 (constraint feedback lowers violations):** supported. Invalid plans accepted fall to 0% with either model. The hard-violation rate falls from 79% to 62–69% with gemma and from 54% to 19% with qwen. The 19% left are exactly the infeasible cases.
 - **H2 (the bounded loop repairs a measurable share):** supported, and strongly model-dependent. On injected faults, gemma repairs 62–74% and qwen 97%. On generated plans, gemma repairs 8 of 29 and qwen 17 of 17. Neither model ever made a correct validator-only outcome wrong, and with best-candidate selection no run ends worse than it started.
-- **H3 (sequencing optimizer):** not tested (M6).
+- **H3 (sequencing optimizer):** supported for the declared metrics. The optimizer roughly halves the machine- and tool-change cost of accepted plans and never breaks a hard constraint (0 of 1,665 runs). The improvement is non-negative by construction. The measured effect is its size, and it is about counts, not time. The weighting is untested, because this benchmark has no conflicting objectives.
 - **H4 (auditability):** qualitative. Every repair has a computed diff and a stop reason. Repeated plans and unusable repair outputs show up as such. Both models' diffs show small, targeted edits (median 1–2 operations).
 
 ## Pending
 
 - A second qwen run (new `experiment_id`, `initial_plans_from` the first) to measure its run-to-run noise.
-- H3 (sequencing optimizer, M6) has not been tested.
+- M6 remainder: FabriCAD importer and FreeCAD feature extraction (not started).
+- A benchmark variant where machine and tool changes conflict, to test the optimizer's weighting.
