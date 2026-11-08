@@ -65,7 +65,7 @@ All data is synthetic, so these numbers describe software behaviour on a toy ben
 | M5 | Streamlit demo | ✅ done |
 | M6 | Optional: OR-Tools sequencing (B3, H3) | ✅ done |
 | M6 | Optional: FabriCAD investigation and importer (derived data, not redistributed) | ✅ done, see `docs/fabricad.md` |
-| M6 | Optional: FreeCAD feature extraction | see `docs/fabricad.md` / roadmap |
+| M6 | Optional: FreeCAD feature extraction from STEP geometry | ✅ done, see `docs/cad_extraction.md` |
 
 ## Quick start
 
@@ -226,9 +226,9 @@ Checks happen at two stages:
 ```
 data/            catalogue, examples, synthetic/benchmark_v1 (all synthetic)
 configs/         experiment configs
-docs/            architecture, assumptions/limits, constraint catalogue, evaluation, results, examples, FabriCAD, data card
-src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, optimization/, importers/, evaluation/, app/, prompt_templates/
-scripts/         run_demo.py, make_synthetic_data.py, make_examples.py, hpc/slurm_experiment.sh
+docs/            architecture, assumptions/limits, constraint catalogue, evaluation, results, examples, FabriCAD, CAD extraction, data card
+src/scmpa/       schemas/, io.py, validation/ (R1–R12), llm/, planning/, repair/, workflow/, optimization/, importers/, cad/, evaluation/, app/, prompt_templates/
+scripts/         run_demo.py, make_synthetic_data.py, make_examples.py, hpc/slurm_experiment.sh, freecad/ (fixture builder, FabriCAD evaluation)
 tests/           unit/ and integration/ tests
 reports/         generated experiment output (git-ignored)
 ```

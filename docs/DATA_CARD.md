@@ -8,6 +8,7 @@
 | Hand-written examples | `data/examples/` | synthetic | 3 components + 3 reference plans | MIT (this repo) |
 | Synthetic benchmark v1 | `data/synthetic/benchmark_v1/` | synthetic | 24 components (19 feasible, 5 infeasible), 19 reference plans | MIT (this repo) |
 | Synthetic benchmark v2 | `data/synthetic/benchmark_v2/` | synthetic | 24 components (19 feasible, 5 infeasible), 19 reference plans | MIT (this repo) |
+| CAD test fixture | `tests/fixtures/cad/` (STEP, truth, stored extraction, resources) | synthetic, modelled in FreeCAD by `scripts/freecad/make_cad_fixture.py` | 1 part, 7 features | MIT (this repo) |
 | FabriCAD-format test fixture | `tests/fixtures/fabricad/` | synthetic, hand-written in FabriCAD's file format (no FabriCAD data) | 2 samples | MIT (this repo) |
 | FabriCAD (external, **not included**) | imported locally into `data/external/fabricad/` (git-ignored) | derived (FabriCAD is itself synthetic) | 30 public preview samples inspected | CC BY-NC 4.0, citation required |
 

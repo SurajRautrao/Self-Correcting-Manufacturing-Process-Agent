@@ -1,0 +1,10 @@
+{
+  "machines": [
+    {"machine_id": "M1", "description": "3-axis vertical machining centre", "capabilities": ["face_milling", "pocket_milling", "slot_milling", "spot_drilling", "drilling", "chamfering"]}
+  ],
+  "tools": [
+    {"tool_id": "T1", "type": "end_mill", "description": "10 mm end mill"},
+    {"tool_id": "T2", "type": "drill", "description": "8 mm drill"},
+    {"tool_id": "T3", "type": "drill", "description": "6 mm drill"}
+  ]
+}

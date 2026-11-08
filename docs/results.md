@@ -165,4 +165,3 @@ Mode `order+resources` (reorder and reassign eligible machine/tool pairs), defau
 - Prompt v2 (planner): dev comparison `dev_gemma3-4b_prompt-v1` vs `-v2`, then `llm_test_full_gemma3-4b_prompt-v2` on test.
 - Benchmark v2: `llm_test_full_gemma3-4b_bench-v2` and `llm_test_full_qwen3.5-9b_bench-v2`, then `optimize_results` on them (weight trade-offs in reorder-only mode).
 - `llm_test_full_qwen3.5-9b_rep2`: qwen run-to-run noise.
-- FreeCAD feature extraction (M6 remainder).
