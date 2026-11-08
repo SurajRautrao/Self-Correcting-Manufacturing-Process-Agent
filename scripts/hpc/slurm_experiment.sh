@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=scmpa_experiment
-#SBATCH --partition=gpu
-#SBATCH --nodelist=ant1
+#SBATCH --partition=gpu-stud
+
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-gpu=8
 #SBATCH --mem=32G
