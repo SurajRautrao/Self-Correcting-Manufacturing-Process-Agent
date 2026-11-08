@@ -35,7 +35,7 @@ The validator alone decides validity. Every repaired or optimized plan is checke
 
 ## Results at a glance
 
-Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible by design. Details, caveats and the validator flaws found along the way are in [`docs/results.md`](docs/results.md); worked traces are in [`docs/examples.md`](docs/examples.md).
+The full write-up is the [final report](docs/report.md). Test split of the synthetic benchmark: 16 parts × 3 seeds, 3 parts infeasible by design. Details, caveats and the validator flaws found along the way are in [`docs/results.md`](docs/results.md); worked traces are in [`docs/examples.md`](docs/examples.md).
 
 | | gemma3:4b | qwen3.5:9b |
 |---|---|---|
