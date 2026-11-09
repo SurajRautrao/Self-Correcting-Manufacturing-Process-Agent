@@ -238,21 +238,3 @@ Each of these was found by the project's own checks, documented, and fixed witho
 | Re-check every result | `python scripts/check_reproducible.py` |
 | Run on the cluster | `scripts/hpc/slurm_experiment.sh` (options in its header) |
 | Try it interactively | `streamlit run src/scmpa/app/streamlit_app.py` |
-
-## Timeline of commits
-
-| Date | Commit | Steps |
-|---|---|---|
-| 2026-11-07 | `e60365f` | 1–7: M0–M5 |
-| 2026-11-07 | `494ad00`, `0f2e1e8` | 8: Slurm script |
-| 2026-11-07 | `42cc5c0` | 9: Run 1 results |
-| 2026-11-07 | `d7a4d01` | 10: rule set v1.2 |
-| 2026-11-08 | `e85464b`, `0599f58` | 11: Run 2 |
-| 2026-11-08 | `34168fa`, `455237e`, `c58c92b` | 12: Run 3 |
-| 2026-11-08 | `31c0568` | 13: optimizer |
-| 2026-11-08 | `611eca2` | 14–16: examples, audit, prompt v2, benchmark v2, FabriCAD |
-| 2026-11-08 | `7342324` | 17: FreeCAD extraction |
-| 2026-11-08 | `31a254c`, `50d43e6` | 18: Runs 4–5 |
-| 2026-11-08 | `cd9aacc`, `a6803dc`, `2b36b5a` | 19: Run 6 |
-| 2026-11-08 | `0cb8996` | 20: final report |
-| 2026-11-08 | `81a316e`, `a2119b0` | 21: reproducibility, CI; tag `v1.0` |
